@@ -7,12 +7,13 @@ import exception.SaldoInsuficienteException;
  */
 public class Jogador {
 
+    private static Jogador jogador = new Jogador();
     private ContaBancaria contaBancaria;
     private String nome;
 
-    public Jogador(String nome) {
+    public Jogador() {
         this.contaBancaria = new ContaBancaria();
-        this.nome = nome;
+
     }
 
     /**
@@ -70,6 +71,14 @@ public class Jogador {
      */
     public void pagarJuros() {
         this.contaBancaria.cobrarJuros();
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public static Jogador getInstance() {
+        return jogador;
     }
 
 
