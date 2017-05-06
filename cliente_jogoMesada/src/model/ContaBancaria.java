@@ -53,7 +53,7 @@ public class ContaBancaria {
     }
 
     /**
-     * paga apenas uma parte da dívida.
+     * paga apenas uma parte da dívida e o banco aplica juros.
      * Se o jogador tentar pagar um valor maior que sua dívida, será debitado o total valor da
      * dívida
      * @param valor
@@ -65,7 +65,24 @@ public class ContaBancaria {
         else {
             this.debitar(valor);
             this.divida -= valor;
+            this.cobrarJuros();
         }
+    }
+
+    /**
+     * faz um emprestimo, aumentando o saldo do jogador e a sua dívida.
+     * @param valor
+     */
+    public void fazerEmprestimo(double valor){
+        this.divida += valor;
+        this.saldo =+ valor;
+    }
+
+    /**
+     * método utilizado para cobrar juros caso o jogador não pague alguma parte dívida.
+     */
+    public void cobrarJuros(){
+        this.divida += (this.divida * 0.1);
     }
 
     /**
