@@ -5,9 +5,9 @@ package controller;
  */
 public class Facade {
 
-    private ControllerPartida controllerPartida;
+    private ControllerAcaoCasas controllerPartida;
 
     public Facade() {
-        this.controllerPartida = new ControllerPartida();
+        this.controllerPartida = new ControllerAcaoCasas();
     }
 }

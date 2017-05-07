@@ -2,6 +2,8 @@ package model;
 
 import exception.SaldoInsuficienteException;
 
+import java.util.ArrayList;
+
 /**
  * Created by wanderson on 06/05/17.
  */
@@ -10,9 +12,21 @@ public class Jogador {
     private static Jogador jogador = new Jogador();
     private ContaBancaria contaBancaria;
     private String nome;
+    private ArrayList<CartaCorreio> cartasCorreio;
+
+    public ArrayList<CartaCorreio> getCartasCorreio() {
+        return cartasCorreio;
+    }
+
+    public ArrayList<CartaCompras> getCartasCompra() {
+        return cartasCompra;
+    }
+
+    private ArrayList<CartaCompras> cartasCompra;
 
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
+        this.cartasCorreio = new ArrayList<>();
     }
 
     /**

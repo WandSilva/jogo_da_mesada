@@ -9,31 +9,18 @@ import java.util.Random;
 /**
  * Created by wanderson on 06/05/17.
  */
-public class ControllerPartida {
+public class ControllerAcaoCasas {
 
     private SorteGrande sorteGrande;
     private Jogador jogador;
     private int numeroDeJogadores;
 
-    public ControllerPartida() {
+    public ControllerAcaoCasas() {
         this.sorteGrande = new SorteGrande();
-    }
-
-    /**
-     * cria um jogador para a partida.
-     * @param nome
-     */
-    public void iniciarJogador(String nome){
         this.jogador = Jogador.getInstance();
-        this.jogador.setNome(nome);
-        this.jogador.depositar(3000);
     }
 
-    public int rolarDado(){
-        Random dado = new Random();
-        int dado6Faces = 1 + dado.nextInt( 6 );
-        return dado6Faces;
-    }
+
 /*---------------------------------- OPERACOES DAS CASAS ESPECIAIS ----------------------------*/
     /**
      * recebe o dinheiro acumulado no sorte grande se cair na casa 'Sorte Grande'.
@@ -105,6 +92,7 @@ public class ControllerPartida {
      * @throws SaldoInsuficienteException
      */
     public void casaDiaDaMesada(int opcaoEscolhida, double valorPagamentoDivida) throws SaldoInsuficienteException {
+
         jogador.depositar(3500); //recebe a mesada
 
         switch (opcaoEscolhida){
