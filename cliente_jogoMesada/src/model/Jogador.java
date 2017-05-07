@@ -69,8 +69,8 @@ public class Jogador {
      * método utilizado para cobrar juros caso o jogador escolha por não pagar
      * alguma parte da dívida.
      */
-    public void pagarJuros() {
-        this.contaBancaria.cobrarJuros();
+    public void pagarApenasJuros() throws SaldoInsuficienteException {
+        this.contaBancaria.cobrarApenasJuros();
     }
 
     public void setNome(String nome) {

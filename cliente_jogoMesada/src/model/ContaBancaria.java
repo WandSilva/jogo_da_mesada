@@ -63,9 +63,9 @@ public class ContaBancaria {
         if (valor > divida)
             this.pagarDividaCompleta();
         else {
-            this.debitar(valor);
+            double juros = (divida-valor)*0.1;
+            this.debitar(valor+juros);
             this.divida -= valor;
-            this.cobrarJuros();
         }
     }
 
@@ -81,8 +81,9 @@ public class ContaBancaria {
     /**
      * método utilizado para cobrar juros caso o jogador não pague alguma parte dívida.
      */
-    public void cobrarJuros(){
-        this.divida += (this.divida * 0.1);
+    public void cobrarApenasJuros() throws SaldoInsuficienteException {
+        double juros = (divida * 0.1);
+        debitar(juros);
     }
 
     /**
