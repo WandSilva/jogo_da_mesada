@@ -81,5 +81,9 @@ public class Jogador {
         return jogador;
     }
 
+    public ContaBancaria getContaBancaria() {
+        return contaBancaria;
+    }
+
 
 }
