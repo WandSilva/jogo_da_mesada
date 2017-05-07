@@ -13,11 +13,11 @@ public class Jogador {
 
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
-
     }
 
     /**
      * deposita um determinado valor na conta
+     *
      * @param valor
      */
     public void depositar(double valor) {
@@ -26,43 +26,65 @@ public class Jogador {
 
     /**
      * debita um determinado valor na conta
+     *
      * @param valor
      */
     public void debitar(double valor) throws SaldoInsuficienteException {
         this.contaBancaria.debitar(valor);
     }
 
+    /**
+     * retorna o saldo do jogador
+     * @return
+     */
     public double getSaldoJogador() {
         return this.contaBancaria.getSaldo();
     }
 
+    /**
+     * retorna a dívida do jogador
+     * @return
+     */
     public double getDividaJogador() {
         return this.contaBancaria.getDivida();
     }
 
+
     /**
      * o jogador paga toda sua dívida ao banco
+     *
      * @throws SaldoInsuficienteException
      */
     public void pagarDividaCompleta() throws SaldoInsuficienteException {
-        contaBancaria.pagarDividaCompleta();
+        this.debitar(getDividaJogador());
+        contaBancaria.setDivida(0);
     }
 
     /**
-     * o jogador paga parte de dua dívida. O banco aplica juros sobre a parte restante.
+     * paga apenas uma parte da dívida e o banco aplica juros.
+     * Se o jogador tentar pagar um valor maior que sua dívida, será debitado o total valor da
+     * dívida
      * @param valor
      * @throws SaldoInsuficienteException
      */
     public void pagarDividaParcial(double valor) throws SaldoInsuficienteException {
-        contaBancaria.pagarDividaParcial(valor);
+        if (valor > contaBancaria.getDivida())
+            this.pagarDividaCompleta();
+        else {
+            double juros = (getDividaJogador() - valor) * 0.1;
+            this.debitar(juros + valor);
+            contaBancaria.diminuirDivida(valor);
+        }
     }
 
     /**
      * pega um valor emprestado do banco, aumentando seu saldo e a sua dívida.
+     *
      * @param valor
      */
-    public void PegarEmprestimo(double valor) {
-        this.contaBancaria.fazerEmprestimo(valor);
+    public void fazerEmprestimo(double valor) {
+        this.depositar(valor);
+        this.contaBancaria.aumentarDivida(valor);
     }
 
     /**
@@ -70,7 +92,8 @@ public class Jogador {
      * alguma parte da dívida.
      */
     public void pagarApenasJuros() throws SaldoInsuficienteException {
-        this.contaBancaria.cobrarApenasJuros();
+        double juros = (getDividaJogador() * 0.1);
+        this.debitar(juros);
     }
 
     public void setNome(String nome) {
