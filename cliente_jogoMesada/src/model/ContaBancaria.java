@@ -43,46 +43,26 @@ public class ContaBancaria {
         return saldo;
     }
 
-    /**
-     * paga toda a dívida do jogador
-     * @throws SaldoInsuficienteException
-     */
-    public void pagarDividaCompleta() throws SaldoInsuficienteException {
-        this.debitar(divida);
-        this.divida = 0;
-    }
-
-    /**
-     * paga apenas uma parte da dívida e o banco aplica juros.
-     * Se o jogador tentar pagar um valor maior que sua dívida, será debitado o total valor da
-     * dívida
-     * @param valor
-     * @throws SaldoInsuficienteException
-     */
-    public void pagarDividaParcial(double valor) throws SaldoInsuficienteException {
-        if (valor > divida)
-            this.pagarDividaCompleta();
-        else {
-            this.debitar(valor);
-            this.divida -= valor;
-            this.cobrarJuros();
-        }
-    }
-
-    /**
-     * faz um emprestimo, aumentando o saldo do jogador e a sua dívida.
-     * @param valor
-     */
-    public void fazerEmprestimo(double valor){
-        this.divida += valor;
-        this.saldo =+ valor;
-    }
 
     /**
      * método utilizado para cobrar juros caso o jogador não pague alguma parte dívida.
      */
-    public void cobrarJuros(){
-        this.divida += (this.divida * 0.1);
+    public void cobrarApenasJuros() throws SaldoInsuficienteException {
+        double juros = (divida * 0.1);
+        debitar(juros);
+    }
+
+
+    public void aumentarDivida(double valor) {
+        this.divida += valor;
+    }
+
+    public void diminuirDivida(double valor){
+        this.divida -= valor;
+    }
+
+    public void setDivida(double divida) {
+        this.divida = divida;
     }
 
     /**
@@ -92,5 +72,4 @@ public class ContaBancaria {
     public double getDivida() {
         return divida;
     }
-
 }

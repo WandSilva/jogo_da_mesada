@@ -4,36 +4,24 @@ import exception.SaldoInsuficienteException;
 import model.Jogador;
 import model.SorteGrande;
 
+import javax.swing.*;
 import java.util.Random;
 
 /**
  * Created by wanderson on 06/05/17.
  */
-public class ControllerPartida {
+public class ControllerAcaoCasas {
 
     private SorteGrande sorteGrande;
     private Jogador jogador;
     private int numeroDeJogadores;
 
-    public ControllerPartida() {
-        this.sorteGrande = new SorteGrande();
-    }
-
-    /**
-     * cria um jogador para a partida.
-     * @param nome
-     */
-    public void iniciarJogador(String nome){
+    public ControllerAcaoCasas() {
+        this.sorteGrande = SorteGrande.getInstance();
         this.jogador = Jogador.getInstance();
-        this.jogador.setNome(nome);
-        this.jogador.depositar(3000);
     }
 
-    public int rolarDado(){
-        Random dado = new Random();
-        int dado6Faces = 1 + dado.nextInt( 6 );
-        return dado6Faces;
-    }
+
 /*---------------------------------- OPERACOES DAS CASAS ESPECIAIS ----------------------------*/
     /**
      * recebe o dinheiro acumulado no sorte grande se cair na casa 'Sorte Grande'.
@@ -95,6 +83,33 @@ public class ControllerPartida {
             jogador.depositar(numeroDeJogadores*100);
         else
             jogador.debitar(100);
+    }
+
+    /**
+     * @param opcaoEscolhida
+     * 1 - pagar toda a dívida
+     * 2 - pagar parte da dívida
+     * 3 - pagar apenas os juros
+     * @throws SaldoInsuficienteException
+     */
+    public void casaDiaDaMesada(int opcaoEscolhida, double valorPagamentoDivida) throws SaldoInsuficienteException {
+
+        jogador.depositar(3500); //recebe a mesada
+        double dividaMes = jogador.getDividaJogador(); //pega a dívida do mês
+        jogador.receberJuros(dividaMes*0.1);
+
+
+        switch (opcaoEscolhida){
+            case 1:
+                jogador.pagarDividaCompleta();
+                break;
+            case 2:
+                jogador.pagarDividaParcial(valorPagamentoDivida);
+                break;
+            case 3:
+                jogador.pagarJuros(dividaMes*0.1);
+                break;
+        }
     }
 
 }
