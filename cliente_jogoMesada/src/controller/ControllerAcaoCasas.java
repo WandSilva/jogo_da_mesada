@@ -49,12 +49,24 @@ public class ControllerAcaoCasas {
      * @param valorRolarDado
      * @return TRUE se ganhou o concurso, caso não, FALSE
      */
-    public Boolean casaConcursoBandaArrocha(int valorRolarDado){
+    public boolean casaConcursoBandaArrocha(int valorRolarDado){
         if (valorRolarDado == 3){
             jogador.depositar(1000);
             return true;
         }
         else return false;
+    }
+
+    public boolean casaBolaoEsportes(int valorDado, int numeroEscolhido, int numeroParticipantes) throws SaldoInsuficienteException {
+        jogador.debitar(100);
+        double premio = 1000 + numeroParticipantes*100;
+
+        if (numeroEscolhido == valorDado) {
+            jogador.depositar(premio);
+            return true;
+        }
+        else return false;
+
     }
 
     public void casaPremio(){
