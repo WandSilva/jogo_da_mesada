@@ -5,12 +5,33 @@ package model;
  */
 public class CartaCorreio {
     private String tipo;
-    private String descricao;
+    private String nome;
     private double valor;
 
-    public CartaCorreio(String tipo, String descricao) {
+    public CartaCorreio(String tipo, String nome) {
         this.tipo = tipo;
-        this.descricao = descricao;
+        this.nome = nome;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

@@ -34,4 +34,8 @@ public class ControllerJogador {
         int dado6Faces = 1 + dado.nextInt( 6 );
         return dado6Faces;
     }
+
+    public void fazerEmprestimo(double valor){
+        jogador.fazerEmprestimo(valor);
+    }
 }
