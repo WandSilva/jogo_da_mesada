@@ -1,5 +1,6 @@
 package controller;
 
+import model.CartaCorreio;
 import model.Jogador;
 
 import java.util.Random;
@@ -33,6 +34,10 @@ public class ControllerJogador {
         Random dado = new Random();
         int dado6Faces = 1 + dado.nextInt( 6 );
         return dado6Faces;
+    }
+
+    public void receberCartaCorreio(CartaCorreio cartaCorreio){
+        jogador.receberCartaCorreio(cartaCorreio);
     }
 
     public void fazerEmprestimo(double valor){

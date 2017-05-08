@@ -19,6 +19,7 @@ public class Jogador {
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
         this.cartasCorreio = new ArrayList<>();
+        this.cartasCompra = new ArrayList<>();
     }
 
     /**
@@ -121,6 +122,15 @@ public class Jogador {
 
     public ArrayList<CartaCompra> getCartasCompra() {
         return cartasCompra;
+    }
+
+    public void receberCartaCorreio(CartaCorreio cartaCorreio){
+
+        this.cartasCorreio.add(cartaCorreio);
+    }
+
+    public void removerContas(){
+        cartasCorreio.clear();
     }
 
 
