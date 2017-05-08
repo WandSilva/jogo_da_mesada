@@ -77,8 +77,7 @@ public class Jogador {
         if (valor > contaBancaria.getDivida())
             this.pagarDividaCompleta();
         else {
-            double juros = (getDividaJogador() - valor) * 0.1;
-            this.debitar(juros + valor);
+            this.debitar(valor);
             contaBancaria.diminuirDivida(valor);
         }
     }
@@ -94,12 +93,18 @@ public class Jogador {
     }
 
     /**
-     * método utilizado para cobrar juros caso o jogador escolha por não pagar
-     * alguma parte da dívida.
+     * método utilizado para cobrar juros ao jogador
      */
-    public void pagarApenasJuros() throws SaldoInsuficienteException {
-        double juros = (getDividaJogador() * 0.1);
-        this.debitar(juros);
+    public void receberJuros(double valor) throws SaldoInsuficienteException {
+        contaBancaria.aumentarDivida(valor);
+    }
+
+    /**
+     * paga apenas os juros
+     */
+    public void pagarJuros(double valor) throws SaldoInsuficienteException {
+        this.debitar(valor);
+        contaBancaria.diminuirDivida(valor);
     }
 
     public void setNome(String nome) {

@@ -4,6 +4,7 @@ import exception.SaldoInsuficienteException;
 import model.Jogador;
 import model.SorteGrande;
 
+import javax.swing.*;
 import java.util.Random;
 
 /**
@@ -94,6 +95,9 @@ public class ControllerAcaoCasas {
     public void casaDiaDaMesada(int opcaoEscolhida, double valorPagamentoDivida) throws SaldoInsuficienteException {
 
         jogador.depositar(3500); //recebe a mesada
+        double dividaMes = jogador.getDividaJogador(); //pega a dívida do mês
+        jogador.receberJuros(dividaMes*0.1);
+
 
         switch (opcaoEscolhida){
             case 1:
@@ -103,7 +107,8 @@ public class ControllerAcaoCasas {
                 jogador.pagarDividaParcial(valorPagamentoDivida);
                 break;
             case 3:
-                jogador.pagarApenasJuros();
+                jogador.pagarJuros(dividaMes*0.1);
+                break;
         }
     }
 
