@@ -16,7 +16,7 @@ public class ControllerAcaoCasas {
     private int numeroDeJogadores;
 
     public ControllerAcaoCasas() {
-        this.sorteGrande = new SorteGrande();
+        this.sorteGrande = SorteGrande.getInstance();
         this.jogador = Jogador.getInstance();
     }
 

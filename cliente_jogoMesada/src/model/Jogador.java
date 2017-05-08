@@ -13,16 +13,8 @@ public class Jogador {
     private ContaBancaria contaBancaria;
     private String nome;
     private ArrayList<CartaCorreio> cartasCorreio;
-
-    public ArrayList<CartaCorreio> getCartasCorreio() {
-        return cartasCorreio;
-    }
-
-    public ArrayList<CartaCompras> getCartasCompra() {
-        return cartasCompra;
-    }
-
     private ArrayList<CartaCompras> cartasCompra;
+
 
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
@@ -116,6 +108,14 @@ public class Jogador {
 
     public static Jogador getInstance() {
         return jogador;
+    }
+
+    public ArrayList<CartaCorreio> getCartasCorreio() {
+        return cartasCorreio;
+    }
+
+    public ArrayList<CartaCompras> getCartasCompra() {
+        return cartasCompra;
     }
 
 

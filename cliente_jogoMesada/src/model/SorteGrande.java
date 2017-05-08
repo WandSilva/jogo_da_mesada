@@ -6,6 +6,7 @@ package model;
 public class SorteGrande {
 
     private double valorAcumulado;
+    private static SorteGrande sorteGrande = new SorteGrande();
 
     public SorteGrande(){
         this.valorAcumulado = 0;
@@ -27,5 +28,9 @@ public class SorteGrande {
         double valor = valorAcumulado;
         this.valorAcumulado = 0;
         return valor;
+    }
+
+    public static SorteGrande getInstance(){
+        return sorteGrande;
     }
 }
