@@ -73,22 +73,22 @@ public class ControllerAcaoCasas {
         jogador.depositar(5000);
     }
 
-    public void casaPraiaNodomingo(double valor) throws SaldoInsuficienteException {
-        jogador.debitar(valor);
-        sorteGrande.arrecadarDinheiro(valor);
+    public void casaPraiaNodomingo() throws SaldoInsuficienteException {
+        jogador.debitar(100);
+        sorteGrande.arrecadarDinheiro(100);
     }
 
-    public void casaAjudeaFloresta(double valor) throws SaldoInsuficienteException {
-        jogador.debitar(valor);
-        sorteGrande.arrecadarDinheiro(valor);
+    public void casaAjudeaFloresta() throws SaldoInsuficienteException {
+        jogador.debitar(100);
+        sorteGrande.arrecadarDinheiro(100);
     }
-    public void casaLanchonete(double valor) throws SaldoInsuficienteException {
-        jogador.debitar(valor);
-        sorteGrande.arrecadarDinheiro(valor);
+    public void casaLanchonete() throws SaldoInsuficienteException {
+        jogador.debitar(100);
+        sorteGrande.arrecadarDinheiro(100);
     }
-    public void casaShopping(double valor) throws SaldoInsuficienteException {
-        jogador.debitar(valor);
-        sorteGrande.arrecadarDinheiro(valor);
+    public void casaShopping() throws SaldoInsuficienteException {
+        jogador.debitar(100);
+        sorteGrande.arrecadarDinheiro(100);
     }
     public void casaFelizAniversario(boolean caiuNaCasa) throws SaldoInsuficienteException {
         if (caiuNaCasa)
