@@ -13,7 +13,7 @@ public class Jogador {
     private ContaBancaria contaBancaria;
     private String nome;
     private ArrayList<CartaCorreio> cartasCorreio;
-    private ArrayList<CartaCompras> cartasCompra;
+    private ArrayList<CartaCompra> cartasCompra;
 
 
     public Jogador() {
@@ -119,7 +119,7 @@ public class Jogador {
         return cartasCorreio;
     }
 
-    public ArrayList<CartaCompras> getCartasCompra() {
+    public ArrayList<CartaCompra> getCartasCompra() {
         return cartasCompra;
     }
 
