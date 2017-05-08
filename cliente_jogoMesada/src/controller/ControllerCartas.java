@@ -246,4 +246,14 @@ public class ControllerCartas {
         return listaCartasCorreio.get(sorteio);
     }
 
+    /**
+     * retorna uma carta de compra aleatória
+     * @return CartaCompra
+     */
+    public CartaCompra pegarCartaCompra(){
+        Random random = new Random();
+        int sorteio = 1 + random.nextInt(12);
+        return listaCartasCompra.get(sorteio);
+    }
+
 }
