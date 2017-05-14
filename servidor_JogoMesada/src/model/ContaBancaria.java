@@ -5,13 +5,14 @@ import exception.SaldoInsuficienteException;
 /**
  * Gere as operações monetárias de um jogador.
  */
+
 public class ContaBancaria {
 
     private double saldo;
     private double divida;
 
     public ContaBancaria() {
-        this.saldo = 0;
+        this.saldo = 3000;
         this.divida = 0;
     }
 

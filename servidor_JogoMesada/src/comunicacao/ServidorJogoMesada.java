@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Sala;
 
 /**
  * Esta classe implementa a abstração do servidor do Jogo da Mesada. A execução
@@ -31,7 +32,8 @@ public class ServidorJogoMesada {
     private static int porta = 22222;
     private static ArrayList<Jogador> jogadoresCadastrados;
     private static ArrayList<String> jogadoresOnline;
-
+    private static ArrayList<Sala> salasDePartidas;
+    
     /**
      * Método responsável por iniciar a execução do servidor e disponibilizá-lo
      * para uso.
@@ -100,6 +102,7 @@ public class ServidorJogoMesada {
                                 Jogador novoJogadorOnline = new Jogador();
                                 novoJogadorOnline.setNome(dados[1]);
                                 saidaDadosClienteServidor.writeBytes("100");
+                                novaSala(novoJogadorOnline);
                             } else {
                                 saidaDadosClienteServidor.writeBytes("UsuarioExistente");
                             }    
@@ -150,6 +153,11 @@ public class ServidorJogoMesada {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        
+
+        private synchronized void novaSala(Jogador novoJogadorOnline) {
+            
         }
         
     }

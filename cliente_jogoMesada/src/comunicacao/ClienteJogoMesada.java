@@ -25,7 +25,8 @@ public class ClienteJogoMesada {
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
-    private DatagramSocket cone;
+    private InetAddress enderecoMulticast;
+    private MulticastSocket conexaoGrupo;
 
     /**
      * 
@@ -53,7 +54,7 @@ public class ClienteJogoMesada {
      * @author Wanderson e Santana
      */
 
-    public String entrar(String usuario) {
+    public synchronized String entrar(String usuario) {
 
         if (conexaoClienteServidor.isConnected()) {
             try {
@@ -76,5 +77,9 @@ public class ClienteJogoMesada {
             return "ERRO! Tente novamente...";
         }
     }
-
+    
+    public synchronized String iniciarPartida()
+    {
+        return "";
+    }
 }
