@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.*;
 
-
 /**
  * Esta classe implementa a parte da aplicação responśavel por comunicar-se com
  * o servidor e com outros clientes por meio de requisições. Modelo
@@ -21,7 +20,8 @@ import java.net.*;
 public class ClienteJogoMesada {
 
     private static String host = new String();
-    private static int portaServidor;
+    private static int portaClienteServidor;
+    private static int portaClienteCliente;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
@@ -29,7 +29,7 @@ public class ClienteJogoMesada {
     private MulticastSocket conexaoGrupo;
 
     /**
-     * 
+     *
      *
      *
      * @author Wanderson e Santana
@@ -37,7 +37,7 @@ public class ClienteJogoMesada {
     public ClienteJogoMesada() {
 
         try {
-            this.conexaoClienteServidor = new Socket(host, portaServidor);
+            this.conexaoClienteServidor = new Socket(host, portaClienteServidor);
             this.saidaDados = new DataOutputStream(this.conexaoClienteServidor.getOutputStream());
             this.entradaDados = new BufferedReader(new InputStreamReader(this.conexaoClienteServidor.getInputStream()));
 
@@ -45,15 +45,14 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
-     * 
+     *
      * Método responsável por efetuar o login no servidor do jogo
      *
      * @param usuario nome para identificar o jogador
      * @author Wanderson e Santana
      */
-
     public synchronized String entrar(String usuario) {
 
         if (conexaoClienteServidor.isConnected()) {
@@ -77,9 +76,36 @@ public class ClienteJogoMesada {
             return "ERRO! Tente novamente...";
         }
     }
-    
-    public synchronized String iniciarPartida()
-    {
+
+    public synchronized String sair() {
         return "";
+    }
+
+    public synchronized String iniciarPartida() {
+
+        return "";
+    }
+
+    private static class ThreadCliente extends Thread {
+
+        private MulticastSocket socketMulticast;
+
+        public ThreadCliente(MulticastSocket socketMulticast) {
+
+        }
+
+        public void run() {
+            try {
+                while (true) {
+
+                    byte dados[] = new byte[256];
+                    DatagramPacket datagrama = new DatagramPacket(dados, dados.length);
+                    socketMulticast.receive(datagrama);
+                    Thread.sleep(100);
+                }
+            } catch (Exception e) {
+            }
+        }
+
     }
 }
