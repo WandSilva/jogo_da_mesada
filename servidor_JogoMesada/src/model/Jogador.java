@@ -15,7 +15,6 @@ public class Jogador {
     private ArrayList<CartaCorreio> cartasCorreio;
     private ArrayList<CartaCompra> cartasCompra;
 
-
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
         this.cartasCorreio = new ArrayList<>();
@@ -42,6 +41,7 @@ public class Jogador {
 
     /**
      * retorna o saldo do jogador
+     *
      * @return
      */
     public double getSaldoJogador() {
@@ -50,12 +50,12 @@ public class Jogador {
 
     /**
      * retorna a dívida do jogador
+     *
      * @return
      */
     public double getDividaJogador() {
         return this.contaBancaria.getDivida();
     }
-
 
     /**
      * o jogador paga toda sua dívida ao banco
@@ -68,16 +68,17 @@ public class Jogador {
     }
 
     /**
-     * paga apenas uma parte da dívida e o banco aplica juros.
-     * Se o jogador tentar pagar um valor maior que sua dívida, será debitado o total valor da
-     * dívida
+     * paga apenas uma parte da dívida e o banco aplica juros. Se o jogador
+     * tentar pagar um valor maior que sua dívida, será debitado o total valor
+     * da dívida
+     *
      * @param valor
      * @throws SaldoInsuficienteException
      */
     public void pagarDividaParcial(double valor) throws SaldoInsuficienteException {
-        if (valor > contaBancaria.getDivida())
+        if (valor > contaBancaria.getDivida()) {
             this.pagarDividaCompleta();
-        else {
+        } else {
             this.debitar(valor);
             contaBancaria.diminuirDivida(valor);
         }
@@ -124,14 +125,29 @@ public class Jogador {
         return cartasCompra;
     }
 
-    public void receberCartaCorreio(CartaCorreio cartaCorreio){
+    public void receberCartaCorreio(CartaCorreio cartaCorreio) {
 
         this.cartasCorreio.add(cartaCorreio);
     }
 
-    public void removerContas(){
+    public void removerContas() {
         cartasCorreio.clear();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Jogador umJogador = (Jogador) o;
+
+        if (this.getNome().equals(umJogador.getNome())) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public String getNome() {
+        return nome;
+    }
 
 }

@@ -103,11 +103,18 @@ public class ServidorJogoMesada {
                                 Jogador novoJogadorOnline = new Jogador();
                                 novoJogadorOnline.setNome(dados[1]);
                                 novaSala(novoJogadorOnline);
-                                saidaDadosClienteServidor.writeBytes("100");
+                                saidaDadosClienteServidor.writeBytes("100\n");
                             } else {
                                 saidaDadosClienteServidor.writeBytes("UsuarioExistente");
                             }
                         } else if (pacoteDados.startsWith("002")) {
+                            String[] dados = new String[2];
+                            dados = pacoteDados.split(";");
+                            Jogador removerJogador = new Jogador();
+                            removerJogador.setNome(dados[1]);
+                            jogadoresOnline.remove(dados[2]);
+                            sairSala(removerJogador);
+                            saidaDadosClienteServidor.writeBytes("200\n");
 
                         }
 
@@ -175,5 +182,17 @@ public class ServidorJogoMesada {
 
         }
 
+        private synchronized void sairSala(Jogador removerJogador) {
+
+            for (Sala sala : salasDePartidas) {
+                if (sala != null) {
+                    if (sala.removerJogador(removerJogador)) {
+                        break;
+                    }
+                }
+
+            }
+
+        }
     }
 }

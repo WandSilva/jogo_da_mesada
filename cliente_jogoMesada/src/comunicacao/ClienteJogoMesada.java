@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.*;
+import model.Sala;
 
 /**
  * Esta classe implementa a parte da aplicação responśavel por comunicar-se com
@@ -22,6 +23,7 @@ public class ClienteJogoMesada {
     private static String host = new String();
     private static int portaClienteServidor;
     private static int portaClienteCliente;
+    private static String usuario;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
@@ -62,6 +64,7 @@ public class ClienteJogoMesada {
                 String pacoteDados = entradaDados.readLine();
 
                 if (pacoteDados.startsWith("100")) {
+                    ClienteJogoMesada.usuario = usuario;
                     return "HOME_PAGE";
 
                 } else {
@@ -78,12 +81,73 @@ public class ClienteJogoMesada {
     }
 
     public synchronized String sair() {
-        return "";
+        if (conexaoClienteServidor.isConnected()) {
+            try {
+                saidaDados.writeBytes("002" + ";" + ClienteJogoMesada.usuario + '\n');
+
+                String pacoteDados = entradaDados.readLine();
+
+                if (pacoteDados.startsWith("200")) {
+                    return "";
+
+                } else {
+                    return pacoteDados;
+                }
+
+            } catch (IOException ex) {
+                //System.out.println(ex.toString());
+                return "Falha na conexão com o servidor!";
+            }
+        } else {
+            return "ERRO! Tente novamente...";
+        }
     }
 
     public synchronized String iniciarPartida() {
 
-        return "";
+        if (conexaoClienteServidor.isConnected()) {
+            try {
+                saidaDados.writeBytes("003" + '\n');
+
+                String pacoteDados = entradaDados.readLine();
+
+                if (pacoteDados.startsWith("100")) {
+                    return "HOME_PAGE";
+
+                } else {
+                    return pacoteDados;
+                }
+
+            } catch (IOException ex) {
+                //System.out.println(ex.toString());
+                return "Falha na conexão com o servidor!";
+            }
+        } else {
+            return "ERRO! Tente novamente...";
+        }
+    }
+
+    public String solicitarEmprestimo(Sala sala) {
+        if (conexaoClienteServidor.isConnected()) {
+            try {
+                saidaDados.writeBytes("003" + ";" + ClienteJogoMesada.usuario + '\n');
+
+                String pacoteDados = entradaDados.readLine();
+
+                if (pacoteDados.startsWith("300")) {
+                    return "";
+
+                } else {
+                    return pacoteDados;
+                }
+
+            } catch (IOException ex) {
+                //System.out.println(ex.toString());
+                return "Falha na conexão com o servidor!";
+            }
+        } else {
+            return "ERRO! Tente novamente...";
+        }
     }
 
     private static class ThreadCliente extends Thread {
