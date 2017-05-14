@@ -27,10 +27,10 @@ import java.util.logging.Logger;
  *
  */
 public class ServidorJogoMesada {
-
+    
     private static int porta = 22222;
     private static ArrayList<Jogador> jogadoresCadastrados;
-    private static ArrayList<Jogador> jogadoresOnline;
+    private static ArrayList<String> jogadoresOnline;
 
     /**
      * Método responsável por iniciar a execução do servidor e disponibilizá-lo
@@ -41,34 +41,34 @@ public class ServidorJogoMesada {
      */
     public static void main(String[] args) {
         try {
-
+            
             ServerSocket socketClienteServidor = new ServerSocket(porta);
             System.out.println("Servidor executando na porta" + " " + porta);
             jogadoresCadastrados = new ArrayList<>();
             jogadoresOnline = new ArrayList<>();
-
+            
             while (true) {
                 Socket clienteServidor = socketClienteServidor.accept();
                 System.out.println("Conexão Estabelecida com:" + " " + clienteServidor.getInetAddress().getHostAddress());
                 new ThreadServidor(clienteServidor).start();
-
+                
             }
         } catch (IOException ex) {
             System.out.println("Conexão Finalizada!");
         }
     }
-
+    
     private static class ThreadServidor extends Thread {
-
-        private final Socket clienteServidor;
-       //private final MulticastSocket servidorGrupo;
-        private final BufferedReader entradaDados;
-        private final DataOutputStream saidaDados;
-
-        public ThreadServidor(Socket clienteServidor) throws IOException {
-            this.clienteServidor = clienteServidor;
-            this.entradaDados = new BufferedReader(new InputStreamReader(this.clienteServidor.getInputStream()));
-            this.saidaDados = new DataOutputStream(this.clienteServidor.getOutputStream());
+        
+        private final Socket conexaoClienteServidor;
+        //private final MulticastSocket servidorGrupo;
+        private final BufferedReader entradaDadosClienteServidor;
+        private final DataOutputStream saidaDadosClienteServidor;
+        
+        public ThreadServidor(Socket conexaoClienteServidor) throws IOException {
+            this.conexaoClienteServidor = conexaoClienteServidor;
+            this.entradaDadosClienteServidor = new BufferedReader(new InputStreamReader(this.conexaoClienteServidor.getInputStream()));
+            this.saidaDadosClienteServidor = new DataOutputStream(this.conexaoClienteServidor.getOutputStream());
         }
 
         /**
@@ -81,40 +81,54 @@ public class ServidorJogoMesada {
         @Override
         public synchronized void run() {
 
-            //jogadoresCadastrados = (ArrayList<Jogador>) abrirArquivoCadastro(jogadoresCadastrados);
-            
             /**
              * Informações sobre o Protocolo
              *
              */
             while (true) {
-                if (clienteServidor.isConnected()) {
-
+                if (conexaoClienteServidor.isConnected()) {
+                    
                     try {
-                        String pacoteDados = entradaDados.readLine();
-
-                        if (pacoteDados.startsWith("")) {
-
+                        String pacoteDados = entradaDadosClienteServidor.readLine();
+                        
+                        if (pacoteDados.startsWith("001")) {
+                            
+                            String[] dados = new String[2];
+                            dados = pacoteDados.split(";");
+                            
+                            if (!jogadoresOnline.contains(dados[1])) {
+                                Jogador novoJogadorOnline = new Jogador();
+                                novoJogadorOnline.setNome(dados[1]);
+                                saidaDadosClienteServidor.writeBytes("100");
+                            } else {
+                                saidaDadosClienteServidor.writeBytes("UsuarioExistente");
+                            }    
                         }
-
+                        
+                        else if (pacoteDados.startsWith("001"))
+                        {
+                            
+                        }
+                        
                     } catch (IOException ex) {
-                        Logger.getLogger(ServidorJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+                        //System.out.println("Conexão Finalizada!");
+
                         //System.out.println("Conexão Finalizada!");
                     }
-
+                    
                 }
             }
-
+            
         }
-
+        
         private synchronized Object abrirArquivoCadastro(Object o) {
-
+            
             String arquivo = "data" + File.separator + "data_bcli.dat";
-
+            
             try {
                 FileInputStream fi = new FileInputStream(arquivo);
                 ObjectInputStream oi = new ObjectInputStream(fi);
-
+                
                 o = oi.readObject();
                 oi.close();
                 return o;
@@ -122,9 +136,9 @@ public class ServidorJogoMesada {
                 e.printStackTrace();
             }
             return null;
-
+            
         }
-
+        
         private synchronized void salvarArquivoCadastro(Object o) {
             String arquivo = "data" + File.separator + "data_bcli.dat";
             try {
@@ -132,11 +146,11 @@ public class ServidorJogoMesada {
                 ObjectOutputStream oo = new ObjectOutputStream(fo);
                 oo.writeObject(o);
                 oo.close();
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
+        
     }
 }
