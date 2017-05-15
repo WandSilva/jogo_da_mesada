@@ -111,8 +111,8 @@ public class ClienteJogoMesada {
 
                 String pacoteDados = entradaDados.readLine();
 
-                if (pacoteDados.startsWith("100")) {
-                    return "HOME_PAGE";
+                if (pacoteDados.startsWith("300")) {
+                    return "";
 
                 } else {
                     return pacoteDados;
@@ -127,14 +127,14 @@ public class ClienteJogoMesada {
         }
     }
 
-    public String solicitarEmprestimo(Sala sala) {
+    public String solicitarEmprestimo() {
         if (conexaoClienteServidor.isConnected()) {
             try {
-                saidaDados.writeBytes("003" + ";" + ClienteJogoMesada.usuario + '\n');
+                saidaDados.writeBytes("004" + ";" + ClienteJogoMesada.usuario + '\n');
 
                 String pacoteDados = entradaDados.readLine();
 
-                if (pacoteDados.startsWith("300")) {
+                if (pacoteDados.startsWith("400")) {
                     return "";
 
                 } else {
