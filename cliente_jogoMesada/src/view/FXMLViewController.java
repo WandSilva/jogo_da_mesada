@@ -112,7 +112,7 @@ public class FXMLViewController implements Initializable {
         peao.getPeao().setStroke(Color.AQUA);
         peao.getPeao().setFill(Color.GOLD);
         this.grid.add(peao.getPeao(), 0, 0);
-        this.adcionarImagensTabuleiro();
+        this.adicionarImagensTabuleiro();
     }
 
 
@@ -146,7 +146,7 @@ public class FXMLViewController implements Initializable {
         labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
     }
 
-    private void adcionarImagensTabuleiro() {
+    private void adicionarImagensTabuleiro() {
         ArrayList<Pane> casas = organizarCasas();
 
         for (Pane casa : casas) {
