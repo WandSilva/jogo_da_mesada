@@ -182,12 +182,14 @@ public class FXMLViewController implements Initializable {
         casas.add(casa41);
         casas.add(casa42);
         casas.add(casa43);
-        casas.add(casa44);
+       //
+        //
+        // casas.add(casa44);
         casas.add(casa50);
         casas.add(casa51);
         casas.add(casa52);
         casas.add(casa53);
-        casas.add(casa54);
+       // casas.add(casa54);
         casas.add(casa60);
         casas.add(casa61);
         casas.add(casa62);

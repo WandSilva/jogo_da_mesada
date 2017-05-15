@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.paint.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -14,7 +16,7 @@
 
 <AnchorPane fx:id="fundo" prefHeight="712.0" prefWidth="1321.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.FXMLViewController">
    <children>
-      <GridPane fx:id="grid" gridLinesVisible="true" layoutX="245.0" layoutY="58.0" prefHeight="602.0" prefWidth="1059.0">
+      <GridPane fx:id="grid" gridLinesVisible="true" layoutX="336.0" layoutY="58.0" prefHeight="602.0" prefWidth="968.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -62,7 +64,14 @@
             <Pane fx:id="casa20" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
             <Pane fx:id="casa10" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
             <Pane fx:id="casa04" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
-            <Pane fx:id="casa64" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+            <Pane fx:id="casa64" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
+               <children>
+                  <Label layoutX="1.0" layoutY="16.0" prefHeight="73.0" prefWidth="137.0" text="R$00,00" textFill="#000a01" underline="true">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children></Pane>
             <Pane fx:id="casa54" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
             <Pane fx:id="casa44" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
             <Pane fx:id="casa34" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
