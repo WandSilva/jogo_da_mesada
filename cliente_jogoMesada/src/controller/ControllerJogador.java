@@ -12,8 +12,7 @@ public class ControllerJogador {
 
     private Jogador jogador;
 
-    public ControllerJogador(String nome) {
-        iniciarJogador(nome);
+    public ControllerJogador() {
     }
 
     /**
