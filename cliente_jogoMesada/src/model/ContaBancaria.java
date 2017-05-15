@@ -11,7 +11,7 @@ public class ContaBancaria {
     private double divida;
 
     public ContaBancaria() {
-        this.saldo = 3000;
+        this.saldo = 0;
         this.divida = 0;
     }
 

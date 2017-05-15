@@ -1,18 +1,13 @@
 package view;
 
-import controller.ControllerJogador;
 import controller.Facade;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.event.ActionEvent;
-import javafx.scene.shape.Circle;
+import javafx.scene.control.Label;
 
 import javax.swing.*;
 import java.net.URL;
@@ -96,29 +91,36 @@ public class FXMLViewController implements Initializable {
 
     @FXML
     private GridPane grid;
+    @FXML
+    private Label labelSaldo;
+    @FXML
+    private Label labelDivida;
 
     private Peao peao;
 
     Facade facade;
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.facade = new Facade();
+        String nome = JOptionPane.showInputDialog("Informe seu nome");
+        facade.iniciarJogador("nome");
+        labelDivida.setText("Dívida: " + facade.verDividaJogador());
+        labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
         this.peao = new Peao();
+        peao.getPeao().setStroke(Color.AQUA);
+        peao.getPeao().setFill(Color.GOLD);
         this.grid.add(peao.getPeao(), 0, 0);
-        adcionarImagensTabuleiro();
-
-
+        this.adcionarImagensTabuleiro();
     }
 
+
     @FXML
-    public void testeGrid(ActionEvent event) {
+    public void moverPeao(ActionEvent event) {
 
         int dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
-
         peao.setColuna(peao.getColuna() + dado);
 
         if (peao.getColuna() > 6) {
@@ -136,7 +138,25 @@ public class FXMLViewController implements Initializable {
 
     }
 
-    private void adcionarImagensTabuleiro(){
+    @FXML
+    public void fazerEmprestimo() {
+        String valor = JOptionPane.showInputDialog("Valor do emprestimo:");
+        facade.fazerEmprestimo(Double.parseDouble(valor));
+        labelDivida.setText("Dívida: " + facade.verDividaJogador());
+        labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
+    }
+
+    private void adcionarImagensTabuleiro() {
+        ArrayList<Pane> casas = organizarCasas();
+
+        for (Pane casa : casas) {
+            BackgroundImage bi = new BackgroundImage(new Image(casa.getId() + ".png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+            casa.setBackground(new Background(bi));
+        }
+    }
+
+
+    private ArrayList<Pane> organizarCasas() {
         ArrayList<Pane> casas = new ArrayList<>();
         casas.add(casa00);
         casas.add(casa01);
@@ -174,16 +194,7 @@ public class FXMLViewController implements Initializable {
         casas.add(casa63);
         casas.add(casa64);
 
-
-
-        for (Pane casa:casas){
-            BackgroundImage bi = new BackgroundImage(new Image(casa.getId()+".png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
-            casa.setBackground(new Background(bi));
-        }
-
-
-
-
+        return casas;
     }
 
 }

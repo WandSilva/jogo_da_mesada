@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="fundo" prefHeight="712.0" prefWidth="1321.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.FXMLViewController">
    <children>
-      <GridPane fx:id="grid" gridLinesVisible="true" layoutX="196.0" layoutY="49.0" prefHeight="602.0" prefWidth="1059.0">
+      <GridPane fx:id="grid" gridLinesVisible="true" layoutX="245.0" layoutY="58.0" prefHeight="602.0" prefWidth="1059.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -69,6 +69,9 @@
             <Pane fx:id="casa24" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button fx:id="botao" layoutX="656.0" layoutY="11.0" mnemonicParsing="false" onAction="#testeGrid" text="Rolar dado" />
+      <Button layoutX="245.0" layoutY="14.0" mnemonicParsing="false" onAction="#moverPeao" text="Rolar dado" />
+      <Label fx:id="labelSaldo" layoutX="542.0" layoutY="13.0" text="Saldo: 0" />
+      <Label fx:id="labelDivida" layoutX="540.0" layoutY="29.0" text="Divida: 0" />
+      <Button layoutX="392.0" layoutY="14.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
    </children>
 </AnchorPane>

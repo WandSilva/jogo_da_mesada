@@ -35,6 +35,14 @@ public class Facade {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
 
+    public double verDividaJogador(){
+        return controllerJogador.verDividaJogador();
+    }
+    public double verSaldoJogador(){
+        return controllerJogador.verSaldoJogador();
+    }
+
+
     //******************************METODOS DO CONTROLLER CASAS***********************//
 
     //******************************METODOS DO CONTROLLER CARTA***********************//

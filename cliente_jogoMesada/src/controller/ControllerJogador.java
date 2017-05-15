@@ -42,4 +42,11 @@ public class ControllerJogador {
     public void fazerEmprestimo(double valor){
         jogador.fazerEmprestimo(valor);
     }
+
+    public double verDividaJogador(){
+        return jogador.getDividaJogador();
+    }
+    public double verSaldoJogador(){
+        return jogador.getSaldoJogador();
+    }
 }
