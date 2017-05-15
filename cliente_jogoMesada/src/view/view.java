@@ -2,6 +2,7 @@ package view;/**
  * Created by wanderson on 08/05/17.
  */
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,3 +26,4 @@ public class view extends Application {
         stage.show();
     }
 }
+///home/vinicius/Jogo da Mesada/cliente_jogoMesada/src/view/FXMLView.fxml
