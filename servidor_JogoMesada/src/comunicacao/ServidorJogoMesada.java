@@ -116,6 +116,10 @@ public class ServidorJogoMesada {
                             sairSala(removerJogador);
                             saidaDadosClienteServidor.writeBytes("200\n");
 
+                        } else if (pacoteDados.startsWith("003")){
+                            
+                        } else if (pacoteDados.startsWith("004")){
+                            
                         }
 
                     } catch (IOException ex) {
