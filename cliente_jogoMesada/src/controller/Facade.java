@@ -1,5 +1,6 @@
 package controller;
 
+import exception.SaldoInsuficienteException;
 import model.CartaCorreio;
 
 /**
@@ -44,6 +45,42 @@ public class Facade {
 
 
     //******************************METODOS DO CONTROLLER CASAS***********************//
+
+    public void acaCasaPremio(){
+        this.controllerCasas.casaPremio();
+    }
+    public void acaoCasaSorteGrande(Boolean caiuNaCasa){
+        this.controllerCasas.casaSorteGrande(caiuNaCasa);
+    }
+    public void acaoCasaMaratonaBeneficente(int valorRolarDado) throws SaldoInsuficienteException {
+        this.controllerCasas.casaMaratonaBeneficente(valorRolarDado);
+    }
+    public boolean casaConcursoArrocha(int valorRolarDado){
+        return this.controllerCasas.casaConcursoBandaArrocha(valorRolarDado);
+    }
+
+    public void acaoCasaPraiaNodomingo() throws SaldoInsuficienteException {
+        this.controllerCasas.casaPraiaNodomingo();
+    }
+
+    public void acaoCasaAjudeaFloresta() throws SaldoInsuficienteException {
+        this.controllerCasas.casaAjudeaFloresta();
+    }
+
+    public void acaoCasaLanchonete() throws SaldoInsuficienteException {
+        this.controllerCasas.casaLanchonete();
+    }
+
+    public void acaoCasaShopping() throws SaldoInsuficienteException {
+        this.controllerCasas.casaShopping();
+    }
+
+    public void acaoCasaFelizAniversario(boolean caiuNaCasa) throws SaldoInsuficienteException {
+        this.controllerCasas.casaFelizAniversario(caiuNaCasa);
+    }
+    public void acaoCasaDiaDaMesada(int opcaoEscolhida, double valorPagamentoDivida) throws SaldoInsuficienteException {
+        this.controllerCasas.casaDiaDaMesada(opcaoEscolhida, valorPagamentoDivida);
+    }
 
     //******************************METODOS DO CONTROLLER CARTA***********************//
 }

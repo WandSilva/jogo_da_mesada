@@ -1,6 +1,7 @@
 package view;
 
 import controller.Facade;
+import exception.SaldoInsuficienteException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -106,8 +107,7 @@ public class FXMLViewController implements Initializable {
         this.facade = new Facade();
         String nome = JOptionPane.showInputDialog("Informe seu nome");
         facade.iniciarJogador("nome");
-        labelDivida.setText("Dívida: " + facade.verDividaJogador());
-        labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
+        this.atualizarValoresTela();
         this.peao = new Peao();
         peao.getPeao().setStroke(Color.AQUA);
         peao.getPeao().setFill(Color.GOLD);
@@ -121,6 +121,7 @@ public class FXMLViewController implements Initializable {
 
         int dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
+
         peao.setColuna(peao.getColuna() + dado);
 
         if (peao.getColuna() > 6) {
@@ -135,6 +136,112 @@ public class FXMLViewController implements Initializable {
         grid.getChildren().remove(peao.getPeao());
         grid.add(peao.getPeao(), peao.getColuna(), peao.getLinha());
 
+        this.realizarAcaoCasa(peao.getColuna(), peao.getLinha());
+    }
+
+    public void realizarAcaoCasa(int coluna, int linha) {
+
+        //correio de 1 carta
+        if ((coluna == 1 && linha == 0) || (coluna == 4 && linha == 1) || (coluna == 5 && linha == 2) || (coluna == 1 && linha == 3)) {
+
+            atualizarValoresTela();
+
+        }
+        //casa premio
+        else if (coluna == 2 && linha == 0) {
+            facade.acaCasaPremio();
+            atualizarValoresTela();
+        }
+        //correio de 3 cartas
+        else if ((coluna == 3 && linha == 0) || (coluna == 2 && linha == 2)) {
+          //  facade.acaCasaPremio();
+            atualizarValoresTela();
+
+        }
+        //correio de 2 cartas
+        else if ((coluna == 5 && linha == 0) || (coluna == 3 && linha == 3)) {
+           // facade.acaCasaPremio();
+            atualizarValoresTela();
+        }
+        //compras e entretenimento
+        else if ((coluna == 4 && linha == 0) || (coluna == 5 && linha == 1) || (coluna == 1 && linha == 2) || (coluna == 4 && linha == 3)) {
+           // facade.acaCasaPremio();
+            atualizarValoresTela();
+        }
+        //bolao de esportes
+        else if ((coluna == 6 && linha == 0) || (coluna == 6 && linha == 1) || (coluna == 6 && linha == 2) || (coluna == 6 && linha == 3)) {
+          //  facade.acaCasaPremio();
+            atualizarValoresTela();
+        }
+        //achou um comprador
+        else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 3) || (coluna == 2 && linha == 2) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
+           // facade.acaCasaPremio();
+            atualizarValoresTela();
+        }
+        //praia no domingo
+        else if (coluna == 0 && linha == 1) {
+            try {
+                facade.acaoCasaPraiaNodomingo();
+            } catch (SaldoInsuficienteException e) {
+               JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+            }
+            atualizarValoresTela();
+        }
+        //concurso banda de rock
+        else if (coluna == 1 && linha == 1) {
+            facade.casaConcursoArrocha(0);
+            atualizarValoresTela();
+        }
+        //feliz aniversário
+        else if (coluna == 3 && linha == 1) {
+            try {
+                facade.acaoCasaFelizAniversario(true);
+            } catch (SaldoInsuficienteException e) {
+                e.printStackTrace();
+            }
+            atualizarValoresTela();
+        }
+        //ajude a floresta
+        else if (coluna == 0 && linha == 2) {
+            try {
+                facade.acaoCasaAjudeaFloresta();
+            } catch (SaldoInsuficienteException e) {
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+            }
+            atualizarValoresTela();
+        }
+        //lanchonete
+        else if (coluna == 4 && linha == 2) {
+            try {
+                facade.acaoCasaLanchonete();
+            } catch (SaldoInsuficienteException e) {
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+            }
+            atualizarValoresTela();
+        }
+        //negocio de ocasião
+        else if (coluna == 0 && linha == 3) {
+            //facade.acaCasaPremio();
+            atualizarValoresTela();
+        }
+        //compras no shopping
+        else if (coluna == 0 && linha == 4) {
+            try {
+                facade.acaoCasaShopping();
+            } catch (SaldoInsuficienteException e) {
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+            }
+            atualizarValoresTela();
+        }
+        //maratona beneficente
+        else if (coluna == 2 && linha == 4) {
+            try {
+                facade.acaoCasaMaratonaBeneficente(0);
+            } catch (SaldoInsuficienteException e) {
+                e.printStackTrace();
+            }
+            atualizarValoresTela();
+        }
 
     }
 
@@ -153,6 +260,11 @@ public class FXMLViewController implements Initializable {
             BackgroundImage bi = new BackgroundImage(new Image(casa.getId() + ".png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
             casa.setBackground(new Background(bi));
         }
+    }
+
+    public void atualizarValoresTela() {
+        labelDivida.setText("Dívida: " + facade.verDividaJogador());
+        labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
     }
 
 
@@ -182,14 +294,10 @@ public class FXMLViewController implements Initializable {
         casas.add(casa41);
         casas.add(casa42);
         casas.add(casa43);
-       //
-        //
-        // casas.add(casa44);
         casas.add(casa50);
         casas.add(casa51);
         casas.add(casa52);
         casas.add(casa53);
-       // casas.add(casa54);
         casas.add(casa60);
         casas.add(casa61);
         casas.add(casa62);
