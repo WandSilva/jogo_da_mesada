@@ -33,4 +33,12 @@ public class SorteGrande {
     public static SorteGrande getInstance(){
         return sorteGrande;
     }
+
+    public double getValorAcumulado() {
+        return valorAcumulado;
+    }
+
+    public void setValorAcumulado(double valorAcumulado) {
+        this.valorAcumulado = valorAcumulado;
+    }
 }

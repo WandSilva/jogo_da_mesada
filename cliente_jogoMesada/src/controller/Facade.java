@@ -93,6 +93,10 @@ public class Facade {
         this.controllerCasas.casaDiaDaMesada(opcaoEscolhida, valorPagamentoDivida);
     }
 
+    public double getValorSorteGrande(){
+        return this.controllerCasas.getValorSorteGrande();
+    }
+
     //******************************METODOS DO CONTROLLER CARTA***********************//
     public CartaCorreio pegarCartaCorreio() {
         return this.controllerCartas.pegarCartaCorreio();

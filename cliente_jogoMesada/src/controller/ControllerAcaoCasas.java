@@ -144,4 +144,9 @@ public class ControllerAcaoCasas {
         }
     }
 
+    public double getValorSorteGrande(){
+        return this.sorteGrande.getValorAcumulado();
+    }
+
+
 }

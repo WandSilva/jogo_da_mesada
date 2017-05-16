@@ -104,6 +104,8 @@ public class FXMLViewController implements Initializable {
     private ComboBox<String> comboCorreio;
     @FXML
     private TextArea textCorreio;
+    @FXML
+    private Label labelSorteGrande;
 
     private Peao peao;
 
@@ -122,6 +124,7 @@ public class FXMLViewController implements Initializable {
         this.grid.add(peao.getPeao(), 0, 0);
         this.adicionarImagensTabuleiro();
         this.mostrarCartasCorreio();
+        //  this.atualizarSortegrande();
     }
 
 
@@ -131,21 +134,30 @@ public class FXMLViewController implements Initializable {
         int dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
 
-        peao.setColuna(peao.getColuna() + dado);
+        if (peao.getLinha() == 4 && peao.getColuna() == 3) {
 
-        if (peao.getColuna() > 6) {
-            peao.setColuna(dado - (7 - ((peao.getColuna() - dado))));
-            peao.setLinha(peao.getLinha() + 1);
-        }
-        if (peao.getLinha() >= 5 && peao.getColuna()>=3) {
             peao.setLinha(0);
-            peao.setColuna(0);
+            peao.setColuna(dado);
+
+
+        } else {
+
+            peao.setColuna(peao.getColuna() + dado);
+
+            if (peao.getLinha() > 3 && peao.getColuna() > 2) {
+                peao.setLinha(4);
+                peao.setColuna(3);
+            } else if (peao.getColuna() > 6) {
+                peao.setColuna(dado - (7 - ((peao.getColuna() - dado))));
+                peao.setLinha(peao.getLinha() + 1);
+            }
         }
 
         grid.getChildren().remove(peao.getPeao());
         grid.add(peao.getPeao(), peao.getColuna(), peao.getLinha());
 
         this.realizarAcaoCasa(peao.getColuna(), peao.getLinha());
+
     }
 
     public void realizarAcaoCasa(int coluna, int linha) {
@@ -272,6 +284,16 @@ public class FXMLViewController implements Initializable {
         }
     }
 
+    public void ganharSorteGrande() {
+        facade.acaoCasaSorteGrande(true);
+        //labelSorteGrande.setText((String)facade.getValorSorteGrande());
+    }
+
+    public void atualizarSortegrande() {
+        String valor = Double.toString(facade.getValorSorteGrande());
+        this.labelSorteGrande.setText(valor);
+    }
+
     public void atualizarValoresTela() {
         labelDivida.setText("Dívida: " + facade.verDividaJogador());
         labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
@@ -279,7 +301,7 @@ public class FXMLViewController implements Initializable {
 
     public void mostrarCartasCorreio() {
         comboCorreio.getItems().clear();
-        for (int i=0; i<facade.verCartasJogador().size(); i++)
+        for (int i = 0; i < facade.verCartasJogador().size(); i++)
             comboCorreio.getItems().addAll(facade.verCartasJogador().get(i).getTipo());
     }
 
