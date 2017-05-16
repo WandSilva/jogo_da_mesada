@@ -2,9 +2,13 @@ package view;
 
 import controller.Facade;
 import exception.SaldoInsuficienteException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -96,6 +100,10 @@ public class FXMLViewController implements Initializable {
     private Label labelSaldo;
     @FXML
     private Label labelDivida;
+    @FXML
+    private ComboBox<String> comboCorreio;
+    @FXML
+    private TextArea textCorreio;
 
     private Peao peao;
 
@@ -113,6 +121,7 @@ public class FXMLViewController implements Initializable {
         peao.getPeao().setFill(Color.GOLD);
         this.grid.add(peao.getPeao(), 0, 0);
         this.adicionarImagensTabuleiro();
+        this.mostrarCartasCorreio();
     }
 
 
@@ -128,7 +137,7 @@ public class FXMLViewController implements Initializable {
             peao.setColuna(dado - (7 - ((peao.getColuna() - dado))));
             peao.setLinha(peao.getLinha() + 1);
         }
-        if (peao.getLinha() == 5) {
+        if (peao.getLinha() >= 5 && peao.getColuna()>=3) {
             peao.setLinha(0);
             peao.setColuna(0);
         }
@@ -143,9 +152,8 @@ public class FXMLViewController implements Initializable {
 
         //correio de 1 carta
         if ((coluna == 1 && linha == 0) || (coluna == 4 && linha == 1) || (coluna == 5 && linha == 2) || (coluna == 1 && linha == 3)) {
-
-            atualizarValoresTela();
-
+            facade.receberCartaCorreio(facade.pegarCartaCorreio());
+            this.mostrarCartasCorreio();
         }
         //casa premio
         else if (coluna == 2 && linha == 0) {
@@ -154,28 +162,30 @@ public class FXMLViewController implements Initializable {
         }
         //correio de 3 cartas
         else if ((coluna == 3 && linha == 0) || (coluna == 2 && linha == 2)) {
-          //  facade.acaCasaPremio();
-            atualizarValoresTela();
-
+            facade.receberCartaCorreio(facade.pegarCartaCorreio());
+            facade.receberCartaCorreio(facade.pegarCartaCorreio());
+            facade.receberCartaCorreio(facade.pegarCartaCorreio());
+            this.mostrarCartasCorreio();
         }
         //correio de 2 cartas
         else if ((coluna == 5 && linha == 0) || (coluna == 3 && linha == 3)) {
-           // facade.acaCasaPremio();
-            atualizarValoresTela();
+            facade.receberCartaCorreio(facade.pegarCartaCorreio());
+            facade.receberCartaCorreio(facade.pegarCartaCorreio());
+            this.mostrarCartasCorreio();
         }
         //compras e entretenimento
         else if ((coluna == 4 && linha == 0) || (coluna == 5 && linha == 1) || (coluna == 1 && linha == 2) || (coluna == 4 && linha == 3)) {
-           // facade.acaCasaPremio();
+            // facade.acaCasaPremio();
             atualizarValoresTela();
         }
         //bolao de esportes
         else if ((coluna == 6 && linha == 0) || (coluna == 6 && linha == 1) || (coluna == 6 && linha == 2) || (coluna == 6 && linha == 3)) {
-          //  facade.acaCasaPremio();
+            //  facade.acaCasaPremio();
             atualizarValoresTela();
         }
         //achou um comprador
         else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 3) || (coluna == 2 && linha == 2) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
-           // facade.acaCasaPremio();
+            // facade.acaCasaPremio();
             atualizarValoresTela();
         }
         //praia no domingo
@@ -183,7 +193,7 @@ public class FXMLViewController implements Initializable {
             try {
                 facade.acaoCasaPraiaNodomingo();
             } catch (SaldoInsuficienteException e) {
-               JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
         }
@@ -265,6 +275,18 @@ public class FXMLViewController implements Initializable {
     public void atualizarValoresTela() {
         labelDivida.setText("Dívida: " + facade.verDividaJogador());
         labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
+    }
+
+    public void mostrarCartasCorreio() {
+        comboCorreio.getItems().clear();
+        for (int i=0; i<facade.verCartasJogador().size(); i++)
+            comboCorreio.getItems().addAll(facade.verCartasJogador().get(i).getTipo());
+    }
+
+    @FXML
+    private void teste(ActionEvent event) {
+
+        System.out.println(comboCorreio.getValue());
     }
 
 

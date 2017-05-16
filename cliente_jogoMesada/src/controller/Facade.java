@@ -3,6 +3,8 @@ package controller;
 import exception.SaldoInsuficienteException;
 import model.CartaCorreio;
 
+import java.util.ArrayList;
+
 /**
  * Created by wanderson on 06/05/17.
  */
@@ -20,42 +22,50 @@ public class Facade {
 
     //******************************METODOS DO CONTROLLER JOGADOR***********************//
 
-    public void iniciarJogador(String nome){
+    public void iniciarJogador(String nome) {
         controllerJogador.iniciarJogador(nome);
     }
 
-    public int rolarDado(){
+    public int rolarDado() {
         return this.controllerJogador.rolarDado();
     }
 
-    public void fazerEmprestimo(double valor){
+    public void fazerEmprestimo(double valor) {
         this.controllerJogador.fazerEmprestimo(valor);
     }
 
-    public void receberCartaCorreio(CartaCorreio cartaCorreio){
+    public void receberCartaCorreio(CartaCorreio cartaCorreio) {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
 
-    public double verDividaJogador(){
+    public double verDividaJogador() {
         return controllerJogador.verDividaJogador();
     }
-    public double verSaldoJogador(){
+
+    public double verSaldoJogador() {
         return controllerJogador.verSaldoJogador();
+    }
+
+    public ArrayList<CartaCorreio> verCartasJogador(){
+        return this.controllerJogador.getCartasCorreioJogador();
     }
 
 
     //******************************METODOS DO CONTROLLER CASAS***********************//
 
-    public void acaCasaPremio(){
+    public void acaCasaPremio() {
         this.controllerCasas.casaPremio();
     }
-    public void acaoCasaSorteGrande(Boolean caiuNaCasa){
+
+    public void acaoCasaSorteGrande(Boolean caiuNaCasa) {
         this.controllerCasas.casaSorteGrande(caiuNaCasa);
     }
+
     public void acaoCasaMaratonaBeneficente(int valorRolarDado) throws SaldoInsuficienteException {
         this.controllerCasas.casaMaratonaBeneficente(valorRolarDado);
     }
-    public boolean casaConcursoArrocha(int valorRolarDado){
+
+    public boolean casaConcursoArrocha(int valorRolarDado) {
         return this.controllerCasas.casaConcursoBandaArrocha(valorRolarDado);
     }
 
@@ -78,9 +88,13 @@ public class Facade {
     public void acaoCasaFelizAniversario(boolean caiuNaCasa) throws SaldoInsuficienteException {
         this.controllerCasas.casaFelizAniversario(caiuNaCasa);
     }
+
     public void acaoCasaDiaDaMesada(int opcaoEscolhida, double valorPagamentoDivida) throws SaldoInsuficienteException {
         this.controllerCasas.casaDiaDaMesada(opcaoEscolhida, valorPagamentoDivida);
     }
 
     //******************************METODOS DO CONTROLLER CARTA***********************//
+    public CartaCorreio pegarCartaCorreio() {
+        return this.controllerCartas.pegarCartaCorreio();
+    }
 }

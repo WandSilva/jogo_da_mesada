@@ -3,6 +3,7 @@ package controller;
 import model.CartaCorreio;
 import model.Jogador;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -48,5 +49,8 @@ public class ControllerJogador {
     }
     public double verSaldoJogador(){
         return jogador.getSaldoJogador();
+    }
+    public ArrayList<CartaCorreio> getCartasCorreioJogador(){
+        return jogador.getCartasCorreio();
     }
 }

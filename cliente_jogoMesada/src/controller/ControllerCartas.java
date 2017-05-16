@@ -242,7 +242,7 @@ public class ControllerCartas {
      */
     public CartaCorreio pegarCartaCorreio() {
         Random random = new Random();
-        int sorteio = 1 + random.nextInt(12);
+        int sorteio = random.nextInt(12);
         return listaCartasCorreio.get(sorteio);
     }
 
@@ -252,7 +252,7 @@ public class ControllerCartas {
      */
     public CartaCompra pegarCartaCompra(){
         Random random = new Random();
-        int sorteio = 1 + random.nextInt(12);
+        int sorteio = random.nextInt(12);
         return listaCartasCompra.get(sorteio);
     }
 
