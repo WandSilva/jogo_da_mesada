@@ -66,7 +66,7 @@
             <Pane fx:id="casa04" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
             <Pane fx:id="casa64" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
                <children>
-                  <Label layoutX="1.0" layoutY="16.0" prefHeight="73.0" prefWidth="137.0" text="R$00,00" textFill="#000a01" underline="true">
+                  <Label fx:id="labelSorteGrande" layoutX="1.0" layoutY="16.0" prefHeight="73.0" prefWidth="137.0" text="R$00,00" textFill="#000a01" underline="true">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -78,16 +78,16 @@
             <Pane fx:id="casa24" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button layoutX="245.0" layoutY="14.0" mnemonicParsing="false" onAction="#moverPeao" text="Rolar dado" />
-      <Label fx:id="labelSaldo" layoutX="542.0" layoutY="13.0" text="Saldo: 0" />
-      <Label fx:id="labelDivida" layoutX="540.0" layoutY="29.0" text="Divida: 0" />
-      <Button layoutX="392.0" layoutY="14.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
-      <ComboBox fx:id="comboCorreio" layoutX="15.0" layoutY="92.0" prefHeight="25.0" prefWidth="200.0" />
-      <TextArea fx:id="textCorreio" layoutX="14.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" />
-      <TextArea fx:id="textCorreio1" layoutX="15.0" layoutY="410.0" prefHeight="200.0" prefWidth="200.0" />
-      <ComboBox fx:id="comboCorreio1" layoutX="16.0" layoutY="375.0" prefHeight="25.0" prefWidth="200.0" />
-      <Label layoutX="14.0" layoutY="69.0" text="Cartas correio" />
-      <Label layoutX="16.0" layoutY="352.0" text="Cartas conta" />
-      <Button layoutX="228.0" layoutY="92.0" mnemonicParsing="false" onAction="#teste" text="Button" />
+      <Button layoutX="332.0" layoutY="15.0" mnemonicParsing="false" onAction="#jogar" text="Rolar dado" />
+      <Label fx:id="labelSaldo" layoutX="727.0" layoutY="14.0" text="Saldo: 0" />
+      <Label fx:id="labelDivida" layoutX="725.0" layoutY="30.0" text="Divida: 0" />
+      <Button layoutX="567.0" layoutY="15.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
+      <ComboBox fx:id="comboCorreio" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0" />
+      <TextArea fx:id="textCorreio" layoutX="13.0" layoutY="75.0" prefHeight="200.0" prefWidth="200.0" />
+      <TextArea fx:id="textCorreio1" layoutX="14.0" layoutY="358.0" prefHeight="200.0" prefWidth="200.0" />
+      <ComboBox fx:id="comboCorreio1" layoutX="15.0" layoutY="323.0" prefHeight="25.0" prefWidth="200.0" />
+      <Label layoutX="13.0" layoutY="17.0" text="Cartas correio" />
+      <Label layoutX="15.0" layoutY="300.0" text="Cartas conta" />
+      <Button layoutX="445.0" layoutY="15.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
    </children>
 </AnchorPane>
