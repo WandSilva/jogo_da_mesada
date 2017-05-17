@@ -106,7 +106,7 @@ public class FXMLViewController implements Initializable {
     @FXML
     private Label labelSorteGrande;
 
-    private Peao peao;
+    private ArrayList<Peao> peoes=  new ArrayList<>();
 
     private int dado;
 
@@ -119,10 +119,9 @@ public class FXMLViewController implements Initializable {
         String nome = JOptionPane.showInputDialog("Informe seu nome");
         facade.iniciarJogador("nome");
         this.atualizarValoresTela();
-        this.peao = new Peao();
-        peao.getPeao().setStroke(Color.AQUA);
-        peao.getPeao().setFill(Color.GOLD);
-        this.grid.add(peao.getPeao(), 0, 0);
+        this.criarPeoes(6);
+       // this.grid.add(peao.getPeao(), 0, 0);
+
         this.adicionarImagensTabuleiro();
         this.mostrarCartasCorreio();
         this.mostrarCartasCompra();
@@ -130,15 +129,25 @@ public class FXMLViewController implements Initializable {
     }
 
 
+    public void criarPeoes(int numeroJogadores){
+        CorPeao cores = new CorPeao();
+        for(int i=0; i<numeroJogadores; i++){
+            Peao peao = new Peao();
+            peao.getPeao().setStroke(Color.rgb(0,0,0));
+            peao.getPeao().setFill(cores.getCores()[i]);
+            peoes.add(peao);
+        }
+    }
+
     @FXML
     public void jogar(ActionEvent event) {
         dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
 
-        this.moverPeao();
-        this.realizarAcaoCasa(peao.getColuna(), peao.getLinha());
+        this.moverPeao(peoes.get(facade.getIdJogador()));
+        this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
     }
-    public void moverPeao(){
+    public void moverPeao(Peao peao){
 
         if (peao.getLinha() == 4 && peao.getColuna() == 3) {
 
@@ -319,7 +328,7 @@ public class FXMLViewController implements Initializable {
         Double vRevenda = cartaCompra.getValorRevenda();
 
         dialogoExe.setTitle("Compras e entretenimento");
-        dialogoExe.setHeaderText("Você pegar a carta ''"+nome+"''. Ela custa R$"+valor+" e " +
+        dialogoExe.setHeaderText("Você pegou a carta ''"+nome+"''. Ela custa R$"+valor+" e " +
                 "pode ser revendida por "+vRevenda);
         dialogoExe.setContentText("Deseja comprar?");
         dialogoExe.getButtonTypes().setAll(btnSim, btnNao);

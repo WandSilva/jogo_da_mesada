@@ -38,6 +38,9 @@ public class Facade {
     public void receberCartaCorreio(CartaCorreio cartaCorreio) {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
+    public int getIdJogador(){
+        return this.controllerJogador.getIdJogador();
+    }
 
     public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
         this.controllerJogador.comprarCartaCompraEntretenimento(cartaCompra);
