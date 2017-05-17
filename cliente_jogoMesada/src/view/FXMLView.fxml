@@ -85,7 +85,7 @@
       <ComboBox fx:id="comboCorreio" layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0" />
       <TextArea fx:id="textCorreio" layoutX="13.0" layoutY="75.0" prefHeight="200.0" prefWidth="200.0" />
       <TextArea fx:id="textCorreio1" layoutX="14.0" layoutY="358.0" prefHeight="200.0" prefWidth="200.0" />
-      <ComboBox fx:id="comboCorreio1" layoutX="15.0" layoutY="323.0" prefHeight="25.0" prefWidth="200.0" />
+      <ComboBox fx:id="comboCompras" layoutX="15.0" layoutY="323.0" prefHeight="25.0" prefWidth="200.0" />
       <Label layoutX="13.0" layoutY="17.0" text="Cartas correio" />
       <Label layoutX="15.0" layoutY="300.0" text="Cartas conta" />
       <Button layoutX="445.0" layoutY="15.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />

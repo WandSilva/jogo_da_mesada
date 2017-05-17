@@ -1,6 +1,7 @@
 package controller;
 
 import exception.SaldoInsuficienteException;
+import model.CartaCompra;
 import model.CartaCorreio;
 
 import java.util.ArrayList;
@@ -38,6 +39,10 @@ public class Facade {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
 
+    public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
+        this.controllerJogador.comprarCartaCompraEntretenimento(cartaCompra);
+    }
+
     public double verDividaJogador() {
         return controllerJogador.verDividaJogador();
     }
@@ -46,8 +51,11 @@ public class Facade {
         return controllerJogador.verSaldoJogador();
     }
 
-    public ArrayList<CartaCorreio> verCartasJogador(){
+    public ArrayList<CartaCorreio> verCartasCorreioJogador(){
         return this.controllerJogador.getCartasCorreioJogador();
+    }
+    public ArrayList<CartaCompra> verCartasCompraJogador(){
+        return controllerJogador.getCartaCompraJogador();
     }
 
 
@@ -100,5 +108,8 @@ public class Facade {
     //******************************METODOS DO CONTROLLER CARTA***********************//
     public CartaCorreio pegarCartaCorreio() {
         return this.controllerCartas.pegarCartaCorreio();
+    }
+    public CartaCompra pegarCartaCompra(){
+        return this.controllerCartas.pegarCartaCompra();
     }
 }

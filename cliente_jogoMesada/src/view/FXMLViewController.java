@@ -5,13 +5,11 @@ import exception.SaldoInsuficienteException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.control.Label;
+import model.CartaCompra;
 
 import javax.swing.*;
 import java.net.URL;
@@ -102,6 +100,8 @@ public class FXMLViewController implements Initializable {
     @FXML
     private ComboBox<String> comboCorreio;
     @FXML
+    private ComboBox<String> comboCompras;
+    @FXML
     private TextArea textCorreio;
     @FXML
     private Label labelSorteGrande;
@@ -125,6 +125,7 @@ public class FXMLViewController implements Initializable {
         this.grid.add(peao.getPeao(), 0, 0);
         this.adicionarImagensTabuleiro();
         this.mostrarCartasCorreio();
+        this.mostrarCartasCompra();
         this.atualizarSortegrande();
     }
 
@@ -192,7 +193,7 @@ public class FXMLViewController implements Initializable {
         }
         //compras e entretenimento
         else if ((coluna == 4 && linha == 0) || (coluna == 5 && linha == 1) || (coluna == 1 && linha == 2) || (coluna == 4 && linha == 3)) {
-            // facade.acaCasaPremio();
+            comprarCartaEntretenimento();
             atualizarValoresTela();
         }
         //bolao de esportes
@@ -307,6 +308,33 @@ public class FXMLViewController implements Initializable {
         this.labelSorteGrande.setText("R$"+ valor);
     }
 
+    public void comprarCartaEntretenimento(){
+        Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
+        ButtonType btnSim = new ButtonType("Sim");
+        ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        CartaCompra cartaCompra= facade.pegarCartaCompra();
+        String nome = cartaCompra.getNome();
+        Double valor = cartaCompra.getValorInicial();
+        Double vRevenda = cartaCompra.getValorRevenda();
+
+        dialogoExe.setTitle("Compras e entretenimento");
+        dialogoExe.setHeaderText("Você pegar a carta ''"+nome+"''. Ela custa R$"+valor+" e " +
+                "pode ser revendida por "+vRevenda);
+        dialogoExe.setContentText("Deseja comprar?");
+        dialogoExe.getButtonTypes().setAll(btnSim, btnNao);
+        dialogoExe.showAndWait().ifPresent(b -> {
+            if (b == btnSim) {
+                try {
+                    facade.comprarCartaCompraEntretenimento(cartaCompra);
+                    mostrarCartasCompra();
+                } catch (SaldoInsuficienteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public void atualizarValoresTela() {
         labelDivida.setText("Dívida: " + facade.verDividaJogador());
         labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
@@ -314,14 +342,13 @@ public class FXMLViewController implements Initializable {
 
     public void mostrarCartasCorreio() {
         comboCorreio.getItems().clear();
-        for (int i = 0; i < facade.verCartasJogador().size(); i++)
-            comboCorreio.getItems().addAll(facade.verCartasJogador().get(i).getTipo());
+        for (int i = 0; i < facade.verCartasCorreioJogador().size(); i++)
+            comboCorreio.getItems().addAll(facade.verCartasCorreioJogador().get(i).getTipo());
     }
-
-    @FXML
-    private void teste(ActionEvent event) {
-
-        System.out.println(comboCorreio.getValue());
+    public void mostrarCartasCompra() {
+        comboCompras.getItems().clear();
+        for (int i = 0; i < facade.verCartasCompraJogador().size(); i++)
+            comboCompras.getItems().addAll(facade.verCartasCompraJogador().get(i).getNome());
     }
 
     public void mostrarAlerta(String titulo, String cabecalho, String corpo){

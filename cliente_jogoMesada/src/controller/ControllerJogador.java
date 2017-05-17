@@ -1,5 +1,7 @@
 package controller;
 
+import exception.SaldoInsuficienteException;
+import model.CartaCompra;
 import model.CartaCorreio;
 import model.Jogador;
 
@@ -40,6 +42,11 @@ public class ControllerJogador {
         jogador.receberCartaCorreio(cartaCorreio);
     }
 
+    public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
+        jogador.debitar(cartaCompra.getValorInicial());
+        jogador.receberCartaCompraEntretenimento(cartaCompra);
+    }
+
     public void fazerEmprestimo(double valor){
         jogador.fazerEmprestimo(valor);
     }
@@ -52,5 +59,8 @@ public class ControllerJogador {
     }
     public ArrayList<CartaCorreio> getCartasCorreioJogador(){
         return jogador.getCartasCorreio();
+    }
+    public ArrayList<CartaCompra> getCartaCompraJogador(){
+        return this.jogador.getCartasCompra();
     }
 }

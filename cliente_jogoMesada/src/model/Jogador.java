@@ -129,6 +129,10 @@ public class Jogador {
         this.cartasCorreio.add(cartaCorreio);
     }
 
+    public void receberCartaCompraEntretenimento(CartaCompra cartaCompra){
+        this.cartasCompra.add(cartaCompra);
+    }
+
     public void removerContas(){
         cartasCorreio.clear();
     }
