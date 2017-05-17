@@ -89,5 +89,6 @@
       <Label layoutX="13.0" layoutY="17.0" text="Cartas correio" />
       <Label layoutX="15.0" layoutY="300.0" text="Cartas conta" />
       <Button layoutX="445.0" layoutY="15.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
+      <Label fx:id="label100" layoutX="253.0" layoutY="229.0" text="Label" />
    </children>
 </AnchorPane>

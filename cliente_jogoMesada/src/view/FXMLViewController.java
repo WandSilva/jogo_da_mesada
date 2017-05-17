@@ -2,6 +2,10 @@ package view;
 
 import controller.Facade;
 import exception.SaldoInsuficienteException;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -106,7 +110,10 @@ public class FXMLViewController implements Initializable {
     @FXML
     private Label labelSorteGrande;
 
-    private ArrayList<Peao> peoes=  new ArrayList<>();
+    @FXML
+    private Label label100;
+
+    private ArrayList<Peao> peoes = new ArrayList<>();
 
     private int dado;
 
@@ -118,9 +125,10 @@ public class FXMLViewController implements Initializable {
         this.facade = new Facade();
         String nome = JOptionPane.showInputDialog("Informe seu nome");
         facade.iniciarJogador("nome");
+        iniciaCronometro();
         this.atualizarValoresTela();
         this.criarPeoes(6);
-       // this.grid.add(peao.getPeao(), 0, 0);
+        // this.grid.add(peao.getPeao(), 0, 0);
 
         this.adicionarImagensTabuleiro();
         this.mostrarCartasCorreio();
@@ -129,11 +137,11 @@ public class FXMLViewController implements Initializable {
     }
 
 
-    public void criarPeoes(int numeroJogadores){
+    public void criarPeoes(int numeroJogadores) {
         CorPeao cores = new CorPeao();
-        for(int i=0; i<numeroJogadores; i++){
+        for (int i = 0; i < numeroJogadores; i++) {
             Peao peao = new Peao();
-            peao.getPeao().setStroke(Color.rgb(0,0,0));
+            peao.getPeao().setStroke(Color.rgb(0, 0, 0));
             peao.getPeao().setFill(cores.getCores()[i]);
             peoes.add(peao);
         }
@@ -144,10 +152,12 @@ public class FXMLViewController implements Initializable {
         dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
 
-        this.moverPeao(peoes.get(facade.getIdJogador()));
+        this.moverPeao(peoes.get(facade.getIdJogador()), this.dado);
         this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
     }
-    public void moverPeao(Peao peao){
+
+
+    public void moverPeao(Peao peao, int dado) {
 
         if (peao.getLinha() == 4 && peao.getColuna() == 3) {
 
@@ -301,35 +311,34 @@ public class FXMLViewController implements Initializable {
 
     @FXML
     public void ganharSorteGrande(ActionEvent event) {
-        if(dado==6) {
-            JOptionPane.showMessageDialog(null,"Parabéns, você recebeu R$"+labelSorteGrande.getText(),"Sorte grande", JOptionPane.INFORMATION_MESSAGE);
+        if (dado == 6) {
+            JOptionPane.showMessageDialog(null, "Parabéns, você recebeu R$" + labelSorteGrande.getText(), "Sorte grande", JOptionPane.INFORMATION_MESSAGE);
             facade.acaoCasaSorteGrande(true);
             atualizarSortegrande();
             atualizarValoresTela();
-        }
-        else
-            JOptionPane.showMessageDialog(null,"Tentando trapacear? Voce não tirou 6 no dado!","Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não tirou 6 no dado!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
     }
 
     public void atualizarSortegrande() {
         String valor = Double.toString(facade.getValorSorteGrande());
         System.out.println(valor);
-        this.labelSorteGrande.setText("R$"+ valor);
+        this.labelSorteGrande.setText("R$" + valor);
     }
 
-    public void comprarCartaEntretenimento(){
+    public void comprarCartaEntretenimento() {
         Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
         ButtonType btnSim = new ButtonType("Sim");
         ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        CartaCompra cartaCompra= facade.pegarCartaCompra();
+        CartaCompra cartaCompra = facade.pegarCartaCompra();
         String nome = cartaCompra.getNome();
         Double valor = cartaCompra.getValorInicial();
         Double vRevenda = cartaCompra.getValorRevenda();
 
         dialogoExe.setTitle("Compras e entretenimento");
-        dialogoExe.setHeaderText("Você pegou a carta ''"+nome+"''. Ela custa R$"+valor+" e " +
-                "pode ser revendida por "+vRevenda);
+        dialogoExe.setHeaderText("Você pegou a carta ''" + nome + "''. Ela custa R$" + valor + " e " +
+                "pode ser revendida por " + vRevenda);
         dialogoExe.setContentText("Deseja comprar?");
         dialogoExe.getButtonTypes().setAll(btnSim, btnNao);
         dialogoExe.showAndWait().ifPresent(b -> {
@@ -354,13 +363,14 @@ public class FXMLViewController implements Initializable {
         for (int i = 0; i < facade.verCartasCorreioJogador().size(); i++)
             comboCorreio.getItems().addAll(facade.verCartasCorreioJogador().get(i).getTipo());
     }
+
     public void mostrarCartasCompra() {
         comboCompras.getItems().clear();
         for (int i = 0; i < facade.verCartasCompraJogador().size(); i++)
             comboCompras.getItems().addAll(facade.verCartasCompraJogador().get(i).getNome());
     }
 
-    public void mostrarAlerta(String titulo, String cabecalho, String corpo){
+    public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
         Alert dialogoInfo = new Alert(Alert.AlertType.INFORMATION);
         dialogoInfo.setTitle(titulo);
         dialogoInfo.setHeaderText(cabecalho);
@@ -405,6 +415,33 @@ public class FXMLViewController implements Initializable {
         casas.add(casa64);
 
         return casas;
+    }
+    private BooleanProperty stop = new SimpleBooleanProperty(false);
+
+
+    void iniciaCronometro() {
+
+
+        Task t = new Task() {
+
+            @Override
+            protected Object call() throws Exception {
+                while (!stop.get()) {
+
+
+
+
+                    Platform.runLater(() -> {
+                        moverPeao(peoes.get(1), 2);
+                    });
+                    Thread.sleep(3000);
+
+                }
+                return null;
+            }
+        };
+        new Thread(t).start();
+
     }
 
 }
