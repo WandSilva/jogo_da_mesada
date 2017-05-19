@@ -3,8 +3,6 @@ package view;
 import controller.Facade;
 import exception.SaldoInsuficienteException;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import model.CartaCompra;
+import model.CartaCorreio;
 
 import javax.swing.*;
 import java.net.URL;
@@ -108,6 +107,8 @@ public class FXMLViewController implements Initializable {
     @FXML
     private TextArea textCorreio;
     @FXML
+    private TextArea textContas;
+    @FXML
     private Label labelSorteGrande;
 
     @FXML
@@ -125,7 +126,6 @@ public class FXMLViewController implements Initializable {
         this.facade = new Facade();
         String nome = JOptionPane.showInputDialog("Informe seu nome");
         facade.iniciarJogador("nome");
-        iniciaCronometro();
         this.atualizarValoresTela();
         this.criarPeoes(6);
         // this.grid.add(peao.getPeao(), 0, 0);
@@ -134,6 +134,7 @@ public class FXMLViewController implements Initializable {
         this.mostrarCartasCorreio();
         this.mostrarCartasCompra();
         this.atualizarSortegrande();
+        this.moverPeaoOutroJogador();
     }
 
 
@@ -160,15 +161,10 @@ public class FXMLViewController implements Initializable {
     public void moverPeao(Peao peao, int dado) {
 
         if (peao.getLinha() == 4 && peao.getColuna() == 3) {
-
             peao.setLinha(0);
             peao.setColuna(dado);
-
-
         } else {
-
             peao.setColuna(peao.getColuna() + dado);
-
             if (peao.getLinha() > 3 && peao.getColuna() > 2) {
                 peao.setLinha(4);
                 peao.setColuna(3);
@@ -177,7 +173,6 @@ public class FXMLViewController implements Initializable {
                 peao.setLinha(peao.getLinha() + 1);
             }
         }
-
         grid.getChildren().remove(peao.getPeao());
         grid.add(peao.getPeao(), peao.getColuna(), peao.getLinha());
     }
@@ -208,7 +203,7 @@ public class FXMLViewController implements Initializable {
             facade.receberCartaCorreio(facade.pegarCartaCorreio());
             facade.receberCartaCorreio(facade.pegarCartaCorreio());
             this.mostrarCartasCorreio();
-            mostrarAlerta("Casa correios", "Casa correios", "Você recebeu 3 cartas");
+            mostrarAlerta("Casa correios", "Casa correios", "Você recebeu 2 cartas");
         }
         //compras e entretenimento
         else if ((coluna == 4 && linha == 0) || (coluna == 5 && linha == 1) || (coluna == 1 && linha == 2) || (coluna == 4 && linha == 3)) {
@@ -370,6 +365,31 @@ public class FXMLViewController implements Initializable {
             comboCompras.getItems().addAll(facade.verCartasCompraJogador().get(i).getNome());
     }
 
+    @FXML
+    public void descricaoCartaCompra(ActionEvent e) {
+        CartaCompra cartaCompra=null;
+
+        for (CartaCompra aux : facade.verCartasCompraJogador()) {
+            if (aux.getNome() == comboCompras.getValue())
+                cartaCompra = aux;
+        }
+
+        textContas.setText("Valor Inicial: R$"+cartaCompra.getValorInicial()+"\n"+
+        "Valor de revenda: R$"+cartaCompra.getValorRevenda());
+    }
+    @FXML
+    public void descricaoCartaCorreio(ActionEvent e) {
+        CartaCorreio cartaCorreio=null;
+
+        for (CartaCorreio aux : facade.verCartasCorreioJogador()) {
+            if (aux.getTipo() == comboCorreio.getValue())
+                cartaCorreio = aux;
+        }
+
+        textCorreio.setText("Carta: "+cartaCorreio.getNome()+"\n\n"+
+        "Valor:" +cartaCorreio.getValor());
+    }
+
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
         Alert dialogoInfo = new Alert(Alert.AlertType.INFORMATION);
         dialogoInfo.setTitle(titulo);
@@ -416,32 +436,21 @@ public class FXMLViewController implements Initializable {
 
         return casas;
     }
-    private BooleanProperty stop = new SimpleBooleanProperty(false);
 
 
-    void iniciaCronometro() {
-
-
+    void moverPeaoOutroJogador() {
         Task t = new Task() {
-
             @Override
             protected Object call() throws Exception {
-                while (!stop.get()) {
-
-
-
+                while (true) {
 
                     Platform.runLater(() -> {
                         moverPeao(peoes.get(1), 2);
                     });
                     Thread.sleep(3000);
-
                 }
-                return null;
             }
         };
         new Thread(t).start();
-
     }
-
 }
