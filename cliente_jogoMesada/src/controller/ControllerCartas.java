@@ -101,7 +101,7 @@ public class ControllerCartas {
         cartaConta1.setValor(50);
 
         CartaCorreio cartaConta2 = new CartaCorreio("contas", "Dívida na cantina");
-        cartaConta1.setValor(100);
+        cartaConta2.setValor(100);
 
         listaCartasCorreio.add(cartaConta1);
         listaCartasCorreio.add(cartaConta2);
@@ -117,7 +117,7 @@ public class ControllerCartas {
 
         CartaCorreio cartaPagueVizinho2 = new CartaCorreio("pague um vizinho agora",
                 "Contribuição para a festa da vizinhança");
-        cartaPagueVizinho1.setValor(200);
+        cartaPagueVizinho2.setValor(200);
 
         listaCartasCorreio.add(cartaPagueVizinho1);
         listaCartasCorreio.add(cartaPagueVizinho2);
@@ -133,7 +133,7 @@ public class ControllerCartas {
 
         CartaCorreio cartaDinheiroExtra2 = new CartaCorreio("dinheiro extra",
                 "Pagamento por ajudar a construir casa na arvore");
-        cartaDinheiroExtra1.setValor(200);
+        cartaDinheiroExtra2.setValor(200);
 
         listaCartasCorreio.add(cartaDinheiroExtra1);
         listaCartasCorreio.add(cartaDinheiroExtra2);
@@ -149,7 +149,7 @@ public class ControllerCartas {
 
         CartaCorreio cartaDoacoes2 = new CartaCorreio("doacoes",
                 "ajuda para contruir o campo de futebol");
-        cartaDoacoes1.setValor(100);
+        cartaDoacoes2.setValor(100);
 
         listaCartasCorreio.add(cartaDoacoes1);
         listaCartasCorreio.add(cartaDoacoes2);
@@ -181,7 +181,7 @@ public class ControllerCartas {
 
         CartaCorreio cartaVaParaFrente2 = new CartaCorreio("va para frente agora",
                 "pode ir para a proxima casa ''Compras'' ou ''achou um comprador''");
-        cartaVaParaFrente1.setValor(0);
+        cartaVaParaFrente2.setValor(0);
 
         listaCartasCorreio.add(cartaVaParaFrente1);
         listaCartasCorreio.add(cartaVaParaFrente2);
