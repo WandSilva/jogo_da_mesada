@@ -45,6 +45,9 @@ public class Facade {
     public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
         this.controllerJogador.comprarCartaCompraEntretenimento(cartaCompra);
     }
+    public void venderCartaCompraEntretenimento(CartaCompra cartaCompra){
+        this.controllerJogador.venderCartaCompraEntretenimento(cartaCompra);
+    }
 
     public double verDividaJogador() {
         return controllerJogador.verDividaJogador();

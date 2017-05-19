@@ -216,8 +216,8 @@ public class FXMLViewController implements Initializable {
             atualizarValoresTela();
         }
         //achou um comprador
-        else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 3) || (coluna == 2 && linha == 2) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
-            // facade.acaCasaPremio();
+        else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
+            JOptionPane.showMessageDialog(null, "Agora você pode vender uma carta 'Compras e entretenimento', caso possua uma");
             atualizarValoresTela();
         }
         //praia no domingo
@@ -285,6 +285,30 @@ public class FXMLViewController implements Initializable {
             atualizarValoresTela();
         }
 
+    }
+
+    @FXML
+    public void venderCartaCompra() {
+        int coluna = peoes.get(facade.getIdJogador()).getColuna();
+        int linha = peoes.get(facade.getIdJogador()).getLinha();
+
+        if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
+
+            CartaCompra cartaCompra = null;
+
+            for (CartaCompra aux : facade.verCartasCompraJogador()) {
+                if (aux.getNome() == comboCompras.getValue()) {
+                    cartaCompra = aux;
+                }
+            }
+            if (cartaCompra != null) {
+                comboCompras.getItems().remove(cartaCompra.getNome());
+                facade.venderCartaCompraEntretenimento(cartaCompra);
+                this.atualizarValoresTela();
+                textContas.setText("");
+            }
+        } else
+            JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não está na casa 'Achou um coprador'!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
     }
 
     @FXML
@@ -367,27 +391,28 @@ public class FXMLViewController implements Initializable {
 
     @FXML
     public void descricaoCartaCompra(ActionEvent e) {
-        CartaCompra cartaCompra=null;
+        CartaCompra cartaCompra = null;
 
         for (CartaCompra aux : facade.verCartasCompraJogador()) {
             if (aux.getNome() == comboCompras.getValue())
                 cartaCompra = aux;
         }
 
-        textContas.setText("Valor Inicial: R$"+cartaCompra.getValorInicial()+"\n"+
-        "Valor de revenda: R$"+cartaCompra.getValorRevenda());
+        textContas.setText("Valor Inicial: R$" + cartaCompra.getValorInicial() + "\n" +
+                "Valor de revenda: R$" + cartaCompra.getValorRevenda());
     }
+
     @FXML
     public void descricaoCartaCorreio(ActionEvent e) {
-        CartaCorreio cartaCorreio=null;
+        CartaCorreio cartaCorreio = null;
 
         for (CartaCorreio aux : facade.verCartasCorreioJogador()) {
             if (aux.getTipo() == comboCorreio.getValue())
                 cartaCorreio = aux;
         }
 
-        textCorreio.setText("Carta: "+cartaCorreio.getNome()+"\n\n"+
-        "Valor:" +cartaCorreio.getValor());
+        textCorreio.setText("Carta: " + cartaCorreio.getNome() + "\n\n" +
+                "Valor:" + cartaCorreio.getValor());
     }
 
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {

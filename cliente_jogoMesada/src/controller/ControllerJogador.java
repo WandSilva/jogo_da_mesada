@@ -53,7 +53,11 @@ public class ControllerJogador {
 
     public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
         jogador.debitar(cartaCompra.getValorInicial());
-        jogador.receberCartaCompraEntretenimento(cartaCompra);
+        jogador.addCartaCompraEntretenimento(cartaCompra);
+    }
+    public void venderCartaCompraEntretenimento(CartaCompra cartaCompra){
+        jogador.removerCartaCompraEntretemimento(cartaCompra);
+        jogador.depositar(cartaCompra.getValorRevenda());
     }
 
     public void fazerEmprestimo(double valor){

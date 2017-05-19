@@ -42,6 +42,7 @@ public class Jogador {
 
     /**
      * retorna o saldo do jogador
+     *
      * @return
      */
     public double getSaldoJogador() {
@@ -50,6 +51,7 @@ public class Jogador {
 
     /**
      * retorna a dívida do jogador
+     *
      * @return
      */
     public double getDividaJogador() {
@@ -71,6 +73,7 @@ public class Jogador {
      * paga apenas uma parte da dívida e o banco aplica juros.
      * Se o jogador tentar pagar um valor maior que sua dívida, será debitado o total valor da
      * dívida
+     *
      * @param valor
      * @throws SaldoInsuficienteException
      */
@@ -124,16 +127,20 @@ public class Jogador {
         return cartasCompra;
     }
 
-    public void receberCartaCorreio(CartaCorreio cartaCorreio){
+    public void receberCartaCorreio(CartaCorreio cartaCorreio) {
 
         this.cartasCorreio.add(cartaCorreio);
     }
 
-    public void receberCartaCompraEntretenimento(CartaCompra cartaCompra){
+    public void addCartaCompraEntretenimento(CartaCompra cartaCompra) {
         this.cartasCompra.add(cartaCompra);
     }
 
-    public void removerContas(){
+    public void removerCartaCompraEntretemimento(CartaCompra cartaCompra) {
+        this.cartasCompra.remove(cartaCompra);
+    }
+
+    public void removerContas() {
         cartasCorreio.clear();
     }
 
