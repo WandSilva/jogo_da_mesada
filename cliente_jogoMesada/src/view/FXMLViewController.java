@@ -445,7 +445,7 @@ public class FXMLViewController implements Initializable {
                 while (true) {
 
                     Platform.runLater(() -> {
-                        moverPeao(peoes.get(1), 2);
+                        moverPeao(peoes.get(1), 0);
                     });
                     Thread.sleep(3000);
                 }

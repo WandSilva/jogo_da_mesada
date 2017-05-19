@@ -165,7 +165,7 @@ public class ControllerCartas {
 
         CartaCorreio cartaDoacoes2 = new CartaCorreio("cobranca monstro",
                 "Viagem nas ferias");
-        cartaDoacoes1.setValor(3300);
+        cartaDoacoes2.setValor(3300);
 
         listaCartasCorreio.add(cartaDoacoes1);
         listaCartasCorreio.add(cartaDoacoes2);
