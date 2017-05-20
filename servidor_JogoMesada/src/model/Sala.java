@@ -1,5 +1,6 @@
 package model;
 
+import java.net.MulticastSocket;
 import java.util.ArrayList;
 
 /**
@@ -11,11 +12,15 @@ public class Sala {
     private ArrayList<Jogador> jogadores;
     private int numeroJogadores;
     private boolean jogando = false;
-
+    
     public Sala(Jogador novoJogador) {
         jogadores = new ArrayList<>();
         jogadores.add(novoJogador);
         numeroJogadores = 1;
+    }
+
+    public Sala() {
+
     }
 
     public void addJogador(Jogador novoJogador) {
@@ -51,6 +56,18 @@ public class Sala {
             }
         }
         return false;
+    }
+
+    public ArrayList<Jogador> getJogadores() {
+        return jogadores;
+    }
+
+    public int getNumeroJogadores() {
+        return numeroJogadores;
+    }
+
+    public boolean isJogando() {
+        return jogando;
     }
 
 }

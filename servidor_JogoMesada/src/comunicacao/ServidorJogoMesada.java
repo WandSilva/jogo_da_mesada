@@ -3,19 +3,11 @@ package comunicacao;
 import model.Jogador;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.MulticastSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Sala;
 
 /**
@@ -29,10 +21,11 @@ import model.Sala;
  */
 public class ServidorJogoMesada {
 
-    private static int porta = 22222;
+    private static int portaClienteServidor = 22222;
 //    private static ArrayList<Jogador> jogadoresCadastrados;
     private static ArrayList<String> jogadoresOnline;
     private static ArrayList<Sala> salasDePartidas;
+    
 
     /**
      * Método responsável por iniciar a execução do servidor e disponibilizá-lo
@@ -44,11 +37,12 @@ public class ServidorJogoMesada {
     public static void main(String[] args) {
         try {
 
-            ServerSocket socketClienteServidor = new ServerSocket(porta);
-            System.out.println("Servidor executando na porta" + " " + porta);
+            ServerSocket socketClienteServidor = new ServerSocket(portaClienteServidor);
+            System.out.println("Servidor executando na porta" + " " + portaClienteServidor);
 //            jogadoresCadastrados = new ArrayList<>();
             jogadoresOnline = new ArrayList<>();
             salasDePartidas = new ArrayList<>();
+            
 
             while (true) {
                 Socket clienteServidor = socketClienteServidor.accept();
@@ -67,6 +61,7 @@ public class ServidorJogoMesada {
         //private final MulticastSocket servidorGrupo;
         private final BufferedReader entradaDadosClienteServidor;
         private final DataOutputStream saidaDadosClienteServidor;
+        private ArrayList<Jogador> array = new ArrayList<>();
 
         public ThreadServidor(Socket conexaoClienteServidor) throws IOException {
             this.conexaoClienteServidor = conexaoClienteServidor;
@@ -102,24 +97,34 @@ public class ServidorJogoMesada {
                             if (!jogadoresOnline.contains(dados[1])) {
                                 Jogador novoJogadorOnline = new Jogador();
                                 novoJogadorOnline.setNome(dados[1]);
-                                novaSala(novoJogadorOnline);
-                                saidaDadosClienteServidor.writeBytes("100\n");
+                                String enderecoMulticast = novaSala(novoJogadorOnline);
+                                saidaDadosClienteServidor.writeBytes("100"+";"+enderecoMulticast+"\n");
                             } else {
-                                saidaDadosClienteServidor.writeBytes("UsuarioExistente");
+                                saidaDadosClienteServidor.writeBytes("UsuarioExistente\n");
                             }
                         } else if (pacoteDados.startsWith("002")) {
                             String[] dados = new String[2];
                             dados = pacoteDados.split(";");
-                            Jogador removerJogador = new Jogador();
-                            removerJogador.setNome(dados[1]);
-                            jogadoresOnline.remove(dados[2]);
-                            sairSala(removerJogador);
+                            Jogador jogador = new Jogador();
+                            jogador.setNome(dados[1]);
+                            jogadoresOnline.remove(dados[1]);
+                            sairSala(jogador);
                             saidaDadosClienteServidor.writeBytes("200\n");
 
-                        } else if (pacoteDados.startsWith("003")){
-                            
-                        } else if (pacoteDados.startsWith("004")){
-                            
+                        } else if (pacoteDados.startsWith("003")) {
+                            String[] dados = new String[2];
+
+                        } else if (pacoteDados.startsWith("004")) {
+                            String[] dados = new String[2];
+                            dados = pacoteDados.split(";");
+                            Jogador jogador = new Jogador();
+                            jogador.setNome(dados[1]);
+                            Sala sala = buscarSala(jogador);
+                            if (!sala.isJogando()) {
+                                sala.ocuparSala();
+                                iniciarPartida(sala);
+                                saidaDadosClienteServidor.writeBytes("400\n");
+                            }
                         }
 
                     } catch (IOException ex) {
@@ -133,70 +138,61 @@ public class ServidorJogoMesada {
 
         }
 
-        private synchronized Object abrirArquivoCadastro(Object o) {
-
-            String arquivo = "data" + File.separator + "data_bcli.dat";
-
-            try {
-                FileInputStream fi = new FileInputStream(arquivo);
-                ObjectInputStream oi = new ObjectInputStream(fi);
-
-                o = oi.readObject();
-                oi.close();
-                return o;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-        private synchronized void salvarArquivoCadastro(Object o) {
-            String arquivo = "data" + File.separator + "data_bcli.dat";
-            try {
-                FileOutputStream fo = new FileOutputStream(arquivo);
-                ObjectOutputStream oo = new ObjectOutputStream(fo);
-                oo.writeObject(o);
-                oo.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        private synchronized void novaSala(Jogador novoJogadorOnline) {
+        private synchronized String novaSala(Jogador novoJogadorOnline) {
 
             if (salasDePartidas.isEmpty()) {
-
                 Sala novaSala = new Sala(novoJogadorOnline);
                 salasDePartidas.add(novaSala);
+                return "235.0.0.1";  
             }
 
             for (Sala sala : salasDePartidas) {
                 if (sala == null) {
                     Sala novaSala = new Sala(novoJogadorOnline);
                     salasDePartidas.add(novaSala);
-                    break;
+                    int numero = salasDePartidas.size();
+                    return "235.0.0." + numero;
 
                 } else if (sala.tamanhoSala() < 6 && !sala.salaOcupada()) {
                     sala.addJogador(novoJogadorOnline);
-                    break;
+                    int numero = salasDePartidas.size();
+                    return "235.0.0." + numero;
                 }
             }
-
+            return "";
         }
 
-        private synchronized void sairSala(Jogador removerJogador) {
+        private synchronized void sairSala(Jogador jogador) {
 
             for (Sala sala : salasDePartidas) {
                 if (sala != null) {
-                    if (sala.removerJogador(removerJogador)) {
+                    if (sala.removerJogador(jogador)) {
                         break;
                     }
                 }
 
             }
 
+        }
+
+        private synchronized void iniciarPartida(Sala sala) {
+            
+            
+            
+        }
+
+        private synchronized Sala buscarSala(Jogador jogador) {
+            for (Sala sala : salasDePartidas) {
+                if (sala != null) {
+                    array = sala.getJogadores();
+                    for (Jogador array1 : array) {
+                        if (array1.equals(jogador)) {
+                            return sala;
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }

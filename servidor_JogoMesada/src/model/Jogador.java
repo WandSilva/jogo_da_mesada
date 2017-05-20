@@ -14,11 +14,13 @@ public class Jogador {
     private String nome;
     private ArrayList<CartaCorreio> cartasCorreio;
     private ArrayList<CartaCompra> cartasCompra;
+    private Sala sala;
 
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
         this.cartasCorreio = new ArrayList<>();
         this.cartasCompra = new ArrayList<>();
+        this.sala = new Sala();
     }
 
     /**
@@ -150,4 +152,11 @@ public class Jogador {
         return nome;
     }
 
+    public Sala getSala() {
+        return sala;
+    }
+
+    public void setSala(Sala sala) {
+        this.sala = sala;
+    }
 }
