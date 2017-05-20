@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,9 +21,9 @@ import model.Sala;
  */
 public class ClienteJogoMesada {
 
-    private static String host = new String();
-    private static int portaClienteServidor;
-    private static int portaClienteCliente;
+    private final static String host = new String();
+    private final static int portaClienteServidor = 22222;
+    private final static int portaClienteCliente = 44444;
     private static String usuario;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
@@ -64,7 +65,13 @@ public class ClienteJogoMesada {
                 String pacoteDados = entradaDados.readLine();
 
                 if (pacoteDados.startsWith("100")) {
+                    String[] dados = new String[2];
+                    dados = pacoteDados.split(";");
                     ClienteJogoMesada.usuario = usuario;
+                    enderecoMulticast = InetAddress.getByName(dados[1]);
+                    conexaoGrupo = new MulticastSocket(portaClienteCliente);
+                    conexaoGrupo.joinGroup(enderecoMulticast);
+                    new ThreadCliente(conexaoGrupo).start();
                     return "HOME_PAGE";
 
                 } else {
@@ -103,11 +110,10 @@ public class ClienteJogoMesada {
         }
     }
 
-    public synchronized String iniciarPartida() {
-
+    public synchronized String trocarSala() {
         if (conexaoClienteServidor.isConnected()) {
             try {
-                saidaDados.writeBytes("003" + '\n');
+                saidaDados.writeBytes("003" + ";" + ClienteJogoMesada.usuario + '\n');
 
                 String pacoteDados = entradaDados.readLine();
 
@@ -127,7 +133,8 @@ public class ClienteJogoMesada {
         }
     }
 
-    public String solicitarEmprestimo() {
+    public synchronized String iniciarPartida() {
+
         if (conexaoClienteServidor.isConnected()) {
             try {
                 saidaDados.writeBytes("004" + ";" + ClienteJogoMesada.usuario + '\n');
@@ -135,6 +142,7 @@ public class ClienteJogoMesada {
                 String pacoteDados = entradaDados.readLine();
 
                 if (pacoteDados.startsWith("400")) {
+
                     return "";
 
                 } else {
@@ -150,22 +158,42 @@ public class ClienteJogoMesada {
         }
     }
 
+    public synchronized void minhaJogada(int numDado) {
+        byte dados[] = ("1001" + ";" + ClienteJogoMesada.usuario + ";" + numDado + "\n").getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private static class ThreadCliente extends Thread {
 
-        private MulticastSocket socketMulticast;
+        private final MulticastSocket socketMulticast;
 
         public ThreadCliente(MulticastSocket socketMulticast) {
-
+            this.socketMulticast = socketMulticast;
         }
 
         public void run() {
             try {
                 while (true) {
-
-                    byte dados[] = new byte[256];
+                    Thread.sleep(500);
+                    byte dados[] = new byte[1024];
                     DatagramPacket datagrama = new DatagramPacket(dados, dados.length);
                     socketMulticast.receive(datagrama);
-                    Thread.sleep(100);
+                    String msg = new String(datagrama.getData());
+                    
+                    if (msg.startsWith("1001"))
+                    {
+                        String[] dadosRecebidos = new String[3];
+                        dadosRecebidos = msg.split(";");
+                        
+                        //Chamar para atualizar dados;
+                        
+                    }
+                    
                 }
             } catch (Exception e) {
             }

@@ -124,7 +124,7 @@ public class FXMLViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.facade = new Facade();
-        String nome = JOptionPane.showInputDialog("Informe seu nome");
+        String nomeUsuario = JOptionPane.showInputDialog("Informe seu nome");
         facade.iniciarJogador("nome");
         this.atualizarValoresTela();
         this.criarPeoes(6);

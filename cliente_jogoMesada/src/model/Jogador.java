@@ -15,7 +15,6 @@ public class Jogador {
     private ArrayList<CartaCorreio> cartasCorreio;
     private ArrayList<CartaCompra> cartasCompra;
 
-
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
         this.cartasCorreio = new ArrayList<>();
@@ -58,7 +57,6 @@ public class Jogador {
         return this.contaBancaria.getDivida();
     }
 
-
     /**
      * o jogador paga toda sua dívida ao banco
      *
@@ -70,17 +68,17 @@ public class Jogador {
     }
 
     /**
-     * paga apenas uma parte da dívida e o banco aplica juros.
-     * Se o jogador tentar pagar um valor maior que sua dívida, será debitado o total valor da
-     * dívida
+     * paga apenas uma parte da dívida e o banco aplica juros. Se o jogador
+     * tentar pagar um valor maior que sua dívida, será debitado o total valor
+     * da dívida
      *
      * @param valor
      * @throws SaldoInsuficienteException
      */
     public void pagarDividaParcial(double valor) throws SaldoInsuficienteException {
-        if (valor > contaBancaria.getDivida())
+        if (valor > contaBancaria.getDivida()) {
             this.pagarDividaCompleta();
-        else {
+        } else {
             this.debitar(valor);
             contaBancaria.diminuirDivida(valor);
         }
@@ -109,6 +107,10 @@ public class Jogador {
     public void pagarJuros(double valor) throws SaldoInsuficienteException {
         this.debitar(valor);
         contaBancaria.diminuirDivida(valor);
+    }
+
+    public String getNome() {
+        return nome;
     }
 
     public void setNome(String nome) {
@@ -144,5 +146,17 @@ public class Jogador {
         cartasCorreio.clear();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        Jogador jogador = (Jogador) o;
 
+        if (this.getNome().equals(jogador.getNome())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    
+    
 }
