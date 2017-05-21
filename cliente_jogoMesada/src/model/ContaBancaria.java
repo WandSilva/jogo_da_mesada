@@ -8,11 +8,12 @@ import exception.SaldoInsuficienteException;
 public class ContaBancaria {
 
     private double saldo;
-    private double divida;
+    private double dividaTotal;
+    private double dividaMensal;
 
     public ContaBancaria() {
         this.saldo = 0;
-        this.divida = 0;
+        this.dividaTotal = 0;
     }
 
     /**
@@ -48,21 +49,21 @@ public class ContaBancaria {
      * método utilizado para cobrar juros caso o jogador não pague alguma parte dívida.
      */
     public void cobrarApenasJuros() throws SaldoInsuficienteException {
-        double juros = (divida * 0.1);
+        double juros = (dividaTotal * 0.1);
         debitar(juros);
     }
 
 
     public void aumentarDivida(double valor) {
-        this.divida += valor;
+        this.dividaTotal += valor;
     }
 
     public void diminuirDivida(double valor){
-        this.divida -= valor;
+        this.dividaTotal -= valor;
     }
 
     public void setDivida(double divida) {
-        this.divida = divida;
+        this.dividaTotal = divida;
     }
 
     /**
@@ -70,6 +71,14 @@ public class ContaBancaria {
      * @return
      */
     public double getDivida() {
-        return divida;
+        return dividaTotal;
+    }
+
+    public double getDividaMensal() {
+        return dividaMensal;
+    }
+
+    public void setDividaMensal(double dividaMensal) {
+        this.dividaMensal = dividaMensal;
     }
 }

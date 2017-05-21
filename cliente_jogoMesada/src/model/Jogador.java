@@ -97,7 +97,7 @@ public class Jogador {
     /**
      * método utilizado para cobrar juros ao jogador
      */
-    public void receberJuros(double valor) throws SaldoInsuficienteException {
+    public void receberJuros(double valor){
         contaBancaria.aumentarDivida(valor);
     }
 
@@ -155,6 +155,14 @@ public class Jogador {
         }
 
         return false;
+    }
+
+    public void setDividaMensal(double valor){
+        this.contaBancaria.setDividaMensal(valor);
+    }
+
+    public double getDividaMensal(){
+        return this.contaBancaria.getDividaMensal();
     }
 
     

@@ -47,6 +47,16 @@ public class ControllerJogador {
         return dado6Faces;
     }
 
+    public void pagarJuros() throws SaldoInsuficienteException {
+        jogador.pagarJuros(jogador.getDividaMensal() * 0.1);
+    }
+    public void pagarDividaTotal() throws SaldoInsuficienteException {
+        jogador.pagarDividaCompleta();
+    }
+    public void pagarDividaParcial(double valor) throws SaldoInsuficienteException {
+        jogador.pagarDividaParcial(valor);
+    }
+
     public void receberCartaCorreio(CartaCorreio cartaCorreio){
         jogador.receberCartaCorreio(cartaCorreio);
     }

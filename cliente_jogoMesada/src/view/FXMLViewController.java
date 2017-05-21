@@ -183,7 +183,7 @@ public class FXMLViewController implements Initializable {
         if ((coluna == 1 && linha == 0) || (coluna == 4 && linha == 1) || (coluna == 5 && linha == 2) || (coluna == 1 && linha == 3)) {
             facade.receberCartaCorreio(facade.pegarCartaCorreio());
             this.mostrarCartasCorreio();
-            mostrarAlerta("Casa correios", "Casa correios", "Você recebeu 1 carta");
+            mostrarAlerta("Correios", "", "Você recebeu 1 carta");
         }
         //casa premio
         else if (coluna == 2 && linha == 0) {
@@ -196,14 +196,14 @@ public class FXMLViewController implements Initializable {
             facade.receberCartaCorreio(facade.pegarCartaCorreio());
             facade.receberCartaCorreio(facade.pegarCartaCorreio());
             this.mostrarCartasCorreio();
-            mostrarAlerta("Casa correios", "Casa correios", "Você recebeu 3 cartas");
+            mostrarAlerta("Correios", "", "Você recebeu 3 cartas");
         }
         //correio de 2 cartas
         else if ((coluna == 5 && linha == 0) || (coluna == 3 && linha == 3)) {
             facade.receberCartaCorreio(facade.pegarCartaCorreio());
             facade.receberCartaCorreio(facade.pegarCartaCorreio());
             this.mostrarCartasCorreio();
-            mostrarAlerta("Casa correios", "Casa correios", "Você recebeu 2 cartas");
+            mostrarAlerta("Correios", "", "Você recebeu 2 cartas");
         }
         //compras e entretenimento
         else if ((coluna == 4 && linha == 0) || (coluna == 5 && linha == 1) || (coluna == 1 && linha == 2) || (coluna == 4 && linha == 3)) {
@@ -217,7 +217,7 @@ public class FXMLViewController implements Initializable {
         }
         //achou um comprador
         else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
-            JOptionPane.showMessageDialog(null, "Agora você pode vender uma carta 'Compras e entretenimento', caso possua uma");
+            mostrarAlerta("Achou um comprador","","Agora você pode vender uma carta 'Compras e entretenimento', caso possua uma");
             atualizarValoresTela();
         }
         //praia no domingo
@@ -225,7 +225,7 @@ public class FXMLViewController implements Initializable {
             try {
                 facade.acaoCasaPraiaNodomingo();
             } catch (SaldoInsuficienteException e) {
-                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
         }
@@ -248,7 +248,7 @@ public class FXMLViewController implements Initializable {
             try {
                 facade.acaoCasaAjudeaFloresta();
             } catch (SaldoInsuficienteException e) {
-                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
         }
@@ -257,7 +257,7 @@ public class FXMLViewController implements Initializable {
             try {
                 facade.acaoCasaLanchonete();
             } catch (SaldoInsuficienteException e) {
-                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
         }
@@ -271,7 +271,7 @@ public class FXMLViewController implements Initializable {
             try {
                 facade.acaoCasaShopping();
             } catch (SaldoInsuficienteException e) {
-                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um deposito", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
         }
@@ -283,6 +283,11 @@ public class FXMLViewController implements Initializable {
                 e.printStackTrace();
             }
             atualizarValoresTela();
+        }
+        //dia da mesada
+        if (coluna == 3 && linha == 4){
+            facade.acaoCasaDiaDaMesada();
+            this.atualizarValoresTela();
         }
 
     }
@@ -341,7 +346,6 @@ public class FXMLViewController implements Initializable {
 
     public void atualizarSortegrande() {
         String valor = Double.toString(facade.getValorSorteGrande());
-        System.out.println(valor);
         this.labelSorteGrande.setText("R$" + valor);
     }
 
@@ -370,6 +374,54 @@ public class FXMLViewController implements Initializable {
                 }
             }
         });
+    }
+
+    @FXML
+    public void pagarDivida(ActionEvent e){
+        int coluna = peoes.get(facade.getIdJogador()).getColuna();
+        int linha = peoes.get(facade.getIdJogador()).getLinha();
+
+        if (linha == 4 && coluna==3) {
+            Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
+            ButtonType btnJuros = new ButtonType("Pagar apenas juros");
+            ButtonType btnParte = new ButtonType("pagar parte da dívida");
+            ButtonType btnTudo = new ButtonType("pagar toda a dívida");
+
+
+            dialogoExe.setTitle("Compras e entretenimento");
+            //dialogoExe.setHeaderText("");
+            //dialogoExe.setContentText("Deseja comprar?");
+            dialogoExe.getButtonTypes().setAll(btnJuros, btnParte, btnTudo);
+            dialogoExe.showAndWait().ifPresent(b -> {
+                if (b == btnJuros) {
+                    try {
+                        facade.pagarJuros();
+                        this.atualizarValoresTela();
+                    } catch (SaldoInsuficienteException e1) {
+                        JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else if (b == btnParte) {
+                    try {
+                        Double valor = Double.parseDouble(JOptionPane.showInputDialog("Valor da pagamento"));
+                        facade.pagarDividaParcial(valor);
+                        this.atualizarValoresTela();
+                    } catch (SaldoInsuficienteException e1) {
+                        JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else if (b == btnTudo) {
+                    try {
+                        facade.pagarDividaTotal();
+                        this.atualizarValoresTela();
+                    } catch (SaldoInsuficienteException e1) {
+                        JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+            });
+        }
+        else JOptionPane.showMessageDialog(null, "Voce não está na casa 'Dia da mesada'!", "Calma aí amigão", JOptionPane.ERROR_MESSAGE);
     }
 
     public void atualizarValoresTela() {

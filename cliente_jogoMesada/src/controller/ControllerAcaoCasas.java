@@ -104,19 +104,16 @@ public class ControllerAcaoCasas {
     }
 
     /**
-     * @param opcaoEscolhida 1 - pagar toda a dívida
-     *                       2 - pagar parte da dívida
-     *                       3 - pagar apenas os juros
      * @throws SaldoInsuficienteException
      */
-    public void casaDiaDaMesada(int opcaoEscolhida, double valorPagamentoDivida) throws SaldoInsuficienteException {
+    public void casaDiaDaMesada()  {
 
         jogador.depositar(3500); //recebe a mesada
-        double dividaMes = jogador.getDividaJogador(); //pega a dívida do mês
-        jogador.receberJuros(dividaMes * 0.1);
+        jogador.setDividaMensal(jogador.getDividaJogador()); //pega a dívida do mês
+        jogador.receberJuros(jogador.getDividaMensal() * 0.1);
 
 
-        switch (opcaoEscolhida) {
+       /* switch (opcaoEscolhida) {
             case 1:
                 jogador.pagarDividaCompleta();
                 break;
@@ -141,7 +138,7 @@ public class ControllerAcaoCasas {
             jogador.fazerEmprestimo(Math.abs(jogador.getSaldoJogador()) - valorContas);
             jogador.debitar(valorContas);
             jogador.removerContas();
-        }
+        }*/
     }
 
     public double getValorSorteGrande(){

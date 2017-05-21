@@ -31,6 +31,16 @@ public class Facade {
         return this.controllerJogador.rolarDado();
     }
 
+    public void pagarJuros() throws SaldoInsuficienteException {
+        this.controllerJogador.pagarJuros();
+    }
+    public void pagarDividaTotal() throws SaldoInsuficienteException {
+        this.controllerJogador.pagarDividaTotal();
+    }
+    public void pagarDividaParcial(double valor) throws SaldoInsuficienteException {
+        this.controllerJogador.pagarDividaParcial(valor);
+    }
+
     public void fazerEmprestimo(double valor) {
         this.controllerJogador.fazerEmprestimo(valor);
     }
@@ -103,8 +113,8 @@ public class Facade {
         this.controllerCasas.casaFelizAniversario(caiuNaCasa);
     }
 
-    public void acaoCasaDiaDaMesada(int opcaoEscolhida, double valorPagamentoDivida) throws SaldoInsuficienteException {
-        this.controllerCasas.casaDiaDaMesada(opcaoEscolhida, valorPagamentoDivida);
+    public void acaoCasaDiaDaMesada() {
+        this.controllerCasas.casaDiaDaMesada();
     }
 
     public double getValorSorteGrande(){

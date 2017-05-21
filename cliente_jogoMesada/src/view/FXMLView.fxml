@@ -79,16 +79,17 @@
          </children>
       </GridPane>
       <Button layoutX="332.0" layoutY="15.0" mnemonicParsing="false" onAction="#jogar" text="Rolar dado" />
-      <Label fx:id="labelSaldo" layoutX="727.0" layoutY="14.0" text="Saldo: 0" />
-      <Label fx:id="labelDivida" layoutX="725.0" layoutY="30.0" text="Divida: 0" />
+      <Label fx:id="labelSaldo" layoutX="851.0" layoutY="12.0" text="Saldo: 0" />
+      <Label fx:id="labelDivida" layoutX="849.0" layoutY="28.0" text="Divida: 0" />
       <Button layoutX="567.0" layoutY="15.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
       <ComboBox fx:id="comboCorreio" layoutX="14.0" layoutY="40.0" onAction="#descricaoCartaCorreio" prefHeight="25.0" prefWidth="216.0" />
-      <TextArea fx:id="textCorreio" editable="false" layoutX="15.0" layoutY="75.0" prefHeight="200.0" prefWidth="216.0" wrapText="true" />
-      <TextArea fx:id="textContas" editable="false" layoutX="15.0" layoutY="347.0" prefHeight="55.0" prefWidth="216.0" wrapText="true" />
-      <ComboBox fx:id="comboCompras" layoutX="15.0" layoutY="323.0" onAction="#descricaoCartaCompra" prefHeight="25.0" prefWidth="216.0" />
+      <TextArea fx:id="textCorreio" editable="false" layoutX="14.0" layoutY="64.0" prefHeight="88.0" prefWidth="216.0" wrapText="true" />
+      <TextArea fx:id="textContas" editable="false" layoutX="16.0" layoutY="217.0" prefHeight="55.0" prefWidth="216.0" wrapText="true" />
+      <ComboBox fx:id="comboCompras" layoutX="16.0" layoutY="193.0" onAction="#descricaoCartaCompra" prefHeight="25.0" prefWidth="216.0" />
       <Label layoutX="13.0" layoutY="17.0" text="Cartas correio" />
-      <Label layoutX="15.0" layoutY="300.0" text="Cartas conta" />
+      <Label layoutX="16.0" layoutY="170.0" text="Cartas conta" />
       <Button layoutX="445.0" layoutY="15.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
-      <Button layoutX="15.0" layoutY="412.0" mnemonicParsing="false" onAction="#venderCartaCompra" text="Vender" />
+      <Button layoutX="16.0" layoutY="282.0" mnemonicParsing="false" onAction="#venderCartaCompra" text="Vender" />
+      <Button layoutX="733.0" layoutY="15.0" mnemonicParsing="false" onAction="#pagarDivida" text="Pagar divida" />
    </children>
 </AnchorPane>
