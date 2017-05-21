@@ -217,7 +217,7 @@ public class FXMLViewController implements Initializable {
         }
         //achou um comprador
         else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
-            mostrarAlerta("Achou um comprador","","Agora você pode vender uma carta 'Compras e entretenimento', caso possua uma");
+            mostrarAlerta("Achou um comprador", "", "Agora você pode vender uma carta 'Compras e entretenimento', caso possua uma");
             atualizarValoresTela();
         }
         //praia no domingo
@@ -285,7 +285,7 @@ public class FXMLViewController implements Initializable {
             atualizarValoresTela();
         }
         //dia da mesada
-        if (coluna == 3 && linha == 4){
+        if (coluna == 3 && linha == 4) {
             facade.acaoCasaDiaDaMesada();
             this.atualizarValoresTela();
         }
@@ -351,7 +351,8 @@ public class FXMLViewController implements Initializable {
 
     public void comprarCartaEntretenimento() {
         Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
-        ButtonType btnSim = new ButtonType("Sim");
+        ButtonType btnSim = new ButtonType("Comprar");
+        ButtonType btnEmprestimo = new ButtonType("Pagar com empréstimo");
         ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         CartaCompra cartaCompra = facade.pegarCartaCompra();
@@ -363,12 +364,22 @@ public class FXMLViewController implements Initializable {
         dialogoExe.setHeaderText("Você pegou a carta ''" + nome + "''. Ela custa R$" + valor + " e " +
                 "pode ser revendida por " + vRevenda);
         dialogoExe.setContentText("Deseja comprar?");
-        dialogoExe.getButtonTypes().setAll(btnSim, btnNao);
+        dialogoExe.getButtonTypes().setAll(btnSim, btnEmprestimo, btnNao);
         dialogoExe.showAndWait().ifPresent(b -> {
             if (b == btnSim) {
                 try {
                     facade.comprarCartaCompraEntretenimento(cartaCompra);
                     mostrarCartasCompra();
+                } catch (SaldoInsuficienteException e) {
+                    JOptionPane.showMessageDialog(null, "Saldo insuficiente, você deveria ter feito um empréstimo", "Que pena!", JOptionPane.WARNING_MESSAGE);
+                }
+            } else if (b == btnEmprestimo) {
+                double aux = valor - facade.verSaldoJogador();
+                if (aux < 0)
+                    aux = 0;
+                facade.fazerEmprestimo(aux);
+                try {
+                    facade.comprarCartaCompraEntretenimento(cartaCompra);
                 } catch (SaldoInsuficienteException e) {
                     e.printStackTrace();
                 }
@@ -377,11 +388,11 @@ public class FXMLViewController implements Initializable {
     }
 
     @FXML
-    public void pagarDivida(ActionEvent e){
+    public void pagarDivida(ActionEvent e) {
         int coluna = peoes.get(facade.getIdJogador()).getColuna();
         int linha = peoes.get(facade.getIdJogador()).getLinha();
 
-        if (linha == 4 && coluna==3) {
+        if (linha == 4 && coluna == 3) {
             Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
             ButtonType btnJuros = new ButtonType("Pagar apenas juros");
             ButtonType btnParte = new ButtonType("pagar parte da dívida");
@@ -398,10 +409,9 @@ public class FXMLViewController implements Initializable {
                         facade.pagarJuros();
                         this.atualizarValoresTela();
                     } catch (SaldoInsuficienteException e1) {
-                        JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+
                     }
-                }
-                else if (b == btnParte) {
+                } else if (b == btnParte) {
                     try {
                         Double valor = Double.parseDouble(JOptionPane.showInputDialog("Valor da pagamento"));
                         facade.pagarDividaParcial(valor);
@@ -409,8 +419,7 @@ public class FXMLViewController implements Initializable {
                     } catch (SaldoInsuficienteException e1) {
                         JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
                     }
-                }
-                else if (b == btnTudo) {
+                } else if (b == btnTudo) {
                     try {
                         facade.pagarDividaTotal();
                         this.atualizarValoresTela();
@@ -420,8 +429,8 @@ public class FXMLViewController implements Initializable {
                 }
 
             });
-        }
-        else JOptionPane.showMessageDialog(null, "Voce não está na casa 'Dia da mesada'!", "Calma aí amigão", JOptionPane.ERROR_MESSAGE);
+        } else
+            JOptionPane.showMessageDialog(null, "Voce não está na casa 'Dia da mesada'!", "Calma aí amigão", JOptionPane.ERROR_MESSAGE);
     }
 
     public void atualizarValoresTela() {
