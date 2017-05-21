@@ -34,10 +34,18 @@ public class ControllerCartas {
      * recebe uma carta e verifica seu tipo para executar sua devida ação
      *
      * @param pegouCarta
-     * @param cartaCorreio
+     * @param tipoCarta
      * @throws SaldoInsuficienteException
      */
-    public void acaoCartas(boolean pegouCarta, CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
+    public void acaoCartas(boolean pegouCarta, String tipoCarta) throws SaldoInsuficienteException {
+
+        CartaCorreio cartaCorreio = null;
+
+        for (CartaCorreio aux : jogador.getCartasCorreio())
+            if (aux.getTipo().equals(tipoCarta)) {
+                cartaCorreio = aux;
+            }
+
         switch (cartaCorreio.getTipo()) {
             case "contas":
                 this.acaoCartaConta(cartaCorreio);
@@ -55,12 +63,13 @@ public class ControllerCartas {
                 this.acaoCobrancaMonstro(cartaCorreio);
                 break;
             case "va para frente agora":
-                this.criarCartaVaParaFrenteAgora();
+                break;
         }
     }
 
     private void acaoCartaConta(CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
         jogador.debitar(cartaCorreio.getValor());
+        jogador.removerContas(cartaCorreio);
     }
 
     private void acaoCartaPagueVizinhoAgora(boolean pegouCarta, CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
@@ -68,6 +77,8 @@ public class ControllerCartas {
             jogador.debitar(cartaCorreio.getValor());
         else
             jogador.depositar(cartaCorreio.getValor());
+
+        jogador.removerContas(cartaCorreio);
     }
 
     private void acaoDinheiroExtra(boolean pegouCarta, CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
@@ -75,18 +86,24 @@ public class ControllerCartas {
             jogador.depositar(cartaCorreio.getValor());
         else
             jogador.debitar(cartaCorreio.getValor());
+
+        jogador.removerContas(cartaCorreio);
     }
 
     private void acaoDoacoes(CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
         jogador.debitar(cartaCorreio.getValor());
         sorteGrande.arrecadarDinheiro(cartaCorreio.getValor());
+
+        jogador.removerContas(cartaCorreio);
     }
 
     public void acaoCobrancaMonstro(CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
         jogador.debitar(cartaCorreio.getValor());
+        jogador.removerContas(cartaCorreio);
     }
 
     public void acaoVaParaFrenteAgora(CartaCorreio cartaCorreio) {
+        jogador.removerContas(cartaCorreio);
 
     }
 
@@ -190,15 +207,15 @@ public class ControllerCartas {
     /*----------------------------metodos das cartas compra----------------------------*/
 
     public void criarCartasCompra() {
-        CartaCompra cartaCompra1  = new CartaCompra("Smart phone novo", 1500, 2000);
-        CartaCompra cartaCompra2  = new CartaCompra("Smart phone usado", 1000, 1200);
-        CartaCompra cartaCompra3  = new CartaCompra("PS4", 1500, 2000);
-        CartaCompra cartaCompra4  = new CartaCompra("Item raro de colecionador", 5000, 10000);
-        CartaCompra cartaCompra5  = new CartaCompra("Jogo novo", 200, 250);
-        CartaCompra cartaCompra6  = new CartaCompra("Aeromodelo", 2000, 3000);
-        CartaCompra cartaCompra7  = new CartaCompra("Bola de futebol", 200, 250);
-        CartaCompra cartaCompra8  = new CartaCompra("Pacote de Jogos na steam", 500, 750);
-        CartaCompra cartaCompra9  = new CartaCompra("Ingresso para jogo da seleção", 500, 1000);
+        CartaCompra cartaCompra1 = new CartaCompra("Smart phone novo", 1500, 2000);
+        CartaCompra cartaCompra2 = new CartaCompra("Smart phone usado", 1000, 1200);
+        CartaCompra cartaCompra3 = new CartaCompra("PS4", 1500, 2000);
+        CartaCompra cartaCompra4 = new CartaCompra("Item raro de colecionador", 5000, 10000);
+        CartaCompra cartaCompra5 = new CartaCompra("Jogo novo", 200, 250);
+        CartaCompra cartaCompra6 = new CartaCompra("Aeromodelo", 2000, 3000);
+        CartaCompra cartaCompra7 = new CartaCompra("Bola de futebol", 200, 250);
+        CartaCompra cartaCompra8 = new CartaCompra("Pacote de Jogos na steam", 500, 750);
+        CartaCompra cartaCompra9 = new CartaCompra("Ingresso para jogo da seleção", 500, 1000);
         CartaCompra cartaCompra10 = new CartaCompra("Guitarra", 1500, 2000);
         CartaCompra cartaCompra11 = new CartaCompra("ingresso pro show do Safadão", 300, 600);
         CartaCompra cartaCompra12 = new CartaCompra("Notebook", 2500, 3500);
@@ -248,9 +265,10 @@ public class ControllerCartas {
 
     /**
      * retorna uma carta de compra aleatória
+     *
      * @return CartaCompra
      */
-    public CartaCompra pegarCartaCompra(){
+    public CartaCompra pegarCartaCompra() {
         Random random = new Random();
         int sorteio = random.nextInt(12);
         return listaCartasCompra.get(sorteio);

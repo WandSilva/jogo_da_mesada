@@ -142,8 +142,8 @@ public class Jogador {
         this.cartasCompra.remove(cartaCompra);
     }
 
-    public void removerContas() {
-        cartasCorreio.clear();
+    public void removerContas(CartaCorreio cartaCorreio) {
+        cartasCorreio.remove(cartaCorreio);
     }
 
     @Override

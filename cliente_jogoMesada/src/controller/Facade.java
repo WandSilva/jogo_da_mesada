@@ -55,8 +55,8 @@ public class Facade {
     public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
         this.controllerJogador.comprarCartaCompraEntretenimento(cartaCompra);
     }
-    public void venderCartaCompraEntretenimento(CartaCompra cartaCompra){
-        this.controllerJogador.venderCartaCompraEntretenimento(cartaCompra);
+    public void venderCartaCompraEntretenimento(String carta){
+        this.controllerJogador.venderCartaCompraEntretenimento(carta);
     }
 
     public double verDividaJogador() {
@@ -122,6 +122,9 @@ public class Facade {
     }
 
     //******************************METODOS DO CONTROLLER CARTA***********************//
+    public void acaoCartas(boolean pegouCarta, String tipoCarta) throws SaldoInsuficienteException {
+        this.controllerCartas.acaoCartas(pegouCarta,tipoCarta);
+    }
     public CartaCorreio pegarCartaCorreio() {
         return this.controllerCartas.pegarCartaCorreio();
     }

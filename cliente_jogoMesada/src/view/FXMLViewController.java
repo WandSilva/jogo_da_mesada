@@ -298,20 +298,10 @@ public class FXMLViewController implements Initializable {
         int linha = peoes.get(facade.getIdJogador()).getLinha();
 
         if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
-
-            CartaCompra cartaCompra = null;
-
-            for (CartaCompra aux : facade.verCartasCompraJogador()) {
-                if (aux.getNome() == comboCompras.getValue()) {
-                    cartaCompra = aux;
-                }
-            }
-            if (cartaCompra != null) {
-                comboCompras.getItems().remove(cartaCompra.getNome());
-                facade.venderCartaCompraEntretenimento(cartaCompra);
-                this.atualizarValoresTela();
-                textContas.setText("");
-            }
+            facade.venderCartaCompraEntretenimento(comboCompras.getValue());
+            comboCompras.getItems().remove(comboCompras.getValue());
+            this.atualizarValoresTela();
+            textContas.setText("");
         } else
             JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não está na casa 'Achou um coprador'!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
     }
@@ -380,11 +370,26 @@ public class FXMLViewController implements Initializable {
                 facade.fazerEmprestimo(aux);
                 try {
                     facade.comprarCartaCompraEntretenimento(cartaCompra);
+                    mostrarCartasCompra();
                 } catch (SaldoInsuficienteException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    @FXML
+    public void acaoCartaCorreio(ActionEvent e) {
+
+        try {
+            facade.acaoCartas(true, comboCorreio.getValue());
+            comboCorreio.getItems().remove(comboCorreio.getValue());
+            textCorreio.setText("");
+            this.atualizarValoresTela();
+            this.atualizarSortegrande();
+        } catch (SaldoInsuficienteException e1) {
+            e1.printStackTrace();
+        }
     }
 
     @FXML
@@ -459,8 +464,10 @@ public class FXMLViewController implements Initializable {
                 cartaCompra = aux;
         }
 
-        textContas.setText("Valor Inicial: R$" + cartaCompra.getValorInicial() + "\n" +
-                "Valor de revenda: R$" + cartaCompra.getValorRevenda());
+        if(cartaCompra!=null) {
+            textContas.setText("Valor Inicial: R$" + cartaCompra.getValorInicial() + "\n" +
+                    "Valor de revenda: R$" + cartaCompra.getValorRevenda());
+        }
     }
 
     @FXML
@@ -471,9 +478,11 @@ public class FXMLViewController implements Initializable {
             if (aux.getTipo() == comboCorreio.getValue())
                 cartaCorreio = aux;
         }
+        if (cartaCorreio != null) {
 
-        textCorreio.setText("Carta: " + cartaCorreio.getNome() + "\n\n" +
-                "Valor:" + cartaCorreio.getValor());
+            textCorreio.setText("Carta: " + cartaCorreio.getNome() + "\n\n" +
+                    "Valor:" + cartaCorreio.getValor());
+        }
     }
 
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
