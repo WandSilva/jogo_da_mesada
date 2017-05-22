@@ -25,7 +25,6 @@ public class ServidorJogoMesada {
 //    private static ArrayList<Jogador> jogadoresCadastrados;
     private static ArrayList<String> jogadoresOnline;
     private static ArrayList<Sala> salasDePartidas;
-    
 
     /**
      * Método responsável por iniciar a execução do servidor e disponibilizá-lo
@@ -42,7 +41,6 @@ public class ServidorJogoMesada {
 //            jogadoresCadastrados = new ArrayList<>();
             jogadoresOnline = new ArrayList<>();
             salasDePartidas = new ArrayList<>();
-            
 
             while (true) {
                 Socket clienteServidor = socketClienteServidor.accept();
@@ -98,8 +96,8 @@ public class ServidorJogoMesada {
                                 Jogador novoJogadorOnline = new Jogador();
                                 novoJogadorOnline.setNome(dados[1]);
                                 jogadoresOnline.add(dados[1]);
-                                String enderecoMulticast = novaSala(novoJogadorOnline);
-                                saidaDadosClienteServidor.writeBytes("100"+";"+enderecoMulticast+"\n");
+                                String enderecoMulticast = entrarSala(novoJogadorOnline);
+                                saidaDadosClienteServidor.writeBytes("100" + ";" + enderecoMulticast + "\n");
                             } else {
                                 saidaDadosClienteServidor.writeBytes("UsuarioExistente\n");
                             }
@@ -139,28 +137,31 @@ public class ServidorJogoMesada {
 
         }
 
-        private synchronized String novaSala(Jogador novoJogadorOnline) {
+        private synchronized String entrarSala(Jogador novoJogadorOnline) {
 
             if (salasDePartidas.isEmpty()) {
                 Sala novaSala = new Sala(novoJogadorOnline);
                 salasDePartidas.add(novaSala);
-                return "235.0.0.1";  
-            }
+                return "235.0.0.1";
+            } else {
+                for (Sala sala : salasDePartidas) {
+                    if (sala == null) {
+                        Sala novaSala = new Sala(novoJogadorOnline);
+                        salasDePartidas.add(novaSala);
+                        int numero = salasDePartidas.size();
+                        return "235.0.0." + numero;
 
-            for (Sala sala : salasDePartidas) {
-                if (sala == null) {
-                    Sala novaSala = new Sala(novoJogadorOnline);
-                    salasDePartidas.add(novaSala);
-                    int numero = salasDePartidas.size();
-                    return "235.0.0." + numero;
-
-                } else if (sala.tamanhoSala() < 6 && !sala.salaOcupada()) {
-                    sala.addJogador(novoJogadorOnline);
-                    int numero = salasDePartidas.size();
-                    return "235.0.0." + numero;
+                    } else if (sala.tamanhoSala() < 6 && !sala.salaOcupada()) {
+                        sala.addJogador(novoJogadorOnline);
+                        int numero = salasDePartidas.size();
+                        return "235.0.0." + numero;
+                    }   
                 }
+                        Sala novaSala = new Sala(novoJogadorOnline);
+                        salasDePartidas.add(novaSala);
+                        int numero = salasDePartidas.size();
+                        return "235.0.0." + numero;
             }
-            return "";
         }
 
         private synchronized void sairSala(Jogador jogador) {
@@ -177,9 +178,7 @@ public class ServidorJogoMesada {
         }
 
         private synchronized void iniciarPartida(Sala sala) {
-            
-            
-            
+
         }
 
         private synchronized Sala buscarSala(Jogador jogador) {
