@@ -73,7 +73,7 @@ public class ClienteJogoMesada {
                     dados = pacoteDados.split(";");
                     ClienteJogoMesada.usuario = usuario;
                     enderecoMulticast = InetAddress.getByName(dados[1]);
-                    System.out.println(enderecoMulticast);
+//                    System.out.println(enderecoMulticast);
                     conexaoGrupo = new MulticastSocket(portaClienteCliente);
                     conexaoGrupo.joinGroup(enderecoMulticast);
                     new ThreadCliente(conexaoGrupo).start();

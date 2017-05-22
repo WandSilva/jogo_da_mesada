@@ -135,7 +135,7 @@ public class FXMLViewController implements Initializable {
             this.mostrarCartasCorreio();
             this.mostrarCartasCompra();
             this.atualizarSortegrande();
-            this.moverPeaoOutroJogador();
+//            this.moverPeaoOutroJogador();
         } else {
             boolean nomeExiste = true;
 
@@ -151,7 +151,8 @@ public class FXMLViewController implements Initializable {
                     this.mostrarCartasCorreio();
                     this.mostrarCartasCompra();
                     this.atualizarSortegrande();
-                    this.moverPeaoOutroJogador();
+//                    this.moverPeaoOutroJogador();
+                    nomeExiste = false;
                 }
             }
 
