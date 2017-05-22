@@ -44,8 +44,14 @@ public class ControllerAcaoCasas {
      * @throws SaldoInsuficienteException
      */
     public void casaMaratonaBeneficente(int valorRolarDado) throws SaldoInsuficienteException {
-        jogador.debitar(valorRolarDado * 100);
-        this.sorteGrande.arrecadarDinheiro(valorRolarDado * 100);
+        int valor = valorRolarDado * 100;
+        try {
+            jogador.debitar(valor);
+        } catch (SaldoInsuficienteException e) {
+            jogador.fazerEmprestimo(valor-jogador.getSaldoJogador());
+            jogador.debitar(valor);
+        }
+        this.sorteGrande.arrecadarDinheiro(valor);
     }
 
     /**
@@ -77,22 +83,42 @@ public class ControllerAcaoCasas {
     }
 
     public void casaPraiaNodomingo() throws SaldoInsuficienteException {
-        jogador.debitar(100);
+        try {
+            jogador.debitar(100);
+        } catch (SaldoInsuficienteException e) {
+            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.debitar(100);
+        }
         sorteGrande.arrecadarDinheiro(100);
     }
 
     public void casaAjudeaFloresta() throws SaldoInsuficienteException {
-        jogador.debitar(100);
+        try {
+            jogador.debitar(100);
+        } catch (SaldoInsuficienteException e) {
+            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.debitar(100);
+        }
         sorteGrande.arrecadarDinheiro(100);
     }
 
     public void casaLanchonete() throws SaldoInsuficienteException {
-        jogador.debitar(100);
+        try {
+            jogador.debitar(100);
+        } catch (SaldoInsuficienteException e) {
+            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.debitar(100);
+        }
         sorteGrande.arrecadarDinheiro(100);
     }
 
     public void casaShopping() throws SaldoInsuficienteException {
-        jogador.debitar(100);
+        try {
+            jogador.debitar(100);
+        } catch (SaldoInsuficienteException e) {
+            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.debitar(100);
+        }
         sorteGrande.arrecadarDinheiro(100);
     }
 
@@ -100,45 +126,21 @@ public class ControllerAcaoCasas {
         if (caiuNaCasa)
             jogador.depositar(numeroDeJogadores * 100);
         else
-            jogador.debitar(100);
+            try {
+                jogador.debitar(100);
+            } catch (SaldoInsuficienteException e) {
+                jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+                jogador.debitar(100);
+            }
     }
 
     /**
      * @throws SaldoInsuficienteException
      */
     public void casaDiaDaMesada()  {
-
         jogador.depositar(3500); //recebe a mesada
         jogador.setDividaMensal(jogador.getDividaJogador()); //pega a dívida do mês
         jogador.receberJuros(jogador.getDividaMensal() * 0.1);
-
-
-       /* switch (opcaoEscolhida) {
-            case 1:
-                jogador.pagarDividaCompleta();
-                break;
-            case 2:
-                jogador.pagarDividaParcial(valorPagamentoDivida);
-                break;
-            case 3:
-                jogador.pagarJuros(dividaMes * 0.1);
-                break;
-        }
-
-        ArrayList<CartaCorreio> contasJogador = jogador.getCartasCorreio();
-        double valorContas = 0;
-
-        for (int i = 0; i < contasJogador.size(); i++) {
-            valorContas += contasJogador.get(i).getValor();
-        }
-        if (jogador.getSaldoJogador() > valorContas) {
-            jogador.debitar(valorContas);
-            jogador.removerContas();
-        } else {
-            jogador.fazerEmprestimo(Math.abs(jogador.getSaldoJogador()) - valorContas);
-            jogador.debitar(valorContas);
-            jogador.removerContas();
-        }*/
     }
 
     public double getValorSorteGrande(){

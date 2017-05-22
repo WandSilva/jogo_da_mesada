@@ -78,19 +78,19 @@
             <Pane fx:id="casa24" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button layoutX="332.0" layoutY="15.0" mnemonicParsing="false" onAction="#jogar" text="Rolar dado" />
-      <Label fx:id="labelSaldo" layoutX="851.0" layoutY="12.0" text="Saldo: 0" />
-      <Label fx:id="labelDivida" layoutX="849.0" layoutY="28.0" text="Divida: 0" />
-      <Button layoutX="567.0" layoutY="15.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
+      <Button layoutX="332.0" layoutY="15.0" mnemonicParsing="false" onAction="#jogar" text="Jogar" />
+      <Label fx:id="labelSaldo" layoutX="765.0" layoutY="12.0" text="Saldo: 0" />
+      <Label fx:id="labelDivida" layoutX="763.0" layoutY="28.0" text="Divida: 0" />
+      <Button layoutX="506.0" layoutY="14.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
       <ComboBox fx:id="comboCorreio" layoutX="14.0" layoutY="40.0" onAction="#descricaoCartaCorreio" prefHeight="25.0" prefWidth="216.0" />
       <TextArea fx:id="textCorreio" editable="false" layoutX="14.0" layoutY="64.0" prefHeight="88.0" prefWidth="216.0" wrapText="true" />
       <TextArea fx:id="textContas" editable="false" layoutX="16.0" layoutY="275.0" prefHeight="55.0" prefWidth="216.0" wrapText="true" />
       <ComboBox fx:id="comboCompras" layoutX="16.0" layoutY="251.0" onAction="#descricaoCartaCompra" prefHeight="25.0" prefWidth="216.0" />
       <Label layoutX="13.0" layoutY="17.0" text="Cartas correio" />
       <Label layoutX="16.0" layoutY="228.0" text="Cartas conta" />
-      <Button layoutX="445.0" layoutY="15.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
+      <Button layoutX="394.0" layoutY="14.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
       <Button layoutX="16.0" layoutY="340.0" mnemonicParsing="false" onAction="#venderCartaCompra" text="Vender" />
-      <Button layoutX="733.0" layoutY="15.0" mnemonicParsing="false" onAction="#pagarDivida" text="Pagar divida" />
+      <Button layoutX="651.0" layoutY="14.0" mnemonicParsing="false" onAction="#pagarDivida" text="Pagar divida" />
       <Button layoutX="13.0" layoutY="162.0" mnemonicParsing="false" onAction="#acaoCartaCorreio" text="Açao da carta" />
    </children>
 </AnchorPane>

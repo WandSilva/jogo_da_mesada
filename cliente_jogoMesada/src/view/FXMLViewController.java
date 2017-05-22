@@ -150,10 +150,10 @@ public class FXMLViewController implements Initializable {
 
     @FXML
     public void jogar(ActionEvent event) {
-        dado = facade.rolarDado();
+        this.dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
 
-        this.moverPeao(peoes.get(facade.getIdJogador()), this.dado);
+        this.moverPeao(peoes.get(facade.getIdJogador()), dado);
         this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
     }
 
@@ -228,6 +228,7 @@ public class FXMLViewController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
+            atualizarSortegrande();
         }
         //concurso banda de rock
         else if (coluna == 1 && linha == 1) {
@@ -251,6 +252,7 @@ public class FXMLViewController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
+            atualizarSortegrande();
         }
         //lanchonete
         else if (coluna == 4 && linha == 2) {
@@ -260,6 +262,7 @@ public class FXMLViewController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
+            atualizarSortegrande();
         }
         //negocio de ocasião
         else if (coluna == 0 && linha == 3) {
@@ -274,26 +277,62 @@ public class FXMLViewController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
             atualizarValoresTela();
+            atualizarSortegrande();
         }
         //maratona beneficente
         else if (coluna == 2 && linha == 4) {
-            try {
-                facade.acaoCasaMaratonaBeneficente(0);
-            } catch (SaldoInsuficienteException e) {
-                e.printStackTrace();
-            }
             atualizarValoresTela();
+            atualizarSortegrande();
         }
         //dia da mesada
         if (coluna == 3 && linha == 4) {
             facade.acaoCasaDiaDaMesada();
             this.atualizarValoresTela();
         }
+    }
 
+    public void acaoSeAlguemCaiuNaCasa(int coluna, int linha) {
+        //casa feliz aniversário
+        if (coluna == 3 && linha == 1) {
+            try {
+                facade.acaoCasaFelizAniversario(false);
+                this.atualizarValoresTela();
+                mostrarAlerta("Feliz aniversário", "", "Um jogador está fazendo " +
+                        "aniversário e vc esta dando 100 reais de presente");
+            } catch (SaldoInsuficienteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //maratona beneficente
+        else if (coluna == 2 && linha == 4) {
+            Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
+            ButtonType rolarDado = new ButtonType("rolar o dado");
+
+            dialogoExe.setTitle("Maratona beneficente");
+            dialogoExe.setHeaderText("Um jogador caiu na cara maratona beneficente. " +
+                    "Role o dado para saber o valor da sua doação");
+            dialogoExe.setContentText("");
+            dialogoExe.getButtonTypes().setAll(rolarDado);
+            dialogoExe.showAndWait().ifPresent(b -> {
+                if (b == rolarDado) {
+
+                    try {
+                        int valorDado = facade.rolarDado();
+                        mostrarAlerta("", "", "valor sorteado: " + valorDado + "\nVocê doará " + 100 * valorDado + " reais");
+                        facade.acaoCasaMaratonaBeneficente(valorDado);
+                        atualizarValoresTela();
+                        atualizarSortegrande();
+                    } catch (SaldoInsuficienteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     @FXML
-    public void venderCartaCompra() {
+    public void venderCartaCompra(ActionEvent e) {
         int coluna = peoes.get(facade.getIdJogador()).getColuna();
         int linha = peoes.get(facade.getIdJogador()).getLinha();
 
@@ -378,6 +417,7 @@ public class FXMLViewController implements Initializable {
         });
     }
 
+
     @FXML
     public void acaoCartaCorreio(ActionEvent e) {
 
@@ -406,7 +446,7 @@ public class FXMLViewController implements Initializable {
 
             dialogoExe.setTitle("Compras e entretenimento");
             //dialogoExe.setHeaderText("");
-            //dialogoExe.setContentText("Deseja comprar?");
+            //dialogoExe.setContentText("");
             dialogoExe.getButtonTypes().setAll(btnJuros, btnParte, btnTudo);
             dialogoExe.showAndWait().ifPresent(b -> {
                 if (b == btnJuros) {
@@ -464,7 +504,7 @@ public class FXMLViewController implements Initializable {
                 cartaCompra = aux;
         }
 
-        if(cartaCompra!=null) {
+        if (cartaCompra != null) {
             textContas.setText("Valor Inicial: R$" + cartaCompra.getValorInicial() + "\n" +
                     "Valor de revenda: R$" + cartaCompra.getValorRevenda());
         }
@@ -540,7 +580,8 @@ public class FXMLViewController implements Initializable {
                 while (true) {
 
                     Platform.runLater(() -> {
-                        moverPeao(peoes.get(1), 0);
+                        moverPeao(peoes.get(1), 2);
+                        acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
                     });
                     Thread.sleep(3000);
                 }
