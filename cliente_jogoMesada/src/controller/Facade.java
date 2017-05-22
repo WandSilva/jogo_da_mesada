@@ -14,11 +14,13 @@ public class Facade {
     private ControllerAcaoCasas controllerCasas;
     private ControllerJogador controllerJogador;
     private ControllerCartas controllerCartas;
+    private ControllerComunicacao controllerComunicacao;
 
-    public Facade() {
+    public Facade(String ipServidor) {
         this.controllerCasas = new ControllerAcaoCasas();
         this.controllerJogador = new ControllerJogador();
         this.controllerCartas = new ControllerCartas();
+        this.controllerComunicacao = ControllerComunicacao.getInstance(ipServidor);
     }
 
     //******************************METODOS DO CONTROLLER JOGADOR***********************//
@@ -136,5 +138,12 @@ public class Facade {
     }
     public CartaCompra pegarCartaCompra(){
         return this.controllerCartas.pegarCartaCompra();
+    }
+    
+    //******************************METODOS DO CONTROLLER COMUNICACAO***********************//
+    
+    public String conectarServidor(String nomeUsuario)
+    {
+        return this.controllerComunicacao.conectarCliente(nomeUsuario);
     }
 }

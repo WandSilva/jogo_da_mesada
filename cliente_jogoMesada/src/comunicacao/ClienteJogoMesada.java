@@ -37,16 +37,20 @@ public class ClienteJogoMesada {
      *
      * @author Wanderson e Santana
      */
-    public ClienteJogoMesada() {
-
+    public ClienteJogoMesada(String ipServidor) {
         try {
-            this.conexaoClienteServidor = new Socket(host, portaClienteServidor);
+            this.conexaoClienteServidor = new Socket(ipServidor, portaClienteServidor);
             this.saidaDados = new DataOutputStream(this.conexaoClienteServidor.getOutputStream());
             this.entradaDados = new BufferedReader(new InputStreamReader(this.conexaoClienteServidor.getInputStream()));
 
         } catch (IOException ex) {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ClienteJogoMesada()
+    {
+        
     }
 
     /**
@@ -72,7 +76,7 @@ public class ClienteJogoMesada {
                     conexaoGrupo = new MulticastSocket(portaClienteCliente);
                     conexaoGrupo.joinGroup(enderecoMulticast);
                     new ThreadCliente(conexaoGrupo).start();
-                    return "HOME_PAGE";
+                    return "OK";
 
                 } else {
                     return pacoteDados;

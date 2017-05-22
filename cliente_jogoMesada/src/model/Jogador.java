@@ -1,5 +1,6 @@
 package model;
 
+import comunicacao.ClienteJogoMesada;
 import exception.SaldoInsuficienteException;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class Jogador {
     private String nome;
     private ArrayList<CartaCorreio> cartasCorreio;
     private ArrayList<CartaCompra> cartasCompra;
+    private ClienteJogoMesada cliente;
 
     public Jogador() {
         this.contaBancaria = new ContaBancaria();
@@ -165,6 +167,8 @@ public class Jogador {
         return this.contaBancaria.getDividaMensal();
     }
 
-    
+    public void conectarServidor(String ipServidor){
+        cliente = new ClienteJogoMesada(ipServidor);
+    }
     
 }

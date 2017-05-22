@@ -161,4 +161,9 @@ public class ControllerJogador {
     public ArrayList<CartaCompra> getCartaCompraJogador() {
         return this.jogador.getCartasCompra();
     }
+    
+    public void conectarServidor(String ipServidor)
+    {
+        jogador.conectarServidor(ipServidor);
+    }
 }
