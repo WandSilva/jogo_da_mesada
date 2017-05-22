@@ -49,7 +49,7 @@ public class ServidorJogoMesada {
 
             }
         } catch (IOException ex) {
-            System.out.println("Conexão Finalizada!");
+            ex.printStackTrace();
         }
     }
 
@@ -129,7 +129,7 @@ public class ServidorJogoMesada {
                     } catch (IOException ex) {
                         //System.out.println("Conexão Finalizada!");
 
-                        System.out.println("Conexão Finalizada!");
+                       ex.printStackTrace();
                     }
 
                 }
