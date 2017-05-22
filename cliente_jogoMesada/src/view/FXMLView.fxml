@@ -78,7 +78,7 @@
             <Pane fx:id="casa24" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button layoutX="332.0" layoutY="15.0" mnemonicParsing="false" onAction="#jogar" text="Jogar" />
+      <Button layoutX="336.0" layoutY="15.0" mnemonicParsing="false" onAction="#jogar" text="Jogar" />
       <Label fx:id="labelSaldo" layoutX="765.0" layoutY="12.0" text="Saldo: 0" />
       <Label fx:id="labelDivida" layoutX="763.0" layoutY="28.0" text="Divida: 0" />
       <Button layoutX="506.0" layoutY="14.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />

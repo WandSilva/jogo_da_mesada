@@ -67,6 +67,14 @@ public class ControllerAcaoCasas {
         } else return false;
     }
 
+    /**
+     * evento da casa Bolão de esportes
+     * @param valorDado
+     * @param numeroEscolhido
+     * @param numeroParticipantes
+     * @return
+     * @throws SaldoInsuficienteException
+     */
     public boolean casaBolaoEsportes(int valorDado, int numeroEscolhido, int numeroParticipantes) throws SaldoInsuficienteException {
         jogador.debitar(100);
         double premio = 1000 + numeroParticipantes * 100;
@@ -78,6 +86,11 @@ public class ControllerAcaoCasas {
 
     }
 
+    /**
+     * debita o 100 x valor do dado sorteado na casa Negocio de Ocasião
+     * @param valorDado
+     * @throws SaldoInsuficienteException
+     */
     public void pagarNeogocioOcasiao(int valorDado) throws SaldoInsuficienteException {
         try {
             jogador.debitar(valorDado*100);
@@ -144,6 +157,7 @@ public class ControllerAcaoCasas {
     }
 
     /**
+     * paga a mesada e faz o cálculo dos juros
      * @throws SaldoInsuficienteException
      */
     public void casaDiaDaMesada()  {

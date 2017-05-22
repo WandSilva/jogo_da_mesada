@@ -3,7 +3,7 @@ package view;
 import javafx.scene.shape.Circle;
 
 /**
- * Created by wanderson on 14/05/17.
+ * O peão contém um 'Circle' (objeto que fica visível no tabuleiro) e sua coordenadas (coluna e linha).
  */
 public class Peao {
 
@@ -16,6 +16,10 @@ public class Peao {
         this.coluna = 0;
         this.linha = 0;
     }
+
+    /**
+     * instancia o peão e define o seu tamanho
+     */
     public void initPeao(){
         this.peao = new Circle();
         peao.setRadius(20);

@@ -206,6 +206,9 @@ public class ControllerCartas {
 
     /*----------------------------metodos das cartas compra----------------------------*/
 
+    /**
+     * instancia as cartas Compra e Entretenimento
+     */
     public void criarCartasCompra() {
         CartaCompra cartaCompra1 = new CartaCompra("Smart phone novo", 1500, 2000);
         CartaCompra cartaCompra2 = new CartaCompra("Smart phone usado", 1000, 1200);
