@@ -118,7 +118,7 @@ public class FXMLViewController implements Initializable {
 
     private int dado;
 
-    Facade facade;
+    private Facade facade;
 
 
     @Override
@@ -148,6 +148,11 @@ public class FXMLViewController implements Initializable {
         }
     }
 
+    /**
+     * evento do boão Jogar.
+     * rola o dado, move o peão e verifica a ação da casa.
+     * @param event
+     */
     @FXML
     public void jogar(ActionEvent event) {
         this.dado = facade.rolarDado();
@@ -177,6 +182,36 @@ public class FXMLViewController implements Initializable {
         grid.add(peao.getPeao(), peao.getColuna(), peao.getLinha());
     }
 
+
+    void moverPeaoOutroJogador() {
+        Task t = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                while (true) {
+
+                    Platform.runLater(() -> {
+                        /* no peoes.get() abaixo tem quem passar o id do jogador que
+                        vc quer mover o peão. Para mover, basta colocar o valor que saiu
+                        no dado dele*/
+                        moverPeao(peoes.get(1), 0);
+
+                        /*aqui vc passa o ID do jogador no get para verficar se onde
+                        * ele caiu tem algum evento que outros jogadores precisam interagir*/
+                        acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
+                    });
+                    Thread.sleep(3000);
+                }
+            }
+        };
+        new Thread(t).start();
+    }
+
+    /**
+     * Verifica onde o peão do jogador está e
+     * realiza a ação da casa
+     * @param coluna
+     * @param linha
+     */
     public void realizarAcaoCasa(int coluna, int linha) {
 
         //correio de 1 carta
@@ -316,6 +351,12 @@ public class FXMLViewController implements Initializable {
         }
     }
 
+    /**
+     * verifica onde o peão de outro jogador está
+     * para informar sobre eventos coletivos acionados por ele.
+     * @param coluna
+     * @param linha
+     */
     public void acaoSeAlguemCaiuNaCasa(int coluna, int linha) {
         //casa feliz aniversário
         if (coluna == 3 && linha == 1) {
@@ -355,36 +396,12 @@ public class FXMLViewController implements Initializable {
             });
         }
     }
-
-    @FXML
-    public void venderCartaCompra(ActionEvent e) {
-        int coluna = peoes.get(facade.getIdJogador()).getColuna();
-        int linha = peoes.get(facade.getIdJogador()).getLinha();
-
-        if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
-            facade.venderCartaCompraEntretenimento(comboCompras.getValue());
-            comboCompras.getItems().remove(comboCompras.getValue());
-            this.atualizarValoresTela();
-            textContas.setText("");
-        } else
-            JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não está na casa 'Achou um coprador'!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
-    }
-
     @FXML
     public void fazerEmprestimo() {
         String valor = JOptionPane.showInputDialog("Valor do emprestimo:");
         facade.fazerEmprestimo(Double.parseDouble(valor));
         labelDivida.setText("Dívida: " + facade.verDividaJogador());
         labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
-    }
-
-    private void adicionarImagensTabuleiro() {
-        ArrayList<Pane> casas = organizarCasas();
-
-        for (Pane casa : casas) {
-            BackgroundImage bi = new BackgroundImage(new Image(casa.getId() + ".png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
-            casa.setBackground(new Background(bi));
-        }
     }
 
     @FXML
@@ -396,11 +413,6 @@ public class FXMLViewController implements Initializable {
             atualizarValoresTela();
         } else
             JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não tirou 6 no dado!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public void atualizarSortegrande() {
-        String valor = Double.toString(facade.getValorSorteGrande());
-        this.labelSorteGrande.setText("R$" + valor);
     }
 
     public void comprarCartaEntretenimento() {
@@ -441,7 +453,19 @@ public class FXMLViewController implements Initializable {
             }
         });
     }
+    @FXML
+    public void venderCartaCompra(ActionEvent e) {
+        int coluna = peoes.get(facade.getIdJogador()).getColuna();
+        int linha = peoes.get(facade.getIdJogador()).getLinha();
 
+        if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
+            facade.venderCartaCompraEntretenimento(comboCompras.getValue());
+            comboCompras.getItems().remove(comboCompras.getValue());
+            this.atualizarValoresTela();
+            textContas.setText("");
+        } else
+            JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não está na casa 'Achou um coprador'!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
+    }
 
     @FXML
     public void acaoCartaCorreio(ActionEvent e) {
@@ -502,24 +526,6 @@ public class FXMLViewController implements Initializable {
         } else
             JOptionPane.showMessageDialog(null, "Voce não está na casa 'Dia da mesada'!", "Calma aí amigão", JOptionPane.ERROR_MESSAGE);
     }
-
-    public void atualizarValoresTela() {
-        labelDivida.setText("Dívida: " + facade.verDividaJogador());
-        labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
-    }
-
-    public void mostrarCartasCorreio() {
-        comboCorreio.getItems().clear();
-        for (int i = 0; i < facade.verCartasCorreioJogador().size(); i++)
-            comboCorreio.getItems().addAll(facade.verCartasCorreioJogador().get(i).getTipo());
-    }
-
-    public void mostrarCartasCompra() {
-        comboCompras.getItems().clear();
-        for (int i = 0; i < facade.verCartasCompraJogador().size(); i++)
-            comboCompras.getItems().addAll(facade.verCartasCompraJogador().get(i).getNome());
-    }
-
     @FXML
     public void descricaoCartaCompra(ActionEvent e) {
         CartaCompra cartaCompra = null;
@@ -550,6 +556,27 @@ public class FXMLViewController implements Initializable {
         }
     }
 
+    public void atualizarValoresTela() {
+        labelDivida.setText("Dívida: " + facade.verDividaJogador());
+        labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
+    }
+    public void atualizarSortegrande() {
+        String valor = Double.toString(facade.getValorSorteGrande());
+        this.labelSorteGrande.setText("R$" + valor);
+    }
+
+    public void mostrarCartasCorreio() {
+        comboCorreio.getItems().clear();
+        for (int i = 0; i < facade.verCartasCorreioJogador().size(); i++)
+            comboCorreio.getItems().addAll(facade.verCartasCorreioJogador().get(i).getTipo());
+    }
+
+    public void mostrarCartasCompra() {
+        comboCompras.getItems().clear();
+        for (int i = 0; i < facade.verCartasCompraJogador().size(); i++)
+            comboCompras.getItems().addAll(facade.verCartasCompraJogador().get(i).getNome());
+    }
+
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
         Alert dialogoInfo = new Alert(Alert.AlertType.INFORMATION);
         dialogoInfo.setTitle(titulo);
@@ -558,6 +585,14 @@ public class FXMLViewController implements Initializable {
         dialogoInfo.showAndWait();
     }
 
+    private void adicionarImagensTabuleiro() {
+        ArrayList<Pane> casas = organizarCasas();
+
+        for (Pane casa : casas) {
+            BackgroundImage bi = new BackgroundImage(new Image(casa.getId() + ".png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
+            casa.setBackground(new Background(bi));
+        }
+    }
     private ArrayList<Pane> organizarCasas() {
         ArrayList<Pane> casas = new ArrayList<>();
         casas.add(casa00);
@@ -595,23 +630,5 @@ public class FXMLViewController implements Initializable {
         casas.add(casa64);
 
         return casas;
-    }
-
-
-    void moverPeaoOutroJogador() {
-        Task t = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                while (true) {
-
-                    Platform.runLater(() -> {
-                        moverPeao(peoes.get(1), 0);
-                        acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
-                    });
-                    Thread.sleep(3000);
-                }
-            }
-        };
-        new Thread(t).start();
     }
 }
