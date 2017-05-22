@@ -21,7 +21,7 @@ import model.Sala;
  */
 public class ServidorJogoMesada {
 
-    private static int portaClienteServidor = 22222;
+    private static final int portaClienteServidor = 22222;
 //    private static ArrayList<Jogador> jogadoresCadastrados;
     private static ArrayList<String> jogadoresOnline;
     private static ArrayList<Sala> salasDePartidas;
@@ -97,6 +97,7 @@ public class ServidorJogoMesada {
                             if (!jogadoresOnline.contains(dados[1])) {
                                 Jogador novoJogadorOnline = new Jogador();
                                 novoJogadorOnline.setNome(dados[1]);
+                                jogadoresOnline.add(dados[1]);
                                 String enderecoMulticast = novaSala(novoJogadorOnline);
                                 saidaDadosClienteServidor.writeBytes("100"+";"+enderecoMulticast+"\n");
                             } else {
