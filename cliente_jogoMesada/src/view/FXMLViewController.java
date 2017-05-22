@@ -125,9 +125,7 @@ public class FXMLViewController implements Initializable {
         String ipServidor = JOptionPane.showInputDialog("Informe o IP do Servidor:");
         this.facade = new Facade(ipServidor);
         String nomeUsuario = JOptionPane.showInputDialog("Informe seu nome:");
-        String resposta = facade.conectarServidor(nomeUsuario);
-        System.out.println(resposta);
-        if (resposta == "OK") {
+        if (facade.conectarServidor(nomeUsuario).equals("OK")) {
             facade.iniciarJogador(nomeUsuario);
             this.atualizarValoresTela();
             this.criarPeoes(6);
