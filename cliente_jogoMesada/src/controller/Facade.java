@@ -55,6 +55,9 @@ public class Facade {
     public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
         this.controllerJogador.comprarCartaCompraEntretenimento(cartaCompra);
     }
+    public void comprarCartaCompraEntretenimento(double valor, CartaCompra cartaCompra) throws SaldoInsuficienteException {
+        this.controllerJogador.comprarCartaCompraEntretenimento(valor,cartaCompra);
+    }
     public void venderCartaCompraEntretenimento(String carta){
         this.controllerJogador.venderCartaCompraEntretenimento(carta);
     }
@@ -89,6 +92,9 @@ public class Facade {
         this.controllerCasas.casaMaratonaBeneficente(valorRolarDado);
     }
 
+    public void pagarNeogocioOcasiao(int valorDado) throws SaldoInsuficienteException {
+       this.controllerCasas.pagarNeogocioOcasiao(valorDado);
+    }
     public boolean casaConcursoArrocha(int valorRolarDado) {
         return this.controllerCasas.casaConcursoBandaArrocha(valorRolarDado);
     }

@@ -69,6 +69,10 @@ public class ControllerJogador {
         jogador.debitar(cartaCompra.getValorInicial());
         jogador.addCartaCompraEntretenimento(cartaCompra);
     }
+    public void comprarCartaCompraEntretenimento(double valor, CartaCompra cartaCompra) throws SaldoInsuficienteException {
+        jogador.debitar(valor);
+        jogador.addCartaCompraEntretenimento(cartaCompra);
+    }
 
     public void venderCartaCompraEntretenimento(String nomeCartaCompra) {
 

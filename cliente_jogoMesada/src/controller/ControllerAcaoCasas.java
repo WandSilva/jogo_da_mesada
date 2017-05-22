@@ -78,6 +78,15 @@ public class ControllerAcaoCasas {
 
     }
 
+    public void pagarNeogocioOcasiao(int valorDado) throws SaldoInsuficienteException {
+        try {
+            jogador.debitar(valorDado*100);
+        } catch (SaldoInsuficienteException e) {
+            jogador.fazerEmprestimo((valorDado*100)-jogador.getSaldoJogador());
+            jogador.debitar(valorDado*100);
+        }
+    }
+
     public void casaPremio() {
         jogador.depositar(5000);
     }

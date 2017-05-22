@@ -266,8 +266,33 @@ public class FXMLViewController implements Initializable {
         }
         //negocio de ocasião
         else if (coluna == 0 && linha == 3) {
-            //facade.acaCasaPremio();
-            atualizarValoresTela();
+
+            Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
+            ButtonType btnSim = new ButtonType("Sim");
+            ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            dialogoExe.setTitle("Negócio de ocasião");
+            dialogoExe.setHeaderText("Você pode comprar uma carta ''Compras e Entretenimento''" +
+                    " por 100 x valor sorteado no dado. ");
+            dialogoExe.setContentText("Deseja comprar?");
+            dialogoExe.getButtonTypes().setAll(btnSim);
+            dialogoExe.showAndWait().ifPresent(b -> {
+                if (b == btnSim) {
+                    try {
+                        int valorDado = facade.rolarDado();
+                        CartaCompra cartaCompra = facade.pegarCartaCompra();
+                        String carta = cartaCompra.getNome();
+                        facade.pagarNeogocioOcasiao(valorDado);
+                        facade.comprarCartaCompraEntretenimento(0, cartaCompra);
+                        mostrarAlerta("", "valor sorteado: " + valorDado,  "Você pegou a carta ''"+ carta +"''.\nEla custou "+ 100 * valorDado + " reais");
+                        comboCompras.getItems().add(carta);
+                        mostrarCartasCompra();
+                        atualizarValoresTela();
+                    } catch (SaldoInsuficienteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
         //compras no shopping
         else if (coluna == 0 && linha == 4) {
@@ -580,7 +605,7 @@ public class FXMLViewController implements Initializable {
                 while (true) {
 
                     Platform.runLater(() -> {
-                        moverPeao(peoes.get(1), 2);
+                        moverPeao(peoes.get(1), 0);
                         acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
                     });
                     Thread.sleep(3000);
