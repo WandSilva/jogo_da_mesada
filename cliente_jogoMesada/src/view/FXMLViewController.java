@@ -120,6 +120,7 @@ public class FXMLViewController implements Initializable {
 
     private Facade facade;
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String ipServidor = JOptionPane.showInputDialog("Informe o IP do Servidor:");
@@ -136,7 +137,6 @@ public class FXMLViewController implements Initializable {
             this.mostrarCartasCorreio();
             this.mostrarCartasCompra();
             this.atualizarSortegrande();
-            this.moverPeaoOutroJogador();
         } else {
             boolean nomeExiste = true;
 
@@ -154,12 +154,13 @@ public class FXMLViewController implements Initializable {
                     this.mostrarCartasCorreio();
                     this.mostrarCartasCompra();
                     this.atualizarSortegrande();
-                    this.moverPeaoOutroJogador();
                     nomeExiste = false;
                 }
             }
         }
+        this.moverPeaoOutroJogador();
     }
+
 
     public void criarPeoes(int numeroJogadores) {
         CorPeao cores = new CorPeao();
@@ -209,17 +210,21 @@ public class FXMLViewController implements Initializable {
             @Override
             protected Object call() throws Exception {
                 while (true) {
-
-                    Platform.runLater(() -> {
+                    System.out.println("while");
+                    if (facade.getControle()==true) {
+                        System.out.println("if");
+                        Platform.runLater(() -> {
                         /* no peoes.get() abaixo tem quem passar o id do jogador que
                          vc quer mover o peão. Para mover, basta colocar o valor que saiu
                          no dado dele*/
-                        moverPeao(peoes.get(1), 0);
+                            moverPeao(peoes.get(1), 1);
 
                         /*aqui vc passa o ID do jogador no get para verficar se onde
                          * ele caiu tem algum evento que outros jogadores precisam interagir*/
-                        acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
-                    });
+                            acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
+                        });
+                        facade.setControle(false);
+                    }
                     Thread.sleep(3000);
                 }
             }
@@ -382,7 +387,7 @@ public class FXMLViewController implements Initializable {
             ButtonType rolarDado = new ButtonType("rolar o dado");
 
             dialogoExe.setTitle("Maratona beneficente");
-            dialogoExe.setHeaderText("Um jogador caiu na cara maratona beneficente. "
+            dialogoExe.setHeaderText("Um jogador caiu na casa maratona beneficente. "
                     + "Role o dado para saber o valor da sua doação");
             dialogoExe.setContentText("");
             dialogoExe.getButtonTypes().setAll(rolarDado);
@@ -499,13 +504,13 @@ public class FXMLViewController implements Initializable {
 
         if (linha == 4 && coluna == 3) {
             Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
-            ButtonType btnJuros = new ButtonType("Pagar apenas juros");
-            ButtonType btnParte = new ButtonType("pagar parte da dívida");
-            ButtonType btnTudo = new ButtonType("pagar toda a dívida");
+            ButtonType btnJuros = new ButtonType("apenas juros");
+            ButtonType btnParte = new ButtonType("parte da dívida");
+            ButtonType btnTudo = new ButtonType("toda a dívida");
 
             dialogoExe.setTitle("Compras e entretenimento");
-            //dialogoExe.setHeaderText("");
-            //dialogoExe.setContentText("");
+            dialogoExe.setHeaderText("");
+            dialogoExe.setContentText("Pagar");
             dialogoExe.getButtonTypes().setAll(btnJuros, btnParte, btnTudo);
             dialogoExe.showAndWait().ifPresent(b -> {
                 if (b == btnJuros) {

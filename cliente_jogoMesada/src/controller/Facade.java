@@ -151,4 +151,11 @@ public class Facade {
     {
         this.controllerComunicacao.enviarNotificacao(nomeUsuario);
     }
+
+    public boolean getControle(){
+        return this.controllerComunicacao.getControle();
+    }
+    public void setControle(boolean controle){
+        this.controllerComunicacao.setControle(controle);
+    }
 }

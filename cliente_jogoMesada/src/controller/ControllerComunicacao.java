@@ -16,6 +16,7 @@ public class ControllerComunicacao {
     private static ControllerComunicacao INSTANCE = null;
     private final ClienteJogoMesada cliente;
     private String endIP;
+    private boolean controle;
 
     private ControllerComunicacao(String ip) {
         this.endIP = ip;
@@ -39,4 +40,12 @@ public class ControllerComunicacao {
      {
          cliente.entrouNaSala(nomeUsuario);
      }
+
+    public boolean getControle() {
+        return controle;
+    }
+
+    public void setControle(boolean controle) {
+        this.controle = controle;
+    }
 }
