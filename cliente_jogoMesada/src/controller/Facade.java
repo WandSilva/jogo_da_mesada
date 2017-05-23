@@ -146,4 +146,9 @@ public class Facade {
     {
         return this.controllerComunicacao.conectarCliente(nomeUsuario);
     }
+    
+    public void enviarNotificacao(String nomeUsuario)
+    {
+        this.controllerComunicacao.enviarNotificacao(nomeUsuario);
+    }
 }

@@ -22,21 +22,9 @@ public class ControllerComunicacao {
         cliente = new ClienteJogoMesada(ip);
     }
     
-    private ControllerComunicacao() {
-        cliente = new ClienteJogoMesada();
-    }
-
     public synchronized static ControllerComunicacao getInstance(String ipServidor) {
         if (INSTANCE == null) {
             INSTANCE = new ControllerComunicacao(ipServidor);
-        }
-
-        return INSTANCE;
-    }
-    
-    public synchronized static ControllerComunicacao getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ControllerComunicacao();
         }
 
         return INSTANCE;
@@ -46,4 +34,9 @@ public class ControllerComunicacao {
 
         return cliente.entrar(nomeUsuario);
     }
+     
+     public void enviarNotificacao(String nomeUsuario)
+     {
+         cliente.entrouNaSala(nomeUsuario);
+     }
 }

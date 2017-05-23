@@ -47,11 +47,6 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public ClienteJogoMesada()
-    {
-        
-    }
 
     /**
      *
@@ -163,8 +158,19 @@ public class ClienteJogoMesada {
         }
     }
 
-    public synchronized void minhaJogada(int numDado) {
-        byte dados[] = ("1001" + ";" + ClienteJogoMesada.usuario + ";" + numDado + "\n").getBytes();
+    public synchronized void entrouNaSala(String nomeUsuario)
+    {
+        byte dados[] = ("1002" + ";" + nomeUsuario + " entrou na sala!").getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public synchronized void jogar(int numDado) {
+        byte dados[] = ("1001" + ";" + ClienteJogoMesada.usuario + ";" + numDado).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
         try {
             conexaoGrupo.send(msgPacket);
@@ -184,7 +190,6 @@ public class ClienteJogoMesada {
         public void run() {
             try {
                 while (true) {
-                    Thread.sleep(500);
                     byte dados[] = new byte[1024];
                     DatagramPacket datagrama = new DatagramPacket(dados, dados.length);
                     socketMulticast.receive(datagrama);
@@ -194,11 +199,15 @@ public class ClienteJogoMesada {
                     {
                         String[] dadosRecebidos = new String[3];
                         dadosRecebidos = msg.split(";");
-                        
-                        //Chamar para atualizar dados;
-                        
                     }
                     
+                    else if (msg.startsWith("1002"))
+                    {
+                        String[] dadosRecebidos = new String[2];
+                        dadosRecebidos = msg.split(";");
+                        System.out.println(dadosRecebidos[1]);
+                    }
+                    Thread.sleep(3000);
                 }
             } catch (Exception e) {
             }

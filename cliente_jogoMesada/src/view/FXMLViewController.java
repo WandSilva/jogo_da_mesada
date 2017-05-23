@@ -127,6 +127,7 @@ public class FXMLViewController implements Initializable {
         String nomeUsuario = JOptionPane.showInputDialog("Informe seu nome:");
         if (facade.conectarServidor(nomeUsuario).equals("OK")) {
             facade.iniciarJogador(nomeUsuario);
+            facade.enviarNotificacao(nomeUsuario);
             this.atualizarValoresTela();
             this.criarPeoes(6);
             // this.grid.add(peao.getPeao(), 0, 0);
@@ -135,7 +136,7 @@ public class FXMLViewController implements Initializable {
             this.mostrarCartasCorreio();
             this.mostrarCartasCompra();
             this.atualizarSortegrande();
-//            this.moverPeaoOutroJogador();
+            this.moverPeaoOutroJogador();
         } else {
             boolean nomeExiste = true;
 
@@ -143,6 +144,8 @@ public class FXMLViewController implements Initializable {
                 JOptionPane.showMessageDialog(null, "Usuário já logado. Por favor, escolha outro nome.");
                 nomeUsuario = JOptionPane.showInputDialog("Informe seu nome:");
                 if (facade.conectarServidor(nomeUsuario).equals("OK")) {
+                    facade.iniciarJogador(nomeUsuario);
+                    facade.enviarNotificacao(nomeUsuario);
                     this.atualizarValoresTela();
                     this.criarPeoes(6);
                     // this.grid.add(peao.getPeao(), 0, 0);
@@ -151,11 +154,10 @@ public class FXMLViewController implements Initializable {
                     this.mostrarCartasCorreio();
                     this.mostrarCartasCompra();
                     this.atualizarSortegrande();
-//                    this.moverPeaoOutroJogador();
+                    this.moverPeaoOutroJogador();
                     nomeExiste = false;
                 }
             }
-
         }
     }
 
