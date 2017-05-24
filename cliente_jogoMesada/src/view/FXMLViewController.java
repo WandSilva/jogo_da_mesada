@@ -210,9 +210,7 @@ public class FXMLViewController implements Initializable {
             @Override
             protected Object call() throws Exception {
                 while (true) {
-                    System.out.println("while");
                     if (facade.getControle()==true) {
-                        System.out.println("if");
                         Platform.runLater(() -> {
                         /* no peoes.get() abaixo tem quem passar o id do jogador que
                          vc quer mover o peão. Para mover, basta colocar o valor que saiu
