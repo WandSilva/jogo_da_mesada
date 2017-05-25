@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="313.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.telaInicial.FXMLTelaInicialController">
+   <children>
+      <TextArea fx:id="txtJogadoresConect" editable="false" layoutX="8.0" layoutY="30.0" prefHeight="231.0" prefWidth="200.0" />
+      <Label layoutX="8.0" layoutY="13.0" text="Jogadores conectados:" />
+      <Button layoutX="245.0" layoutY="282.0" mnemonicParsing="false" onAction="#iniciarPartida" text="Iniciar" />
+   </children>
+</AnchorPane>

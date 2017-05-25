@@ -1,4 +1,4 @@
-package view;
+package view.tabuleiro;
 
 import javafx.scene.shape.Circle;
 

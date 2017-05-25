@@ -1,23 +1,16 @@
-package view;/**
+package view.tabuleiro;/**
  * Created by wanderson on 08/05/17.
  */
 
-import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class view extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+public class Tabuleiro extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -27,5 +20,6 @@ public class view extends Application {
         stage.setTitle("Jogo da mesada");
         stage.show();
     }
+
 }
-///home/vinicius/Jogo da Mesada/cliente_jogoMesada/src/view/FXMLView.fxml
+///home/vinicius/Jogo da Mesada/cliente_jogoMesada/src/Tabuleiro/FXMLView.fxml

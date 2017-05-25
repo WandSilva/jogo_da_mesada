@@ -11,16 +11,24 @@ import java.util.ArrayList;
  */
 public class Facade {
 
+    private static Facade INSTANCE = null;
     private ControllerAcaoCasas controllerCasas;
     private ControllerJogador controllerJogador;
     private ControllerCartas controllerCartas;
     private ControllerComunicacao controllerComunicacao;
 
-    public Facade(String ipServidor) {
+    public Facade() {
         this.controllerCasas = new ControllerAcaoCasas();
         this.controllerJogador = new ControllerJogador();
         this.controllerCartas = new ControllerCartas();
-        this.controllerComunicacao = ControllerComunicacao.getInstance(ipServidor);
+        this.controllerComunicacao = ControllerComunicacao.getInstance();
+    }
+
+    public static Facade getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Facade();
+        }
+        return INSTANCE;
     }
 
     //******************************METODOS DO CONTROLLER JOGADOR***********************//
@@ -152,6 +160,9 @@ public class Facade {
         this.controllerComunicacao.enviarNotificacao(nomeUsuario);
     }
 
+    public void setIP(String ip){
+        this.controllerComunicacao.setIP(ip);
+    }
     public boolean getControle(){
         return this.controllerComunicacao.getControle();
     }

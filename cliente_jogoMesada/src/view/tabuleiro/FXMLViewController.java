@@ -1,4 +1,4 @@
-package view;
+package view.tabuleiro;
 
 import controller.Facade;
 import exception.SaldoInsuficienteException;
@@ -123,44 +123,16 @@ public class FXMLViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String ipServidor = JOptionPane.showInputDialog("Informe o IP do Servidor:");
-        this.facade = new Facade(ipServidor);
-        String nomeUsuario = JOptionPane.showInputDialog("Informe seu nome:");
-        if (facade.conectarServidor(nomeUsuario).equals("OK")) {
-            facade.iniciarJogador(nomeUsuario);
-            facade.enviarNotificacao(nomeUsuario);
-            this.atualizarValoresTela();
-            this.criarPeoes(6);
-            // this.grid.add(peao.getPeao(), 0, 0);
-
-            this.adicionarImagensTabuleiro();
-            this.mostrarCartasCorreio();
-            this.mostrarCartasCompra();
-            this.atualizarSortegrande();
-        } else {
-            boolean nomeExiste = true;
-
-            while (nomeExiste) {
-                JOptionPane.showMessageDialog(null, "Usuário já logado. Por favor, escolha outro nome.");
-                nomeUsuario = JOptionPane.showInputDialog("Informe seu nome:");
-                if (facade.conectarServidor(nomeUsuario).equals("OK")) {
-                    facade.iniciarJogador(nomeUsuario);
-                    facade.enviarNotificacao(nomeUsuario);
-                    this.atualizarValoresTela();
-                    this.criarPeoes(6);
-                    // this.grid.add(peao.getPeao(), 0, 0);
-
-                    this.adicionarImagensTabuleiro();
-                    this.mostrarCartasCorreio();
-                    this.mostrarCartasCompra();
-                    this.atualizarSortegrande();
-                    nomeExiste = false;
-                }
-            }
-        }
+        this.facade = Facade.getInstance();
+        this.atualizarValoresTela();
+        this.criarPeoes(6);
+        // this.grid.add(peao.getPeao(), 0, 0);
+        this.adicionarImagensTabuleiro();
+        this.mostrarCartasCorreio();
+        this.mostrarCartasCompra();
+        this.atualizarSortegrande();
         this.moverPeaoOutroJogador();
     }
-
 
     public void criarPeoes(int numeroJogadores) {
         CorPeao cores = new CorPeao();
@@ -210,7 +182,7 @@ public class FXMLViewController implements Initializable {
             @Override
             protected Object call() throws Exception {
                 while (true) {
-                    if (facade.getControle()==true) {
+                    if (facade.getControle() == true) {
                         Platform.runLater(() -> {
                         /* no peoes.get() abaixo tem quem passar o id do jogador que
                          vc quer mover o peão. Para mover, basta colocar o valor que saiu

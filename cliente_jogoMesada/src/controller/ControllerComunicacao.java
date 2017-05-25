@@ -14,18 +14,21 @@ import comunicacao.ClienteJogoMesada;
 public class ControllerComunicacao {
 
     private static ControllerComunicacao INSTANCE = null;
-    private final ClienteJogoMesada cliente;
+    private  ClienteJogoMesada cliente;
     private String endIP;
     private boolean controle;
 
-    private ControllerComunicacao(String ip) {
+    private ControllerComunicacao() {
+    }
+
+    public void setIP(String ip){
         this.endIP = ip;
         cliente = new ClienteJogoMesada(ip);
     }
     
-    public synchronized static ControllerComunicacao getInstance(String ipServidor) {
+    public synchronized static ControllerComunicacao getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new ControllerComunicacao(ipServidor);
+            INSTANCE = new ControllerComunicacao();
         }
 
         return INSTANCE;
