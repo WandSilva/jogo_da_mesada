@@ -48,7 +48,7 @@ public class FXMLTelaInicialController implements Initializable {
                 }
             }
         }
-        
+
     }
 
     @FXML
@@ -57,19 +57,19 @@ public class FXMLTelaInicialController implements Initializable {
 
         try {
             x.start(new Stage());
-            ((Stage)txtJogadoresConect.getScene().getWindow()).close();
+            ((Stage) txtJogadoresConect.getScene().getWindow()).close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void mostraJogadorConectado() {        
+    public void mostraJogadorConectado() {
         ArrayList<String> lista = new ArrayList();
         lista = facade.getUsuariosConectados();
-        String usuarios="";
-        for (int i=0;i<lista.size();i++){
-            usuarios = usuarios+lista.get(i).replace("[","").
-                    replace("]","")+"\n";
+        String usuarios = new String();
+        for (int i = 0; i < lista.size(); i++) {
+            usuarios = usuarios + lista.get(i).replace("[", "").
+                    replace("]", "").replace(" ", "") + "\n";
         }
         txtJogadoresConect.setText(usuarios);
     }

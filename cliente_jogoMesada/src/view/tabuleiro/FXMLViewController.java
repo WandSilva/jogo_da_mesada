@@ -112,6 +112,8 @@ public class FXMLViewController implements Initializable {
     @FXML
     private TextArea textContas;
     @FXML
+    private TextArea txtJogadores;
+    @FXML
     private Label labelSorteGrande;
 
     @FXML
@@ -136,6 +138,7 @@ public class FXMLViewController implements Initializable {
         this.atualizarSortegrande();
         this.moverPeaoOutroJogador();
         this.removerJogadorServidor();
+        this.mostraJogadorConectado();
     }
 
     public void criarPeoes(int numeroJogadores) {
@@ -547,6 +550,16 @@ public class FXMLViewController implements Initializable {
             textCorreio.setText("Carta: " + cartaCorreio.getNome() + "\n\n"
                     + "Valor:" + cartaCorreio.getValor());
         }
+    }
+    public void mostraJogadorConectado() {
+        ArrayList<String> lista = new ArrayList();
+        lista = facade.getUsuariosConectados();
+        String usuarios="";
+        for (int i=0;i<lista.size();i++){
+            usuarios = usuarios + lista.get(i).replace("[", "").
+                    replace("]", "").replace(" ", "") + "\n";
+        }
+        txtJogadores.setText(usuarios);
     }
 
     public void atualizarValoresTela() {
