@@ -171,8 +171,8 @@ public class Facade {
     }
 
     public ArrayList<String> getUsuariosConectados(){
-        //precisa implementar
-        return null;
+        
+        return controllerComunicacao.iniciarPartida();
     }
 
     public static void removerJogadorServidor() {
