@@ -148,9 +148,17 @@ public class ClienteJogoMesada {
 
                     String[] dados = new String[2];
                     dados = pacoteDados.split(";");
+                    
+                    String[] dados2 = new String[6];
+                    dados2 = dados[1].split(",");
+                    
                     ArrayList<String> ordem = new ArrayList();
-                    System.out.println(dados[1]);
-                    ordem.add(dados[1]);
+                    
+                    for (String string : dados2)
+                    {
+                        ordem.add(string);
+                    }
+                    
                     return ordem;
 
                 } else {

@@ -64,13 +64,14 @@ public class FXMLTelaInicialController implements Initializable {
     }
 
     public void mostraJogadorConectado() {        
-        
+        ArrayList<String> lista = new ArrayList();
+        lista = facade.getUsuariosConectados();
         String usuarios = new String();
         String string1, string2 = new String();
-        for (int i=0;i<facade.getUsuariosConectados().size() ;i++){
-            string1 = facade.getUsuariosConectados().get(i).replace('[',' ');
+        for (int i=0;i<lista.size();i++){
+            string1 = lista.get(i).replace('[', ' ');
             string2 = string1.replace(']', ' ');
-            usuarios = usuarios+string2+"\n";
+            usuarios = usuarios+string2+'\n';
         }
         
         txtJogadoresConect.setText(usuarios);

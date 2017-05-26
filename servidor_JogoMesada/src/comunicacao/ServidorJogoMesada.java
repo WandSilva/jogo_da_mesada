@@ -189,6 +189,7 @@ public class ServidorJogoMesada {
 
             for (Jogador jogador1 : sala.getJogadores()) {
 
+                
                 jogadores.add(jogador1.getNome());
             }
 
