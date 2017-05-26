@@ -70,6 +70,5 @@ public class ControllerComunicacao {
 
     public void sairServidor() {
         cliente.sair();
-    }
-
+    }   
 }

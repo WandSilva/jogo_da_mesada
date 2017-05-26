@@ -1,5 +1,6 @@
 package view.telaInicial;
 
+import controller.Facade;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,8 @@ public class Application extends javafx.application.Application {
             @Override
             public void handle(WindowEvent e) {
                 Platform.exit();
+                Facade facade = Facade.getInstance();
+                facade.removerJogadorServidor();
                 System.exit(0);
                 
             }
