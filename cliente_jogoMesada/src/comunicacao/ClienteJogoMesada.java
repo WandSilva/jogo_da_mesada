@@ -31,8 +31,9 @@ public class ClienteJogoMesada {
     private Socket conexaoClienteServidor;
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
-    private static String ultimaJogador = new String();
+    private static String ultimoJogador = new String();
     private static int ultimoDado = 0;
+    private static ArrayList<String> ordemJogadas = new ArrayList();
 
     /**
      *
@@ -137,7 +138,6 @@ public class ClienteJogoMesada {
     }
 
     public synchronized ArrayList<String> iniciarPartida() {
-
         if (conexaoClienteServidor.isConnected()) {
             try {
                 saidaDados.writeBytes("004" + ";" + ClienteJogoMesada.usuario + '\n');
@@ -145,21 +145,57 @@ public class ClienteJogoMesada {
                 String pacoteDados = entradaDados.readLine();
 
                 if (pacoteDados.startsWith("400")) {
+                    String[] dados = new String[2];
+                    dados = pacoteDados.split(";");
+
+                    String[] dados2 = new String[6];
+                    dados2 = dados[1].split(",");
+
+                    ArrayList<String> ordem = new ArrayList();
+
+                    for (String string : dados2) {
+                        ordem.add(string.replace("[", "").replace("]", "").replace(" ", ""));
+                    }
+
+                    ClienteJogoMesada.ordemJogadas = ordem;
+                    return ordem;
+
+                } else {
+                    return new ArrayList<>();
+                }
+
+            } catch (IOException ex) {
+                //System.out.println(ex.toString());
+                return new ArrayList<>();
+            }
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public synchronized ArrayList<String> usuariosConectados() {
+
+        if (conexaoClienteServidor.isConnected()) {
+            try {
+                saidaDados.writeBytes("005" + ";" + ClienteJogoMesada.usuario + '\n');
+
+                String pacoteDados = entradaDados.readLine();
+
+                if (pacoteDados.startsWith("500")) {
 
                     String[] dados = new String[2];
                     dados = pacoteDados.split(";");
-                    
+
                     String[] dados2 = new String[6];
                     dados2 = dados[1].split(",");
-                    
-                    ArrayList<String> ordem = new ArrayList();
-                    
-                    for (String string : dados2)
-                    {
-                        ordem.add(string);
+
+                    ArrayList<String> lista = new ArrayList();
+
+                    for (String string : dados2) {
+                        lista.add(string);
                     }
-                    
-                    return ordem;
+
+                    return lista;
 
                 } else {
                     return new ArrayList<>();
@@ -185,7 +221,7 @@ public class ClienteJogoMesada {
     }
 
     public String getUltimoJogador() {
-        return ultimaJogador;
+        return ultimoJogador;
     }
 
     public int getUltimoDado() {
@@ -222,7 +258,7 @@ public class ClienteJogoMesada {
                         String[] dadosRecebidos = new String[3];
                         dadosRecebidos = msg.split(";");
 
-                        ultimaJogador = dadosRecebidos[1];
+                        ultimoJogador = dadosRecebidos[1];
                         ultimoDado = Integer.parseInt(dadosRecebidos[2]);
                     } else if (msg.startsWith("1002")) {
                         String[] dadosRecebidos = new String[2];

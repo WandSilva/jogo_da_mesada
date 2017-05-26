@@ -177,7 +177,7 @@ public class Facade {
 
     public ArrayList<String> getUsuariosConectados() {
 
-        return controllerComunicacao.iniciarPartida();
+        return controllerComunicacao.usuariosConectados();
     }
 
     public void removerJogadorServidor() {
