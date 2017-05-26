@@ -24,6 +24,7 @@ public class Application extends javafx.application.Application {
             public void handle(WindowEvent e) {
                 Platform.exit();
                 System.exit(0);
+                
             }
         });
         Parent root = FXMLLoader.load(getClass().getResource("FXMLTelaInicial.fxml"));

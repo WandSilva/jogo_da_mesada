@@ -69,7 +69,7 @@ public class FXMLTelaInicialController implements Initializable {
         String usuarios="";
         for (int i=0;i<lista.size();i++){
             usuarios = usuarios+lista.get(i).replace("[","").
-                    replace("]","")+"\n";
+                    replace("]","").replace(" ", "")+"\n";
         }
         txtJogadoresConect.setText(usuarios);
     }
