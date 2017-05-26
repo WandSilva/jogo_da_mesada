@@ -60,7 +60,10 @@ public class FXMLTelaInicialController implements Initializable {
     }
 
     public void mostraJogadorConectado() {
-        txtJogadoresConect.setText(" Colocar aqui a lista de jogadores conectados");
+        String usuarios = null;
+        for (int i=0;i<facade.getUsuariosConectados().size() ;i++)
+            usuarios = usuarios+"\n"+facade.getUsuariosConectados().get(i);
+        txtJogadoresConect.setText(usuarios);
     }
 
 }

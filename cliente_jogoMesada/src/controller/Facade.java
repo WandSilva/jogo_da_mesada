@@ -169,4 +169,8 @@ public class Facade {
     public void setControle(boolean controle){
         this.controllerComunicacao.setControle(controle);
     }
+
+    public ArrayList<String> getUsuariosConectados(){
+        return null;
+    }
 }
