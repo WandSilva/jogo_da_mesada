@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.*;
+import java.util.ArrayList;
 import model.Sala;
 
 /**
@@ -30,6 +31,8 @@ public class ClienteJogoMesada {
     private Socket conexaoClienteServidor;
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
+    private static String ultimaJogador = new String();
+    private static int ultimoDado = 0;
 
     /**
      *
@@ -133,7 +136,7 @@ public class ClienteJogoMesada {
         }
     }
 
-    public synchronized String iniciarPartida() {
+    public synchronized ArrayList<String> iniciarPartida() {
 
         if (conexaoClienteServidor.isConnected()) {
             try {
@@ -143,24 +146,27 @@ public class ClienteJogoMesada {
 
                 if (pacoteDados.startsWith("400")) {
 
-                    return "";
+                    String[] dados = new String[2];
+                    dados = pacoteDados.split(";");
+                    ArrayList<String> ordem = new ArrayList();
+                    ordem.add(dados[1]);
+                    return ordem;
 
                 } else {
-                    return pacoteDados;
+                    return new ArrayList<>();
                 }
 
             } catch (IOException ex) {
                 //System.out.println(ex.toString());
-                return "Falha na conexão com o servidor!";
+                return new ArrayList<>();
             }
         } else {
-            return "ERRO! Tente novamente...";
+            return new ArrayList<>();
         }
     }
 
-    public synchronized void entrouNaSala(String nomeUsuario)
-    {
-        byte dados[] = ("1002" + ";" + nomeUsuario + " entrou na sala!").getBytes();
+    public synchronized void jogar(String nomeUsuario, int numDado) {
+        byte dados[] = ("1001" + ";" + nomeUsuario + ";" + numDado).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
         try {
             conexaoGrupo.send(msgPacket);
@@ -168,9 +174,17 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public synchronized void jogar(int numDado) {
-        byte dados[] = ("1001" + ";" + ClienteJogoMesada.usuario + ";" + numDado).getBytes();
+
+    public String getUltimoJogador() {
+        return ultimaJogador;
+    }
+
+    public int getUltimoDado() {
+        return ultimoDado;
+    }
+
+    public synchronized void entrouNaSala(String nomeUsuario) {
+        byte dados[] = ("1002" + ";" + nomeUsuario + " entrou na sala!").getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
         try {
             conexaoGrupo.send(msgPacket);
@@ -194,15 +208,14 @@ public class ClienteJogoMesada {
                     DatagramPacket datagrama = new DatagramPacket(dados, dados.length);
                     socketMulticast.receive(datagrama);
                     String msg = new String(datagrama.getData());
-                    
-                    if (msg.startsWith("1001"))
-                    {
+
+                    if (msg.startsWith("1001")) {
                         String[] dadosRecebidos = new String[3];
                         dadosRecebidos = msg.split(";");
-                    }
-                    
-                    else if (msg.startsWith("1002"))
-                    {
+
+                        ultimaJogador = dadosRecebidos[1];
+                        ultimoDado = Integer.parseInt(dadosRecebidos[2]);
+                    } else if (msg.startsWith("1002")) {
                         String[] dadosRecebidos = new String[2];
                         dadosRecebidos = msg.split(";");
                         System.out.println(dadosRecebidos[1]);

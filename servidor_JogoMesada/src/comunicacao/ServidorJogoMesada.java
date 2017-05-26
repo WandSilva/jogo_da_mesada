@@ -59,7 +59,7 @@ public class ServidorJogoMesada {
         //private final MulticastSocket servidorGrupo;
         private final BufferedReader entradaDadosClienteServidor;
         private final DataOutputStream saidaDadosClienteServidor;
-        private ArrayList<Jogador> array = new ArrayList<>();
+        private ArrayList<Jogador> jogadores = new ArrayList<>();
 
         public ThreadServidor(Socket conexaoClienteServidor) throws IOException {
             this.conexaoClienteServidor = conexaoClienteServidor;
@@ -121,15 +121,29 @@ public class ServidorJogoMesada {
                             Sala sala = buscarSala(jogador);
                             if (!sala.isJogando()) {
                                 sala.ocuparSala();
-                                iniciarPartida(sala);
-                                saidaDadosClienteServidor.writeBytes("400\n");
+                                if (sala.getJogadores().size() > 1) {
+                                    ArrayList<String> ordemJogada = new ArrayList<>();
+                                    ordemJogada = listaJogadores(sala);
+                                    saidaDadosClienteServidor.writeBytes("400" + ";" + ordemJogada.toString() + "\n");
+                                } else {
+                                    saidaDadosClienteServidor.writeBytes("ApenasUmJogador\n");
+                                }
+
                             }
+                            saidaDadosClienteServidor.writeBytes("Erro");
+                        } else if (pacoteDados.startsWith("005")) {
+                            String[] dados = new String[2];
+                            dados = pacoteDados.split(";");
+                            Jogador jogador = new Jogador();
+                            jogador.setNome(dados[1]);
+                            Sala sala = buscarSala(jogador);
+
                         }
 
                     } catch (IOException ex) {
                         //System.out.println("Conexão Finalizada!");
 
-                       ex.printStackTrace();
+                        ex.printStackTrace();
                     }
 
                 }
@@ -155,12 +169,12 @@ public class ServidorJogoMesada {
                         sala.addJogador(novoJogadorOnline);
                         int numero = salasDePartidas.size();
                         return "235.0.0." + numero;
-                    }   
+                    }
                 }
-                        Sala novaSala = new Sala(novoJogadorOnline);
-                        salasDePartidas.add(novaSala);
-                        int numero = salasDePartidas.size();
-                        return "235.0.0." + numero;
+                Sala novaSala = new Sala(novoJogadorOnline);
+                salasDePartidas.add(novaSala);
+                int numero = salasDePartidas.size();
+                return "235.0.0." + numero;
             }
         }
 
@@ -177,16 +191,24 @@ public class ServidorJogoMesada {
 
         }
 
-        private synchronized void iniciarPartida(Sala sala) {
+        private synchronized ArrayList<String> listaJogadores(Sala sala) {
 
+            ArrayList<String> jogadores = new ArrayList<>();
+
+            for (Jogador jogador1 : sala.getJogadores()) {
+
+                jogadores.add(jogador1.getNome());
+            }
+
+            return jogadores;
         }
 
         private synchronized Sala buscarSala(Jogador jogador) {
             for (Sala sala : salasDePartidas) {
                 if (sala != null) {
-                    array = sala.getJogadores();
-                    for (Jogador array1 : array) {
-                        if (array1.equals(jogador)) {
+                    jogadores = sala.getJogadores();
+                    for (Jogador jogadorProcurado : jogadores) {
+                        if (jogadorProcurado.equals(jogador)) {
                             return sala;
                         }
                     }
