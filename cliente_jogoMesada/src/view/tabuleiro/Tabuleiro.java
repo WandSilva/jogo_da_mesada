@@ -19,7 +19,7 @@ public class Tabuleiro extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;
-        Parent root = FXMLLoader.load(getClass().getResource("/view/tabuleiro/FXMLView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Jogo da mesada");
@@ -30,4 +30,3 @@ public class Tabuleiro extends Application {
         return stage;
     }
 }
-///home/vinicius/Jogo da Mesada/cliente_jogoMesada/src/Tabuleiro/FXMLView.fxml

@@ -16,7 +16,7 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/telaInicial/FXMLTelaInicial.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLTelaInicial.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Jogo da mesada");

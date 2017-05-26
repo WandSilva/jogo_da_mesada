@@ -10,6 +10,7 @@ import view.tabuleiro.Tabuleiro;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -31,6 +32,7 @@ public class FXMLTelaInicialController implements Initializable {
         if (facade.conectarServidor(nomeUsuario).equals("OK")) {
             facade.iniciarJogador(nomeUsuario);
             facade.enviarNotificacao(nomeUsuario);
+            mostraJogadorConectado();
 
         } else {
             boolean nomeExiste = true;
@@ -42,9 +44,11 @@ public class FXMLTelaInicialController implements Initializable {
                     facade.iniciarJogador(nomeUsuario);
                     facade.enviarNotificacao(nomeUsuario);
                     nomeExiste = false;
+                    mostraJogadorConectado();
                 }
             }
         }
+        
     }
 
     @FXML
@@ -59,10 +63,16 @@ public class FXMLTelaInicialController implements Initializable {
         }
     }
 
-    public void mostraJogadorConectado() {
-        String usuarios = null;
-        for (int i=0;i<facade.getUsuariosConectados().size() ;i++)
-            usuarios = usuarios+"\n"+facade.getUsuariosConectados().get(i);
+    public void mostraJogadorConectado() {        
+        
+        String usuarios = new String();
+        String string1, string2 = new String();
+        for (int i=0;i<facade.getUsuariosConectados().size() ;i++){
+            string1 = facade.getUsuariosConectados().get(i).replace('[',' ');
+            string2 = string1.replace(']', ' ');
+            usuarios = usuarios+string2+"\n";
+        }
+        
         txtJogadoresConect.setText(usuarios);
     }
 
