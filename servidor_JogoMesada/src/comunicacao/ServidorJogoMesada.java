@@ -119,17 +119,28 @@ public class ServidorJogoMesada {
                             Jogador jogador = new Jogador();
                             jogador.setNome(dados[1]);
                             Sala sala = buscarSala(jogador);
-                            ArrayList<String> ordemJogada = new ArrayList<>();
-                            ordemJogada = listaJogadores(sala);
-                            System.out.println(ordemJogada);
-                            saidaDadosClienteServidor.writeBytes("400" + ";" + ordemJogada + "\n");
+
+                            if (sala.getNumeroJogadores() > 1) {
+                                sala.ocuparSala();
+                                ArrayList<String> ordemJogada = new ArrayList<>();
+                                ordemJogada = listaJogadores(sala);
+
+                                saidaDadosClienteServidor.writeBytes("400" + ";" + ordemJogada + "\n");
+
+                            } else {
+                                saidaDadosClienteServidor.writeBytes("ApenasUmJogador");
+                            }
+
                         } else if (pacoteDados.startsWith("005")) {
                             String[] dados = new String[2];
                             dados = pacoteDados.split(";");
                             Jogador jogador = new Jogador();
                             jogador.setNome(dados[1]);
                             Sala sala = buscarSala(jogador);
-
+                            ArrayList<String> ordemJogada = new ArrayList<>();
+                            ordemJogada = listaJogadores(sala);
+                            System.out.println(ordemJogada);
+                            saidaDadosClienteServidor.writeBytes("500" + ";" + ordemJogada + "\n");
                         }
 
                     } catch (IOException ex) {
@@ -137,7 +148,6 @@ public class ServidorJogoMesada {
 
                         ex.printStackTrace();
                     }
-
                 }
             }
 
@@ -189,7 +199,6 @@ public class ServidorJogoMesada {
 
             for (Jogador jogador1 : sala.getJogadores()) {
 
-                
                 jogadores.add(jogador1.getNome());
             }
 
