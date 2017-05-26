@@ -32,7 +32,6 @@ public class Facade {
     }
 
     //******************************METODOS DO CONTROLLER JOGADOR***********************//
-
     public void iniciarJogador(String nome) {
         controllerJogador.iniciarJogador(nome);
     }
@@ -44,9 +43,11 @@ public class Facade {
     public void pagarJuros() throws SaldoInsuficienteException {
         this.controllerJogador.pagarJuros();
     }
+
     public void pagarDividaTotal() throws SaldoInsuficienteException {
         this.controllerJogador.pagarDividaTotal();
     }
+
     public void pagarDividaParcial(double valor) throws SaldoInsuficienteException {
         this.controllerJogador.pagarDividaParcial(valor);
     }
@@ -58,17 +59,20 @@ public class Facade {
     public void receberCartaCorreio(CartaCorreio cartaCorreio) {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
-    public int getIdJogador(){
+
+    public int getIdJogador() {
         return this.controllerJogador.getIdJogador();
     }
 
     public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
         this.controllerJogador.comprarCartaCompraEntretenimento(cartaCompra);
     }
+
     public void comprarCartaCompraEntretenimento(double valor, CartaCompra cartaCompra) throws SaldoInsuficienteException {
-        this.controllerJogador.comprarCartaCompraEntretenimento(valor,cartaCompra);
+        this.controllerJogador.comprarCartaCompraEntretenimento(valor, cartaCompra);
     }
-    public void venderCartaCompraEntretenimento(String carta){
+
+    public void venderCartaCompraEntretenimento(String carta) {
         this.controllerJogador.venderCartaCompraEntretenimento(carta);
     }
 
@@ -80,16 +84,15 @@ public class Facade {
         return controllerJogador.verSaldoJogador();
     }
 
-    public ArrayList<CartaCorreio> verCartasCorreioJogador(){
+    public ArrayList<CartaCorreio> verCartasCorreioJogador() {
         return this.controllerJogador.getCartasCorreioJogador();
     }
-    public ArrayList<CartaCompra> verCartasCompraJogador(){
+
+    public ArrayList<CartaCompra> verCartasCompraJogador() {
         return controllerJogador.getCartaCompraJogador();
     }
 
-
     //******************************METODOS DO CONTROLLER CASAS***********************//
-
     public void acaCasaPremio() {
         this.controllerCasas.casaPremio();
     }
@@ -103,8 +106,9 @@ public class Facade {
     }
 
     public void pagarNeogocioOcasiao(int valorDado) throws SaldoInsuficienteException {
-       this.controllerCasas.pagarNeogocioOcasiao(valorDado);
+        this.controllerCasas.pagarNeogocioOcasiao(valorDado);
     }
+
     public boolean casaConcursoArrocha(int valorRolarDado) {
         return this.controllerCasas.casaConcursoBandaArrocha(valorRolarDado);
     }
@@ -133,49 +137,50 @@ public class Facade {
         this.controllerCasas.casaDiaDaMesada();
     }
 
-    public double getValorSorteGrande(){
+    public double getValorSorteGrande() {
         return this.controllerCasas.getValorSorteGrande();
     }
 
     //******************************METODOS DO CONTROLLER CARTA***********************//
     public void acaoCartas(boolean pegouCarta, String tipoCarta) throws SaldoInsuficienteException {
-        this.controllerCartas.acaoCartas(pegouCarta,tipoCarta);
+        this.controllerCartas.acaoCartas(pegouCarta, tipoCarta);
     }
+
     public CartaCorreio pegarCartaCorreio() {
         return this.controllerCartas.pegarCartaCorreio();
     }
-    public CartaCompra pegarCartaCompra(){
+
+    public CartaCompra pegarCartaCompra() {
         return this.controllerCartas.pegarCartaCompra();
     }
-    
+
     //******************************METODOS DO CONTROLLER COMUNICACAO***********************//
-    
-    public String conectarServidor(String nomeUsuario)
-    {
+    public String conectarServidor(String nomeUsuario) {
         return this.controllerComunicacao.conectarCliente(nomeUsuario);
     }
-    
-    public void enviarNotificacao(String nomeUsuario)
-    {
+
+    public void enviarNotificacao(String nomeUsuario) {
         this.controllerComunicacao.enviarNotificacao(nomeUsuario);
     }
 
-    public void setIP(String ip){
+    public void setIP(String ip) {
         this.controllerComunicacao.setIP(ip);
     }
-    public boolean getControle(){
+
+    public boolean getControle() {
         return this.controllerComunicacao.getControle();
     }
-    public void setControle(boolean controle){
+
+    public void setControle(boolean controle) {
         this.controllerComunicacao.setControle(controle);
     }
 
-    public ArrayList<String> getUsuariosConectados(){
-        
-        return controllerComunicacao.iniciarPartida();
+    public ArrayList<String> getUsuariosConectados() {
+
+        return controllerComunicacao.usuariosConectados();
     }
 
-    public static void removerJogadorServidor() {
-        //precisa implementar
+    public void removerJogadorServidor() {
+        controllerComunicacao.sairServidor();
     }
 }

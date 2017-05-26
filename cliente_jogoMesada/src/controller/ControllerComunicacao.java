@@ -60,8 +60,8 @@ public class ControllerComunicacao {
         return controle;
     }
 
-    public ArrayList<String> iniciarPartida() {
-        return cliente.iniciarPartida();
+    public ArrayList<String> usuariosConectados() {
+        return cliente.usuariosConectados();
     }
 
     public void setControle(boolean controle) {
@@ -70,6 +70,5 @@ public class ControllerComunicacao {
 
     public void sairServidor() {
         cliente.sair();
-    }
-
+    }   
 }

@@ -667,7 +667,8 @@ public class FXMLViewController implements Initializable {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
-                Facade.removerJogadorServidor();
+                Facade facade = Facade.getInstance(); 
+                facade.removerJogadorServidor();
                 Platform.exit();
                 System.exit(0);
             }
