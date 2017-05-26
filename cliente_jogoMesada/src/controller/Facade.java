@@ -171,6 +171,11 @@ public class Facade {
     }
 
     public ArrayList<String> getUsuariosConectados(){
+        //precisa implementar
         return null;
+    }
+
+    public static void removerJogadorServidor() {
+        //precisa implementar
     }
 }

@@ -5,12 +5,15 @@ import exception.SaldoInsuficienteException;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.CartaCompra;
 import model.CartaCorreio;
 
@@ -132,6 +135,7 @@ public class FXMLViewController implements Initializable {
         this.mostrarCartasCompra();
         this.atualizarSortegrande();
         this.moverPeaoOutroJogador();
+        this.removerJogadorServidor();
     }
 
     public void criarPeoes(int numeroJogadores) {
@@ -584,6 +588,18 @@ public class FXMLViewController implements Initializable {
             BackgroundImage bi = new BackgroundImage(new Image(casa.getId() + ".png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
             casa.setBackground(new Background(bi));
         }
+    }
+
+    public void removerJogadorServidor(){
+        Stage stage = Tabuleiro.getStage();
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Facade.removerJogadorServidor();
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
     private ArrayList<Pane> organizarCasas() {

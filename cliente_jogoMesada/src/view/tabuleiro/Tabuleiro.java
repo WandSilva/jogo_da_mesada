@@ -15,15 +15,10 @@ import java.io.IOException;
 
 public class Tabuleiro extends Application {
 
+    private static Stage stage;
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent e) {
-                Platform.exit();
-                System.exit(0);
-            }
-        });
+        this.stage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("/view/tabuleiro/FXMLView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -31,5 +26,8 @@ public class Tabuleiro extends Application {
         stage.show();
     }
 
+    public static Stage getStage() {
+        return stage;
+    }
 }
 ///home/vinicius/Jogo da Mesada/cliente_jogoMesada/src/Tabuleiro/FXMLView.fxml
