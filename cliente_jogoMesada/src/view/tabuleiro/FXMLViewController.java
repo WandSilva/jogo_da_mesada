@@ -192,12 +192,13 @@ public class FXMLViewController implements Initializable {
             peao.setColuna(dado);
         } else {
             peao.setColuna(peao.getColuna() + dado);
+            if (peao.getColuna() > 6) {
+                peao.setColuna(dado - (7 - ((peao.getColuna() - dado))));
+                peao.setLinha(peao.getLinha() + 1);
+            }
             if (peao.getLinha() > 3 && peao.getColuna() > 2) {
                 peao.setLinha(4);
                 peao.setColuna(3);
-            } else if (peao.getColuna() > 6) {
-                peao.setColuna(dado - (7 - ((peao.getColuna() - dado))));
-                peao.setLinha(peao.getLinha() + 1);
             }
         }
         grid.getChildren().remove(peao.getPeao());
@@ -467,31 +468,88 @@ public class FXMLViewController implements Initializable {
 
     @FXML
     public void venderCartaCompra(ActionEvent e) {
-        int coluna = peoes.get(facade.getIdJogador()).getColuna();
-        int linha = peoes.get(facade.getIdJogador()).getLinha();
+        if (comboCompras.getValue() != null) {
+            int coluna = peoes.get(facade.getIdJogador()).getColuna();
+            int linha = peoes.get(facade.getIdJogador()).getLinha();
 
-        if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
-            facade.venderCartaCompraEntretenimento(comboCompras.getValue());
-            comboCompras.getItems().remove(comboCompras.getValue());
-            this.atualizarValoresTela();
-            textContas.setText("");
-        } else {
-            JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não está na casa 'Achou um coprador'!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
+            if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
+                facade.venderCartaCompraEntretenimento(comboCompras.getValue());
+                comboCompras.getItems().remove(comboCompras.getValue());
+                this.atualizarValoresTela();
+                textContas.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não está na casa 'Achou um coprador'!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     @FXML
     public void acaoCartaCorreio(ActionEvent e) {
-
-        try {
-            facade.acaoCartas(true, comboCorreio.getValue());
-            comboCorreio.getItems().remove(comboCorreio.getValue());
-            textCorreio.setText("");
-            this.atualizarValoresTela();
-            this.atualizarSortegrande();
-        } catch (SaldoInsuficienteException e1) {
-            e1.printStackTrace();
+        if(comboCorreio.getValue() != null) {
+            if (comboCorreio.getValue().equals("va para frente agora")) {
+                this.acaoVaParaFrenteAgora();
+                comboCorreio.getItems().remove(comboCorreio.getValue());
+            } else {
+                try {
+                    facade.acaoCartas(true, comboCorreio.getValue());
+                    comboCorreio.getItems().remove(comboCorreio.getValue());
+                    textCorreio.setText("");
+                    this.atualizarValoresTela();
+                    this.atualizarSortegrande();
+                } catch (SaldoInsuficienteException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
+    }
+
+    private void acaoVaParaFrenteAgora() {
+        Peao peao = peoes.get(facade.getIdJogador());
+        int linha = peao.getLinha();
+        int coluna = peao.getColuna();
+
+        ChoiceDialog dialogoRegiao = new ChoiceDialog("Compras e entretenimento", "Achou um comprador");
+        dialogoRegiao.setTitle("Va para frente agora");
+        dialogoRegiao.setHeaderText("Escolha seu destino");
+        dialogoRegiao.setContentText("Destino:");
+        dialogoRegiao.showAndWait().ifPresent(r -> {
+            if (r == "Compras e entretenimento") {
+
+                if (((coluna == 1) && (linha == 0)) ||
+                        ((coluna == 1) && (linha == 3))) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 3);
+                } else if (((coluna == 3) && (linha == 0)) ||
+                        ((coluna == 4) && (linha == 1)) ||
+                        ((coluna == 3) && (linha == 3))) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 1);
+                } else if ((coluna == 5) && (linha == 0)) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 7);
+                } else if ((coluna == 2) && (linha == 2)) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 9);
+                } else if ((coluna == 5) && (linha == 2)) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 6);
+                } else
+                    JOptionPane.showMessageDialog(null, "Voce não está na casa ''Correios''!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
+                ;
+            } else if (r == "Achou um comprador") {
+                if ((coluna == 1) && (linha == 0)) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 8);
+                } else if (((coluna == 3) && (linha == 0)) ||
+                        ((coluna == 4) && (linha == 1))) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 6);
+                } else if (((coluna == 5) && (linha == 0)) ||
+                        ((coluna == 5) && (linha == 2))) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 4);
+                } else if (((coluna == 2) && (linha == 2)) ||
+                        (((coluna == 1) && (linha == 3)))) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 1);
+                } else if ((coluna == 3) && (linha == 3)) {
+                    this.moverPeao(peoes.get(facade.getIdJogador()), 2);
+                } else
+                    JOptionPane.showMessageDialog(null, "Voce não está na casa ''Correios''!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
+                ;
+            }
+        });
     }
 
     @FXML
