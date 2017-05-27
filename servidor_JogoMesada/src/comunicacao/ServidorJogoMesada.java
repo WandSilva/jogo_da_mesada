@@ -139,7 +139,7 @@ public class ServidorJogoMesada {
                             Sala sala = buscarSala(jogador);
                             ArrayList<String> ordemJogada = new ArrayList<>();
                             ordemJogada = listaJogadores(sala);
-                            System.out.println(ordemJogada);
+                            //System.out.println(ordemJogada);
                             saidaDadosClienteServidor.writeBytes("500" + ";" + ordemJogada + "\n");
                         }
 
