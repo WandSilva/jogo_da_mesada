@@ -78,21 +78,22 @@
             <Pane fx:id="casa24" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button layoutX="222.0" layoutY="583.0" mnemonicParsing="false" onAction="#jogar" text="Jogar" />
+      <Button fx:id="botaoJogar" layoutX="222.0" layoutY="583.0" mnemonicParsing="false" onAction="#jogar" text="Jogar" />
       <Label fx:id="labelSaldo" layoutX="651.0" layoutY="582.0" text="Saldo: 0" />
       <Label fx:id="labelDivida" layoutX="649.0" layoutY="597.0" text="Divida: 0" />
-      <Button layoutX="392.0" layoutY="583.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
+      <Button fx:id="botaoEmprestimo" layoutX="392.0" layoutY="583.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
       <ComboBox fx:id="comboCorreio" layoutX="6.0" layoutY="32.0" onAction="#descricaoCartaCorreio" prefHeight="25.0" prefWidth="216.0" />
       <TextArea fx:id="textCorreio" editable="false" layoutX="6.0" layoutY="56.0" prefHeight="88.0" prefWidth="216.0" wrapText="true" />
       <TextArea fx:id="textContas" editable="false" layoutX="7.0" layoutY="250.0" prefHeight="55.0" prefWidth="216.0" wrapText="true" />
       <ComboBox fx:id="comboCompras" layoutX="7.0" layoutY="226.0" onAction="#descricaoCartaCompra" prefHeight="25.0" prefWidth="216.0" />
       <Label layoutX="3.0" layoutY="14.0" text="Cartas correio" />
       <Label layoutX="7.0" layoutY="211.0" text="Cartas conta" />
-      <Button layoutX="280.0" layoutY="583.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
-      <Button layoutX="7.0" layoutY="307.0" mnemonicParsing="false" onAction="#venderCartaCompra" text="Vender" />
-      <Button layoutX="537.0" layoutY="583.0" mnemonicParsing="false" onAction="#pagarDivida" text="Pagar divida" />
-      <Button layoutX="5.0" layoutY="145.0" mnemonicParsing="false" onAction="#acaoCartaCorreio" text="Açao da carta" />
+      <Button fx:id="botaoSorGrande" layoutX="280.0" layoutY="583.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
+      <Button fx:id="botaoVenderCarta" layoutX="7.0" layoutY="307.0" mnemonicParsing="false" onAction="#venderCartaCompra" text="Vender" />
+      <Button fx:id="botaoPagarDivida" layoutX="537.0" layoutY="583.0" mnemonicParsing="false" onAction="#pagarDivida" text="Pagar divida" />
+      <Button fx:id="botaoAcaoCarta" layoutX="5.0" layoutY="145.0" mnemonicParsing="false" onAction="#acaoCartaCorreio" text="Açao da carta" />
       <TextArea fx:id="txtJogadores" editable="false" layoutX="8.0" layoutY="390.0" prefHeight="179.0" prefWidth="200.0" />
       <Label layoutX="7.0" layoutY="372.0" text="Jogadores" />
+      <Button layoutX="28.0" layoutY="585.0" mnemonicParsing="false" onAction="#TESTE" text="Teste" />
    </children>
 </AnchorPane>

@@ -119,12 +119,25 @@ public class FXMLViewController implements Initializable {
     @FXML
     private Label labelSorteGrande;
 
+    //botões
     @FXML
-    private Label label100;
+    private Button botaoJogar;
+    @FXML
+    private Button botaoPagarDivida;
+    @FXML
+    private Button botaoSorGrande;
+    @FXML
+    private Button botaoEmprestimo;
+    @FXML
+    private Button botaoVenderCarta;
+    @FXML
+    private Button botaoAcaoCarta;
 
     private ArrayList<Peao> peoes = new ArrayList<>();
 
     private int dado;
+
+    private int teste=1;
 
     private Facade facade;
 
@@ -135,11 +148,11 @@ public class FXMLViewController implements Initializable {
         this.facade = Facade.getInstance();
         ordemJogadas = this.facade.iniciarPartida();
         this.facade.enviarOrdemJogada(ordemJogadas);
-        try {
+        /*try {
             sleep(1000);
         } catch (InterruptedException ex) {
             Logger.getLogger(FXMLViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
 
         this.atualizarValoresTela();
         this.criarPeoes(this.facade.getUsuariosConectados().size());
@@ -148,12 +161,16 @@ public class FXMLViewController implements Initializable {
         this.mostrarCartasCorreio();
         this.mostrarCartasCompra();
         this.atualizarSortegrande();
+        this.moverPeaoOutroJogador();
+        this.removerJogadorServidor();
+        this.mostraJogadorConectado();
+    }
 
-        
-        
-        //this.moverPeaoOutroJogador();
-        //this.removerJogadorServidor();
-        //this.mostraJogadorConectado();
+    @FXML
+    public void TESTE(){
+        if(teste ==1)
+            teste =0;
+        else teste =1;
     }
 
     public void criarPeoes(int numeroJogadores) {
@@ -224,6 +241,12 @@ public class FXMLViewController implements Initializable {
                         facade.setControle(false);
                     }
                     Thread.sleep(3000);
+                    if(teste ==1){
+                        habilitarBotoes();
+                    }
+                    if(teste==0){
+                        desabilitarBotoes();
+                    }
                 }
             }
         };
@@ -663,6 +686,23 @@ public class FXMLViewController implements Initializable {
         for (int i = 0; i < facade.verCartasCompraJogador().size(); i++) {
             comboCompras.getItems().addAll(facade.verCartasCompraJogador().get(i).getNome());
         }
+    }
+
+    public void habilitarBotoes(){
+        this.botaoAcaoCarta.setDisable(true);
+        this.botaoEmprestimo.setDisable(true);
+        this.botaoJogar.setDisable(true);
+        this.botaoPagarDivida.setDisable(true);
+        this.botaoSorGrande.setDisable(true);
+        this.botaoVenderCarta.setDisable(true);
+    }
+    public void desabilitarBotoes(){
+        this.botaoAcaoCarta.setDisable(false);
+        this.botaoEmprestimo.setDisable(false);
+        this.botaoJogar.setDisable(false);
+        this.botaoPagarDivida.setDisable(false);
+        this.botaoSorGrande.setDisable(false);
+        this.botaoVenderCarta.setDisable(false);
     }
 
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
