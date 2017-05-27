@@ -2,7 +2,9 @@ package view.tabuleiro;
 
 import controller.Facade;
 import exception.SaldoInsuficienteException;
+
 import static java.lang.Thread.sleep;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -137,7 +139,7 @@ public class FXMLViewController implements Initializable {
 
     private int dado;
 
-    private int teste=1;
+    private int teste = 1;
 
     private Facade facade;
 
@@ -167,10 +169,10 @@ public class FXMLViewController implements Initializable {
     }
 
     @FXML
-    public void TESTE(){
-        if(teste ==1)
-            teste =0;
-        else teste =1;
+    public void TESTE() {
+        if (teste == 1)
+            teste = 0;
+        else teste = 1;
     }
 
     public void criarPeoes(int numeroJogadores) {
@@ -193,13 +195,8 @@ public class FXMLViewController implements Initializable {
         this.dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
 
-        for (int i = 0 ; i < ordemJogadas.size();i++) {
-            String string = ordemJogadas.get(i);
-            if (string.equals(facade.getNome())) {
-                this.moverPeao(peoes.get(i), dado);
-                this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
-            }
-        }
+        this.moverPeao(peoes.get(facade.getIdJogador()), dado);
+        this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
     }
 
     public void moverPeao(Peao peao, int dado) {
@@ -241,10 +238,10 @@ public class FXMLViewController implements Initializable {
                         facade.setControle(false);
                     }
                     Thread.sleep(3000);
-                    if(teste ==1){
+                    if (teste == 1) {
                         habilitarBotoes();
                     }
-                    if(teste==0){
+                    if (teste == 0) {
                         desabilitarBotoes();
                     }
                 }
@@ -508,7 +505,7 @@ public class FXMLViewController implements Initializable {
 
     @FXML
     public void acaoCartaCorreio(ActionEvent e) {
-        if(comboCorreio.getValue() != null) {
+        if (comboCorreio.getValue() != null) {
             if (comboCorreio.getValue().equals("va para frente agora")) {
                 this.acaoVaParaFrenteAgora();
                 comboCorreio.getItems().remove(comboCorreio.getValue());
@@ -688,7 +685,7 @@ public class FXMLViewController implements Initializable {
         }
     }
 
-    public void habilitarBotoes(){
+    public void habilitarBotoes() {
         this.botaoAcaoCarta.setDisable(true);
         this.botaoEmprestimo.setDisable(true);
         this.botaoJogar.setDisable(true);
@@ -696,7 +693,8 @@ public class FXMLViewController implements Initializable {
         this.botaoSorGrande.setDisable(true);
         this.botaoVenderCarta.setDisable(true);
     }
-    public void desabilitarBotoes(){
+
+    public void desabilitarBotoes() {
         this.botaoAcaoCarta.setDisable(false);
         this.botaoEmprestimo.setDisable(false);
         this.botaoJogar.setDisable(false);

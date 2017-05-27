@@ -65,10 +65,6 @@ public class Facade {
         return this.controllerJogador.getJogador().getNome();
     }
 
-    public int getIdJogador() {
-        return this.controllerJogador.getIdJogador();
-    }
-
     public void comprarCartaCompraEntretenimento(CartaCompra cartaCompra) throws SaldoInsuficienteException {
         this.controllerJogador.comprarCartaCompraEntretenimento(cartaCompra);
     }
@@ -202,5 +198,9 @@ public class Facade {
     public void enviarJogada(String nomeUsuario, int numDado)
     {
         controllerComunicacao.enviarJogada(nomeUsuario, numDado);
+    }
+
+    public int getIdJogador() {
+        return this.controllerComunicacao.getIdJogador();
     }
 }

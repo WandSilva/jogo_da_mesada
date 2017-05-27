@@ -6,6 +6,8 @@
 package controller;
 
 import comunicacao.ClienteJogoMesada;
+import model.Jogador;
+
 import java.util.ArrayList;
 
 /**
@@ -38,6 +40,18 @@ public class ControllerComunicacao {
     public String conectarCliente(String nomeUsuario) {
 
         return cliente.entrar(nomeUsuario);
+    }
+
+    public int getIdJogador(){
+        int id=0;
+        String nome = Jogador.getInstance().getNome();
+        ArrayList<String> lista = usuariosConectados();
+        for (int i=0;i<lista.size();i++){
+            if(lista.get(i).equals(nome)){
+                id =i;
+            }
+        }
+        return id;
     }
 
     public void enviarNotificacao(String nomeUsuario) {

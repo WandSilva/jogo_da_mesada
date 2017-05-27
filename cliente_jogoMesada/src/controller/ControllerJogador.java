@@ -14,7 +14,6 @@ import java.util.Random;
 public class ControllerJogador {
 
     private Jogador jogador;
-    private int idJogador;
 
     public Jogador getJogador() {
         return jogador;
@@ -34,13 +33,6 @@ public class ControllerJogador {
         this.jogador.depositar(3000);
     }
 
-    public void setIdJogador(int idJogador) {
-        this.idJogador = idJogador;
-    }
-
-    public int getIdJogador() {
-        return idJogador;
-    }
 
     /**
      * rola um dado de 6 faces.
