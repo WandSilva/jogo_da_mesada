@@ -2,6 +2,7 @@ package view.tabuleiro;
 
 import controller.Facade;
 import exception.SaldoInsuficienteException;
+import static java.lang.Thread.sleep;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -21,6 +22,8 @@ import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FXMLViewController implements Initializable {
 
@@ -125,20 +128,32 @@ public class FXMLViewController implements Initializable {
 
     private Facade facade;
 
+    private ArrayList<String> ordemJogadas = new ArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.facade = Facade.getInstance();
+        ordemJogadas = this.facade.iniciarPartida();
+        this.facade.enviarOrdemJogada(ordemJogadas);
+        try {
+            sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FXMLViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.atualizarValoresTela();
-        this.criarPeoes(6);
+        this.criarPeoes(this.facade.getUsuariosConectados().size());
         // this.grid.add(peao.getPeao(), 0, 0);
         this.adicionarImagensTabuleiro();
         this.mostrarCartasCorreio();
         this.mostrarCartasCompra();
         this.atualizarSortegrande();
-        this.moverPeaoOutroJogador();
-        this.removerJogadorServidor();
-        this.mostraJogadorConectado();
+
+        
+        
+        //this.moverPeaoOutroJogador();
+        //this.removerJogadorServidor();
+        //this.mostraJogadorConectado();
     }
 
     public void criarPeoes(int numeroJogadores) {
@@ -161,8 +176,13 @@ public class FXMLViewController implements Initializable {
         this.dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
 
-        this.moverPeao(peoes.get(facade.getIdJogador()), dado);
-        this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
+        for (int i = 0 ; i < ordemJogadas.size();i++) {
+            String string = ordemJogadas.get(i);
+            if (string.equals(facade.getNome())) {
+                this.moverPeao(peoes.get(i), dado);
+                this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
+            }
+        }
     }
 
     public void moverPeao(Peao peao, int dado) {
@@ -191,13 +211,13 @@ public class FXMLViewController implements Initializable {
                 while (true) {
                     if (facade.getControle() == true) {
                         Platform.runLater(() -> {
-                        /* no peoes.get() abaixo tem quem passar o id do jogador que
-                         vc quer mover o peão. Para mover, basta colocar o valor que saiu
-                         no dado dele*/
+                            /* no peoes.get() abaixo tem quem passar o id do jogador que
+                             vc quer mover o peão. Para mover, basta colocar o valor que saiu
+                             no dado dele*/
                             moverPeao(peoes.get(1), 1);
 
-                        /*aqui vc passa o ID do jogador no get para verficar se onde
-                         * ele caiu tem algum evento que outros jogadores precisam interagir*/
+                            /*aqui vc passa o ID do jogador no get para verficar se onde
+                             * ele caiu tem algum evento que outros jogadores precisam interagir*/
                             acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
                         });
                         facade.setControle(false);
@@ -551,11 +571,12 @@ public class FXMLViewController implements Initializable {
                     + "Valor:" + cartaCorreio.getValor());
         }
     }
+
     public void mostraJogadorConectado() {
         ArrayList<String> lista = new ArrayList();
         lista = facade.getUsuariosConectados();
-        String usuarios="";
-        for (int i=0;i<lista.size();i++){
+        String usuarios = "";
+        for (int i = 0; i < lista.size(); i++) {
             usuarios = usuarios + lista.get(i).replace("[", "").
                     replace("]", "").replace(" ", "") + "\n";
         }
@@ -603,12 +624,12 @@ public class FXMLViewController implements Initializable {
         }
     }
 
-    public void removerJogadorServidor(){
+    public void removerJogadorServidor() {
         Stage stage = Tabuleiro.getStage();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent e) {
-                Facade facade = Facade.getInstance(); 
+                Facade facade = Facade.getInstance();
                 facade.removerJogadorServidor();
                 Platform.exit();
                 System.exit(0);

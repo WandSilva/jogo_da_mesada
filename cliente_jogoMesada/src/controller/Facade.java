@@ -59,6 +59,11 @@ public class Facade {
     public void receberCartaCorreio(CartaCorreio cartaCorreio) {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
+    
+    public String getNome()
+    {
+        return this.controllerJogador.getJogador().getNome();
+    }
 
     public int getIdJogador() {
         return this.controllerJogador.getIdJogador();
@@ -179,8 +184,23 @@ public class Facade {
 
         return controllerComunicacao.usuariosConectados();
     }
-
+    
+    public void enviarOrdemJogada(ArrayList<String> ordemJogada)
+    {
+        controllerComunicacao.enviarOrdemJogada(ordemJogada);
+    }
+    
+    public ArrayList<String> iniciarPartida()
+    {
+        return controllerComunicacao.iniciarPartida();
+    }
+    
     public void removerJogadorServidor() {
         controllerComunicacao.sairServidor();
+    }
+    
+    public void enviarJogada(String nomeUsuario, int numDado)
+    {
+        controllerComunicacao.enviarJogada(nomeUsuario, numDado);
     }
 }

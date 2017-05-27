@@ -64,11 +64,21 @@ public class ControllerComunicacao {
         return cliente.usuariosConectados();
     }
 
+    public ArrayList<String> iniciarPartida()
+    {
+       return cliente.iniciarPartida();
+    }
+    
+    public void enviarOrdemJogada(ArrayList<String> ordemJogada)
+    {
+        cliente.enviarOrdemJogada(ordemJogada);
+    }
+    
     public void setControle(boolean controle) {
         this.controle = controle;
     }
 
     public void sairServidor() {
         cliente.sair();
-    }   
+    }
 }

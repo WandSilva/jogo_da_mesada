@@ -210,6 +210,14 @@ public class ClienteJogoMesada {
         }
     }
 
+    public String getUltimoJogador() {
+        return ultimoJogador;
+    }
+
+    public int getUltimoDado() {
+        return ultimoDado;
+    }
+
     public synchronized void jogar(String nomeUsuario, int numDado) {
         byte dados[] = ("1001" + ";" + nomeUsuario + ";" + numDado).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
@@ -220,14 +228,6 @@ public class ClienteJogoMesada {
         }
     }
 
-    public String getUltimoJogador() {
-        return ultimoJogador;
-    }
-
-    public int getUltimoDado() {
-        return ultimoDado;
-    }
-
     public synchronized void entrouNaSala(String nomeUsuario) {
         byte dados[] = ("1002" + ";" + nomeUsuario + " entrou na sala!").getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
@@ -236,6 +236,21 @@ public class ClienteJogoMesada {
         } catch (IOException ex) {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public synchronized void enviarOrdemJogada(ArrayList<String> ordem) {
+        byte dados[] = ("1004" + ";" + ordem).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public synchronized void aceitar()
+    {
+        
     }
 
     private static class ThreadCliente extends Thread {
@@ -257,13 +272,32 @@ public class ClienteJogoMesada {
                     if (msg.startsWith("1001")) {
                         String[] dadosRecebidos = new String[3];
                         dadosRecebidos = msg.split(";");
-
                         ultimoJogador = dadosRecebidos[1];
                         ultimoDado = Integer.parseInt(dadosRecebidos[2]);
+                        
+                        System.out.println("Dados Recebidos");
+                        
+                        
                     } else if (msg.startsWith("1002")) {
                         String[] dadosRecebidos = new String[2];
                         dadosRecebidos = msg.split(";");
                         System.out.println(dadosRecebidos[1]);
+                    }else if(msg.startsWith("1003")){
+                        
+                    }else if (msg.startsWith("1004")) {
+                        String[] dadosRecebidos = new String[2];
+                        dadosRecebidos = msg.split(";");
+
+                        String[] dados2 = new String[6];
+                        dados2 = dadosRecebidos[1].split(",");
+
+                        ArrayList<String> ordem = new ArrayList();
+
+                        for (String string : dados2) {
+                            ordem.add(string.replace("[", "").replace("]", "").replace(" ", ""));
+                        }
+                        ClienteJogoMesada.ordemJogadas = ordem;
+                        
                     }
                     Thread.sleep(3000);
                 }

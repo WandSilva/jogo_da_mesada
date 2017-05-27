@@ -16,6 +16,10 @@ public class ControllerJogador {
     private Jogador jogador;
     private int idJogador;
 
+    public Jogador getJogador() {
+        return jogador;
+    }
+
     public ControllerJogador() {
     }
 
