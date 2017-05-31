@@ -176,12 +176,12 @@ public class FXMLViewController implements Initializable {
     }
 
     public void criarPeoes(int numeroJogadores) {
-        CorPeao cores = new CorPeao();
+        AparenciaPeao aparenciaPeao = new AparenciaPeao();
         for (int i = 0; i < numeroJogadores; i++) {
             Peao peao = new Peao();
-            peao.getPeao().setStroke(Color.rgb(0, 0, 0));
-            peao.getPeao().setFill(cores.getCores()[i]);
+            peao.setPeao(aparenciaPeao.getAparenciaPeoes().get(i));
             peoes.add(peao);
+            grid.add(peao.getPeao(), 0,0);
         }
     }
 

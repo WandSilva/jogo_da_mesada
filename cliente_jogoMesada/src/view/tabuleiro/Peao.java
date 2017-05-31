@@ -1,32 +1,31 @@
 package view.tabuleiro;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+
 
 /**
  * O peão contém um 'Circle' (objeto que fica visível no tabuleiro) e sua coordenadas (coluna e linha).
  */
 public class Peao {
 
-    private Circle peao;
+    private Pane peao;
     private int linha;
     private int coluna;
 
     public Peao(){
-        initPeao();
         this.coluna = 0;
         this.linha = 0;
     }
 
-    /**
-     * instancia o peão e define o seu tamanho
-     */
-    public void initPeao(){
-        this.peao = new Circle();
-        peao.setRadius(20);
+    public Pane getPeao() {
+        return peao;
     }
 
-    public Circle getPeao() {
-        return peao;
+    public void setPeao(Pane peao) {
+        this.peao = peao;
     }
 
     public int getLinha() {
@@ -44,4 +43,5 @@ public class Peao {
     public void setColuna(int coluna) {
         this.coluna = coluna;
     }
+
 }
