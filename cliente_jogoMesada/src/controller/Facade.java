@@ -3,6 +3,7 @@ package controller;
 import exception.SaldoInsuficienteException;
 import model.CartaCompra;
 import model.CartaCorreio;
+import model.OrdemJogada;
 
 import java.util.ArrayList;
 
@@ -176,7 +177,7 @@ public class Facade {
         this.controllerComunicacao.setControle(controle);
     }
 
-    public ArrayList<String> getUsuariosConectados() {
+    public ArrayList<OrdemJogada> getUsuariosConectados() {
 
         return controllerComunicacao.usuariosConectados();
     }

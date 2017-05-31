@@ -3,8 +3,6 @@ package view.tabuleiro;
 import controller.Facade;
 import exception.SaldoInsuficienteException;
 
-import static java.lang.Thread.sleep;
-
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -14,18 +12,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.CartaCompra;
 import model.CartaCorreio;
+import model.OrdemJogada;
 
 import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FXMLViewController implements Initializable {
 
@@ -158,7 +154,6 @@ public class FXMLViewController implements Initializable {
 
         this.atualizarValoresTela();
         this.criarPeoes(this.facade.getUsuariosConectados().size());
-        // this.grid.add(peao.getPeao(), 0, 0);
         this.adicionarImagensTabuleiro();
         this.mostrarCartasCorreio();
         this.mostrarCartasCompra();
@@ -651,11 +646,11 @@ public class FXMLViewController implements Initializable {
     }
 
     public void mostraJogadorConectado() {
-        ArrayList<String> lista = new ArrayList();
+        ArrayList<OrdemJogada> lista = new ArrayList();
         lista = facade.getUsuariosConectados();
         String usuarios = "";
         for (int i = 0; i < lista.size(); i++) {
-            usuarios = usuarios + lista.get(i).replace("[", "").
+            usuarios = usuarios + lista.get(i).getNome().replace("[", "").
                     replace("]", "").replace(" ", "") + "\n";
         }
         txtJogadores.setText(usuarios);

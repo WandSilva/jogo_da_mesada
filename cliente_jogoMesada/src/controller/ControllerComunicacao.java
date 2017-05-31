@@ -7,6 +7,7 @@ package controller;
 
 import comunicacao.ClienteJogoMesada;
 import model.Jogador;
+import model.OrdemJogada;
 
 import java.util.ArrayList;
 
@@ -18,10 +19,12 @@ public class ControllerComunicacao {
 
     private static ControllerComunicacao INSTANCE = null;
     private ClienteJogoMesada cliente;
+    ArrayList<OrdemJogada> usuarios;
     private String endIP;
     private boolean controle;
 
     private ControllerComunicacao() {
+        this.usuarios = new ArrayList<>();
     }
 
     public void setIP(String ip) {
@@ -45,10 +48,11 @@ public class ControllerComunicacao {
     public int getIdJogador(){
         int id=0;
         String nome = Jogador.getInstance().getNome();
-        ArrayList<String> lista = usuariosConectados();
+        ArrayList<OrdemJogada> lista = usuariosConectados();
+
         for (int i=0;i<lista.size();i++){
-            if(lista.get(i).equals(nome)){
-                id =i;
+            if(lista.get(i).getNome().equals(nome)){
+                id = lista.get(i).getId();
             }
         }
         return id;
@@ -74,8 +78,14 @@ public class ControllerComunicacao {
         return controle;
     }
 
-    public ArrayList<String> usuariosConectados() {
-        return cliente.usuariosConectados();
+    public ArrayList<OrdemJogada> usuariosConectados() {
+        ArrayList<String> nomeUsuarios = cliente.usuariosConectados();
+
+        usuarios.clear();
+        for (int i=0; i<nomeUsuarios.size();i++){
+            usuarios.add(new OrdemJogada(nomeUsuarios.get(i), i));
+        }
+        return usuarios;
     }
 
     public ArrayList<String> iniciarPartida()

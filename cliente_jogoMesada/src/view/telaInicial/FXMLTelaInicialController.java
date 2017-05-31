@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import model.OrdemJogada;
 import view.tabuleiro.Tabuleiro;
 
 import javax.swing.*;
@@ -64,11 +65,13 @@ public class FXMLTelaInicialController implements Initializable {
     }
 
     public void mostraJogadorConectado() {
-        ArrayList<String> lista = new ArrayList();
+        ArrayList<OrdemJogada> lista = new ArrayList();
         lista = facade.getUsuariosConectados();
         String usuarios = new String();
         for (int i = 0; i < lista.size(); i++) {
-            usuarios = usuarios + lista.get(i).replace("[", "").
+            usuarios = usuarios + lista.get(i).getNome().replace("[", "").
+
+
                     replace("]", "").replace(" ", "") + "\n";
         }
         txtJogadoresConect.setText(usuarios);
