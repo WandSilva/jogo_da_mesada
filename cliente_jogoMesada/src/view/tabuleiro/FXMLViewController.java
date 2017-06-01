@@ -146,13 +146,9 @@ public class FXMLViewController implements Initializable {
         this.facade = Facade.getInstance();
         ordemJogadas = this.facade.iniciarPartida();
         this.facade.enviarOrdemJogada(ordemJogadas);
-        /*try {
-            sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(FXMLViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
 
         this.atualizarValoresTela();
+        this.desabilitarBotoes();
         this.criarPeoes(this.facade.getUsuariosConectados().size());
         this.adicionarImagensTabuleiro();
         this.mostrarCartasCorreio();
@@ -238,6 +234,7 @@ public class FXMLViewController implements Initializable {
                     }
                     Thread.sleep(3000);
                     if (facade.getIdJogador() == facade.getProximoJogador()) {
+                        System.out.println("habilitado");
                         habilitarBotoes();
                     }
                     if (facade.getIdJogador() != facade.getProximoJogador()) {

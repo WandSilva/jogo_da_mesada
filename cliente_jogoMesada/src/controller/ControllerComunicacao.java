@@ -21,7 +21,6 @@ public class ControllerComunicacao {
     private ClienteJogoMesada cliente;
     ArrayList<OrdemJogada> usuarios;
     private String endIP;
-    private boolean controle;
 
     private ControllerComunicacao() {
         this.usuarios = new ArrayList<>();
@@ -74,7 +73,7 @@ public class ControllerComunicacao {
     }
 
     public boolean getControle() {
-        return controle;
+        return cliente.getControleMsgJogada();
     }
 
     public ArrayList<OrdemJogada> usuariosConectados() {
@@ -98,7 +97,7 @@ public class ControllerComunicacao {
     }
     
     public void setControle(boolean controle) {
-        this.controle = controle;
+        this.cliente.setControleMsgJogada(controle);
     }
 
     public void sairServidor() {
