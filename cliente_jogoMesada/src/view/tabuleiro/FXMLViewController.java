@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.CartaCompra;
 import model.CartaCorreio;
+import model.Jogador;
 import model.OrdemJogada;
 
 import javax.swing.*;
@@ -192,6 +193,12 @@ public class FXMLViewController implements Initializable {
 
         this.moverPeao(peoes.get(facade.getIdJogador()), dado);
         this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
+    }
+
+    public void finalizarJogada(){
+       System.out.println(facade.getIdJogador());
+       System.out.println(Jogador.getInstance().getNome());
+        // this.facade.finalizarJogada(dado);
     }
 
     public void moverPeao(Peao peao, int dado) {

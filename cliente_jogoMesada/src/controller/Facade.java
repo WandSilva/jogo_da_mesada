@@ -214,4 +214,8 @@ public class Facade {
     {
         return this.controllerComunicacao.getUltimoDado();
     }
+
+    public void finalizarJogada(int dado){
+        this.controllerComunicacao.finalizarJogada(dado);
+    }
 }

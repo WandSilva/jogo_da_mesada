@@ -49,7 +49,6 @@ public class ControllerComunicacao {
         int id=0;
         String nome = Jogador.getInstance().getNome();
         ArrayList<OrdemJogada> lista = usuariosConectados();
-
         for (int i=0;i<lista.size();i++){
             if(lista.get(i).getNome().equals(nome)){
                 id = lista.get(i).getId();
@@ -104,5 +103,11 @@ public class ControllerComunicacao {
 
     public void sairServidor() {
         cliente.sair();
+    }
+
+    public void finalizarJogada(int dado) {
+        int meuId = this.getIdJogador();
+        int proximo = meuId+1;
+        //agora é só mandar o ID do proximo e o Dado que foi recebido por parametro;
     }
 }
