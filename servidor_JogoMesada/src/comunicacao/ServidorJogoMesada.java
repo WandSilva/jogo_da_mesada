@@ -119,17 +119,11 @@ public class ServidorJogoMesada {
                             Jogador jogador = new Jogador();
                             jogador.setNome(dados[1]);
                             Sala sala = buscarSala(jogador);
+                            sala.ocuparSala();
+                            ArrayList<String> ordemJogada = new ArrayList<>();
+                            ordemJogada = listaJogadores(sala);
 
-                            if (sala.getNumeroJogadores() > 1) {
-                                sala.ocuparSala();
-                                ArrayList<String> ordemJogada = new ArrayList<>();
-                                ordemJogada = listaJogadores(sala);
-
-                                saidaDadosClienteServidor.writeBytes("400" + ";" + ordemJogada + "\n");
-
-                            } else {
-                                saidaDadosClienteServidor.writeBytes("ApenasUmJogador");
-                            }
+                            saidaDadosClienteServidor.writeBytes("400" + ";" + ordemJogada + "\n");
 
                         } else if (pacoteDados.startsWith("005")) {
                             String[] dados = new String[2];
