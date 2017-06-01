@@ -196,9 +196,7 @@ public class FXMLViewController implements Initializable {
     }
 
     public void finalizarJogada(){
-       System.out.println(facade.getIdJogador());
-       System.out.println(Jogador.getInstance().getNome());
-        // this.facade.finalizarJogada(dado);
+       this.facade.finalizarJogada(dado);
     }
 
     public void moverPeao(Peao peao, int dado) {
