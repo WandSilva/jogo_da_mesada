@@ -205,9 +205,9 @@ public class Facade {
         return this.controllerComunicacao.getIdJogador();
     }
     
-    public String getUltimoJogador()
+    public String getProximoJogador()
     {
-        return this.controllerComunicacao.getUltimoJogador();
+        return this.controllerComunicacao.getProximoJogador();
     }
     
     public int getUltimoDado()

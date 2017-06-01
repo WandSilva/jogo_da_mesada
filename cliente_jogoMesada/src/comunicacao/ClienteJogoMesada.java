@@ -32,7 +32,7 @@ public class ClienteJogoMesada {
     private Socket conexaoClienteServidor;
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
-    private static String ultimoJogador = new String();
+    private static String proximoJogador = new String();
     private static int ultimoDado = 0; 
     private static ArrayList<String> ordemJogadas = new ArrayList();
 
@@ -214,8 +214,8 @@ public class ClienteJogoMesada {
         }
     }
 
-    public String getUltimoJogador() {
-        return ultimoJogador;
+    public String getProximoJogador() {
+        return proximoJogador;
     }
 
     public int getUltimoDado() {
@@ -276,7 +276,7 @@ public class ClienteJogoMesada {
                     if (msg.startsWith("1001")) {
                         String[] dadosRecebidos = new String[3];
                         dadosRecebidos = msg.split(";");
-                        ultimoJogador = dadosRecebidos[1];
+                        proximoJogador = dadosRecebidos[1];
                         ultimoDado = Integer.parseInt(dadosRecebidos[2]);
                         
                         System.out.println("Dados Recebidos");
