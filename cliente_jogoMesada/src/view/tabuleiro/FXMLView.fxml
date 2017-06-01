@@ -95,5 +95,6 @@
       <TextArea fx:id="txtJogadores" editable="false" layoutX="8.0" layoutY="390.0" prefHeight="179.0" prefWidth="200.0" />
       <Label layoutX="7.0" layoutY="372.0" text="Jogadores" />
       <Button layoutX="28.0" layoutY="585.0" mnemonicParsing="false" onAction="#TESTE" text="Teste" />
+      <Button layoutX="893.0" layoutY="583.0" mnemonicParsing="false" onAction="#finalizarJogada" text="Finalizar Jogada" />
    </children>
 </AnchorPane>
