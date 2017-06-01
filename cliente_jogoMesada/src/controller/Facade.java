@@ -204,4 +204,14 @@ public class Facade {
     public int getIdJogador() {
         return this.controllerComunicacao.getIdJogador();
     }
+    
+    public String getUltimoJogador()
+    {
+        return this.controllerComunicacao.getUltimoJogador();
+    }
+    
+    public int getUltimoDado()
+    {
+        return this.controllerComunicacao.getUltimoDado();
+    }
 }
