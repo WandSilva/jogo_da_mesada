@@ -657,8 +657,7 @@ public class FXMLViewController implements Initializable {
         lista = facade.getUsuariosConectados();
         String usuarios = "";
         for (int i = 0; i < lista.size(); i++) {
-            usuarios = usuarios + lista.get(i).getNome().replace("[", "").
-                    replace("]", "").replace(" ", "") + "\n";
+            usuarios = usuarios + lista.get(i).getNome() + "\n";
         }
         txtJogadores.setText(usuarios);
     }
