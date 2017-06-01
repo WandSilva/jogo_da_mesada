@@ -65,7 +65,9 @@ public class ControllerComunicacao {
     }
 
     public int getProximoJogador() {
-        return Integer.parseInt(cliente.getProximoJogador());
+        int idProximo = Integer.parseInt(cliente.getProximoJogador());
+        System.out.println(idProximo);
+        return idProximo;
     }
 
     public int getUltimoDado() {
@@ -106,7 +108,11 @@ public class ControllerComunicacao {
 
     public void finalizarJogada(int dado) {
         int meuId = this.getIdJogador();
-        int proximo = meuId+1;
+        int proximo;
+
+        if (meuId ==usuarios.size())
+            proximo = 0;
+        else proximo = meuId+1;
         
         cliente.jogar(proximo, dado);
         //agora é só mandar o ID do proximo e o Dado que foi recebido por parametro;

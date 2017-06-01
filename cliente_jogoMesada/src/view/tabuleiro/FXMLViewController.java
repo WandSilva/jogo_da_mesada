@@ -219,27 +219,30 @@ public class FXMLViewController implements Initializable {
             @Override
             protected Object call() throws Exception {
                 while (true) {
-                    if (facade.getControle() == true) {
                         Platform.runLater(() -> {
+                            if (facade.getControle() == true) {
                             /* no peoes.get() abaixo tem quem passar o id do jogador que
                              vc quer mover o peão. Para mover, basta colocar o valor que saiu
                              no dado dele*/
-                            moverPeao(peoes.get(1), 1);
+                                System.out.println("mover outro");
+                                moverPeao(peoes.get(facade.getProximoJogador()-1), facade.getUltimoDado());
 
                             /*aqui vc passa o ID do jogador no get para verficar se onde
                              * ele caiu tem algum evento que outros jogadores precisam interagir*/
-                            acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
+                                acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
+                                facade.setControle(false);
+                            }
+                            if (facade.getIdJogador() == facade.getProximoJogador()) {
+                                System.out.println("habilitado");
+                                habilitarBotoes();
+                            }
+                            else if (facade.getIdJogador() != facade.getProximoJogador()) {
+                                desabilitarBotoes();
+                            }
                         });
-                        facade.setControle(false);
-                    }
+
+
                     Thread.sleep(3000);
-                    if (facade.getIdJogador() == facade.getProximoJogador()) {
-                        System.out.println("habilitado");
-                        habilitarBotoes();
-                    }
-                    if (facade.getIdJogador() != facade.getProximoJogador()) {
-                        desabilitarBotoes();
-                    }
                 }
             }
         };
@@ -680,7 +683,7 @@ public class FXMLViewController implements Initializable {
         }
     }
 
-    public void habilitarBotoes() {
+    public void desabilitarBotoes () {
         this.botaoAcaoCarta.setDisable(true);
         this.botaoEmprestimo.setDisable(true);
         this.botaoJogar.setDisable(true);
@@ -689,7 +692,7 @@ public class FXMLViewController implements Initializable {
         this.botaoVenderCarta.setDisable(true);
     }
 
-    public void desabilitarBotoes() {
+    public void habilitarBotoes() {
         this.botaoAcaoCarta.setDisable(false);
         this.botaoEmprestimo.setDisable(false);
         this.botaoJogar.setDisable(false);

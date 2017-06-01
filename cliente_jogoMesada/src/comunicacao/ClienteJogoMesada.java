@@ -33,7 +33,7 @@ public class ClienteJogoMesada {
     private Socket conexaoClienteServidor;
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
-    private static String proximoJogador = new String();
+    private static String proximoJogador = "0";
     private static int ultimoDado = 0;
     private static ArrayList<String> ordemJogadas = new ArrayList();
 
