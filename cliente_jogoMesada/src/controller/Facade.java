@@ -196,9 +196,9 @@ public class Facade {
         controllerComunicacao.sairServidor();
     }
     
-    public void enviarJogada(String nomeUsuario, int numDado)
+    public void enviarJogada(int id, int numDado)
     {
-        controllerComunicacao.enviarJogada(nomeUsuario, numDado);
+        controllerComunicacao.enviarJogada(id, numDado);
     }
 
     public int getIdJogador() {

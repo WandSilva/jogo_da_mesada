@@ -25,14 +25,15 @@ public class ClienteJogoMesada {
     private final static String host = new String();
     private final static int portaClienteServidor = 22222;
     private final static int portaClienteCliente = 44444;
-    private static String usuario;
+    private static String usuario; 
+    private static int id;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
     private static String ultimoJogador = new String();
-    private static int ultimoDado = 0;
+    private static int ultimoDado = 0; 
     private static ArrayList<String> ordemJogadas = new ArrayList();
 
     /**
@@ -136,6 +137,8 @@ public class ClienteJogoMesada {
             return "ERRO! Tente novamente...";
         }
     }
+    
+    
 
     public synchronized ArrayList<String> iniciarPartida() {
         if (conexaoClienteServidor.isConnected()) {
@@ -191,9 +194,10 @@ public class ClienteJogoMesada {
 
                     ArrayList<String> lista = new ArrayList();
 
-                    for (String string : dados2) {
-                        lista.add(string);
+                     for (String string : dados2) {
+                        lista.add(string.replace("[", "").replace("]", "").replace(" ", ""));
                     }
+
 
                     return lista;
 
@@ -218,8 +222,8 @@ public class ClienteJogoMesada {
         return ultimoDado;
     }
 
-    public synchronized void jogar(String nomeUsuario, int numDado) {
-        byte dados[] = ("1001" + ";" + nomeUsuario + ";" + numDado).getBytes();
+    public synchronized void jogar(int id, int numDado) {
+        byte dados[] = ("1001" + ";" + id + ";" + numDado).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
         try {
             conexaoGrupo.send(msgPacket);
@@ -295,9 +299,9 @@ public class ClienteJogoMesada {
 
                         for (String string : dados2) {
                             ordem.add(string.replace("[", "").replace("]", "").replace(" ", ""));
+                            
                         }
-                        ClienteJogoMesada.ordemJogadas = ordem;
-                        
+                        ClienteJogoMesada.ordemJogadas = ordem;   
                     }
                     Thread.sleep(3000);
                 }

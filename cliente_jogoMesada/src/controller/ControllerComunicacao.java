@@ -62,8 +62,8 @@ public class ControllerComunicacao {
         cliente.entrouNaSala(nomeUsuario);
     }
 
-    public void enviarJogada(String nomeUsuario, int numDado) {
-        cliente.jogar(nomeUsuario, numDado);
+    public void enviarJogada(int id, int numDado) {
+        cliente.jogar(id, numDado);
     }
 
     public String getUltimoJogador() {
