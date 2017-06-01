@@ -159,12 +159,6 @@ public class FXMLViewController implements Initializable {
         this.mostraJogadorConectado();
     }
 
-    @FXML
-    public void TESTE() {
-        if (teste == 1)
-            teste = 0;
-        else teste = 1;
-    }
 
     public void criarPeoes(int numeroJogadores) {
         AparenciaPeao aparenciaPeao = new AparenciaPeao();
@@ -220,7 +214,7 @@ public class FXMLViewController implements Initializable {
             protected Object call() throws Exception {
                 while (true) {
                         Platform.runLater(() -> {
-                            if (facade.getControle() == true) {
+                            if (facade.getControle()) {
                             /* no peoes.get() abaixo tem quem passar o id do jogador que
                              vc quer mover o peão. Para mover, basta colocar o valor que saiu
                              no dado dele*/
@@ -229,7 +223,7 @@ public class FXMLViewController implements Initializable {
 
                             /*aqui vc passa o ID do jogador no get para verficar se onde
                              * ele caiu tem algum evento que outros jogadores precisam interagir*/
-                                acaoSeAlguemCaiuNaCasa(peoes.get(1).getColuna(), peoes.get(1).getLinha());
+                                acaoSeAlguemCaiuNaCasa(peoes.get(facade.getProximoJogador()-1).getColuna(), peoes.get(facade.getProximoJogador()-1).getLinha());
                                 facade.setControle(false);
                             }
                             if (facade.getIdJogador() == facade.getProximoJogador()) {
@@ -242,7 +236,7 @@ public class FXMLViewController implements Initializable {
                         });
 
 
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                 }
             }
         };

@@ -112,9 +112,9 @@ public class ControllerComunicacao {
 
         if (meuId ==usuarios.size())
             proximo = 0;
-        else proximo = meuId+1;
+        else
+            proximo = meuId+1;
         
         cliente.jogar(proximo, dado);
-        //agora é só mandar o ID do proximo e o Dado que foi recebido por parametro;
     }
 }
