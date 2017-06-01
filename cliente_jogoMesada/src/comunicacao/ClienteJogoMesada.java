@@ -25,15 +25,16 @@ public class ClienteJogoMesada {
     private final static String host = new String();
     private final static int portaClienteServidor = 22222;
     private final static int portaClienteCliente = 44444;
-    private static String usuario; 
+    private static String usuario;
     private static int id;
+    private static boolean controleMsgJogada;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
     private static String proximoJogador = new String();
-    private static int ultimoDado = 0; 
+    private static int ultimoDado = 0;
     private static ArrayList<String> ordemJogadas = new ArrayList();
 
     /**
@@ -137,8 +138,6 @@ public class ClienteJogoMesada {
             return "ERRO! Tente novamente...";
         }
     }
-    
-    
 
     public synchronized ArrayList<String> iniciarPartida() {
         if (conexaoClienteServidor.isConnected()) {
@@ -194,10 +193,9 @@ public class ClienteJogoMesada {
 
                     ArrayList<String> lista = new ArrayList();
 
-                     for (String string : dados2) {
+                    for (String string : dados2) {
                         lista.add(string.replace("[", "").replace("]", "").replace(" ", ""));
                     }
-
 
                     return lista;
 
@@ -241,7 +239,7 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public synchronized void enviarOrdemJogada(ArrayList<String> ordem) {
         byte dados[] = ("1004" + ";" + ordem).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
@@ -251,10 +249,18 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public synchronized void setControleMsgJogada(boolean valor) {
+        ClienteJogoMesada.controleMsgJogada = valor;
+    }
     
-    public synchronized void aceitar()
+    public synchronized boolean getControleMsgJogada()
     {
-        
+        return controleMsgJogada;
+    }
+
+    public synchronized void aceitar() {
+
     }
 
     private static class ThreadCliente extends Thread {
@@ -278,17 +284,17 @@ public class ClienteJogoMesada {
                         dadosRecebidos = msg.split(";");
                         proximoJogador = dadosRecebidos[1];
                         ultimoDado = Integer.parseInt(dadosRecebidos[2]);
-                        
+                        ClienteJogoMesada.controleMsgJogada = true;
+
                         System.out.println("Dados Recebidos");
-                        
-                        
+
                     } else if (msg.startsWith("1002")) {
                         String[] dadosRecebidos = new String[2];
                         dadosRecebidos = msg.split(";");
                         System.out.println(dadosRecebidos[1]);
-                    }else if(msg.startsWith("1003")){
-                        
-                    }else if (msg.startsWith("1004")) {
+                    } else if (msg.startsWith("1003")) {
+
+                    } else if (msg.startsWith("1004")) {
                         String[] dadosRecebidos = new String[2];
                         dadosRecebidos = msg.split(";");
 
@@ -299,9 +305,9 @@ public class ClienteJogoMesada {
 
                         for (String string : dados2) {
                             ordem.add(string.replace("[", "").replace("]", "").replace(" ", ""));
-                            
+
                         }
-                        ClienteJogoMesada.ordemJogadas = ordem;   
+                        ClienteJogoMesada.ordemJogadas = ordem;
                     }
                     Thread.sleep(3000);
                 }
