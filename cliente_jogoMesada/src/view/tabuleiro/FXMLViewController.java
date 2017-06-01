@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.CartaCompra;
 import model.CartaCorreio;
-import model.Jogador;
 import model.OrdemJogada;
 
 import javax.swing.*;
@@ -159,7 +158,7 @@ public class FXMLViewController implements Initializable {
         this.mostrarCartasCorreio();
         this.mostrarCartasCompra();
         this.atualizarSortegrande();
-        this.moverPeaoOutroJogador();
+        this.atualizarJogadas();
         this.removerJogadorServidor();
         this.mostraJogadorConectado();
     }
@@ -219,7 +218,7 @@ public class FXMLViewController implements Initializable {
         grid.add(peao.getPeao(), peao.getColuna(), peao.getLinha());
     }
 
-    void moverPeaoOutroJogador() {
+    void atualizarJogadas() {
         Task t = new Task() {
             @Override
             protected Object call() throws Exception {
@@ -238,10 +237,10 @@ public class FXMLViewController implements Initializable {
                         facade.setControle(false);
                     }
                     Thread.sleep(3000);
-                    if (teste == 1) {
+                    if (facade.getIdJogador() == facade.getProximoJogador()) {
                         habilitarBotoes();
                     }
-                    if (teste == 0) {
+                    if (facade.getIdJogador() != facade.getProximoJogador()) {
                         desabilitarBotoes();
                     }
                 }

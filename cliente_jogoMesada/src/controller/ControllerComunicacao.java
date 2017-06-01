@@ -65,8 +65,8 @@ public class ControllerComunicacao {
         cliente.jogar(id, numDado);
     }
 
-    public String getProximoJogador() {
-        return cliente.getProximoJogador();
+    public int getProximoJogador() {
+        return Integer.parseInt(cliente.getProximoJogador());
     }
 
     public int getUltimoDado() {
