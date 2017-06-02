@@ -31,6 +31,8 @@ public class ClienteJogoMesada {
     private static String usuario;
     private static int id;
     private static boolean controleMsgJogada;
+    private static float sorteGrande;
+    private static boolean controleSorteGrande;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
@@ -249,6 +251,16 @@ public class ClienteJogoMesada {
         }
     }
 
+    public synchronized void sorteGrande(int id, float valor) {
+        byte dados[] = ("1005" + ";" + id + ";" + valor).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static synchronized void setControleMsgJogada(boolean valor) {
         ClienteJogoMesada.controleMsgJogada = valor;
     }
@@ -260,6 +272,20 @@ public class ClienteJogoMesada {
     public synchronized boolean getControleMsgJogada() {
         return controleMsgJogada;
     }
+
+    public synchronized float getSorteGrande() {
+        return ClienteJogoMesada.sorteGrande;
+    }
+
+    public synchronized boolean getControleSorteGrande() {
+        return controleSorteGrande;
+    }
+
+    public synchronized void setControleSorteGrande(boolean valor) {
+        ClienteJogoMesada.controleSorteGrande = valor;
+    }
+    
+    
 
     public synchronized void aceitar() {
 
@@ -296,17 +322,18 @@ public class ClienteJogoMesada {
                     } else if (msg.startsWith("1004")) {
                         String[] dadosRecebidos = new String[2];
                         dadosRecebidos = msg.split(";");
-
                         String[] dados2 = new String[6];
                         dados2 = dadosRecebidos[1].split(",");
-
                         ArrayList<String> ordem = new ArrayList();
-
                         for (String string : dados2) {
                             ordem.add(string.replace("[", "").replace("]", "").replace(" ", ""));
-
                         }
                         ClienteJogoMesada.ordemJogadas = ordem;
+                    } else if (msg.startsWith("1005")) {
+                        String[] dadosRecebidos = msg.split(";");
+                        id = Integer.parseInt(dadosRecebidos[1].trim());
+                        sorteGrande = Float.parseFloat(dadosRecebidos[2].trim());
+                        ClienteJogoMesada.controleSorteGrande = true;
                     }
                     Thread.sleep(3000);
                 }

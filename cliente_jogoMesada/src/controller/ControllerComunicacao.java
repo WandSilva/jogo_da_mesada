@@ -115,4 +115,19 @@ public class ControllerComunicacao {
             proximo = meuId+1;
         cliente.jogar(proximo, dado);
     }
+    
+    public float getSorteGrande()
+    {
+        return cliente.getSorteGrande();
+    }
+    
+    public boolean getControleSorteGrande()
+    {
+        return cliente.getControleSorteGrande();
+    }
+    
+    public void setControleSorteGrande(boolean valor)
+    {
+        cliente.setControleSorteGrande(valor);
+    }
 }

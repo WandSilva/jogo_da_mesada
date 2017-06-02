@@ -214,7 +214,22 @@ public class Facade {
     {
         return this.controllerComunicacao.getUltimoDado();
     }
-
+    
+    public float getSorteGrande()
+    {
+        return this.controllerComunicacao.getSorteGrande();
+    }
+    
+    public boolean getControleSorte()
+    {
+        return this.controllerComunicacao.getControle();
+    }
+    
+    public void setControleSorteGrande(boolean valor)
+    {
+        this.controllerComunicacao.setControleSorteGrande(valor);
+    }
+    
     public void finalizarJogada(int dado){
         this.controllerComunicacao.finalizarJogada(dado);
     }
