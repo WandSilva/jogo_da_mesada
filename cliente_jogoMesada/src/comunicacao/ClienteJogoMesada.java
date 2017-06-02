@@ -30,6 +30,9 @@ public class ClienteJogoMesada {
     private final static int portaClienteCliente = 44444;
     private static String usuario;
     private static int id;
+    private static int idDestino;
+    private static float valorTransferencia;
+    private static boolean controleTransferencia;
     private static boolean controleMsgJogada;
     private static float sorteGrande;
     private static boolean controleSorteGrande;
@@ -44,6 +47,7 @@ public class ClienteJogoMesada {
 
     /**
      * @author Wanderson e Santana
+     * 
      */
     public ClienteJogoMesada(String ipServidor) {
         try {
@@ -260,6 +264,17 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public synchronized void transferirValores(int idDestino, float valor)
+    {
+        byte dados[] = ("1006" + ";" + idDestino + ";" + valor).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public static synchronized void setControleMsgJogada(boolean valor) {
         ClienteJogoMesada.controleMsgJogada = valor;
@@ -284,13 +299,22 @@ public class ClienteJogoMesada {
     public synchronized void setControleSorteGrande(boolean valor) {
         ClienteJogoMesada.controleSorteGrande = valor;
     }
-    
-    
 
-    public synchronized void aceitar() {
-
+    public synchronized boolean getControleTransferencia()
+    {
+        return ClienteJogoMesada.controleTransferencia;
     }
 
+    public synchronized void setControleTransferencia(boolean valor)
+    {
+        ClienteJogoMesada.controleTransferencia = valor;
+    }
+    
+    public synchronized float getValorTransferencia()
+    {
+        return ClienteJogoMesada.valorTransferencia;
+    }
+    
     private static class ThreadCliente extends Thread {
 
         private final MulticastSocket socketMulticast;
@@ -334,6 +358,11 @@ public class ClienteJogoMesada {
                         id = Integer.parseInt(dadosRecebidos[1].trim());
                         sorteGrande = Float.parseFloat(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleSorteGrande = true;
+                    } else if (msg.startsWith("1006")){
+                        String[] dadosRecebidos = msg.split(";");
+                        idDestino = Integer.parseInt(dadosRecebidos[1].trim());
+                        valorTransferencia = Float.parseFloat(dadosRecebidos[2].trim());
+                        ClienteJogoMesada.controleTransferencia = true;
                     }
                     Thread.sleep(3000);
                 }
