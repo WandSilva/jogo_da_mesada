@@ -4,12 +4,15 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import static java.lang.Thread.sleep;
+
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.*;
 import java.util.ArrayList;
+
 import model.Sala;
 
 /**
@@ -17,8 +20,8 @@ import model.Sala;
  * o servidor e com outros clientes por meio de requisições. Modelo
  * Peer-to-Peer.
  *
- * @version 1.0
  * @author Wanderson e Santana
+ * @version 1.0
  */
 public class ClienteJogoMesada {
 
@@ -34,13 +37,10 @@ public class ClienteJogoMesada {
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
     private static String proximoJogador = "0";
-    private static int ultimoDado = 0;
+    private static int ultimoDado;
     private static ArrayList<String> ordemJogadas = new ArrayList();
 
     /**
-     *
-     *
-     *
      * @author Wanderson e Santana
      */
     public ClienteJogoMesada(String ipServidor) {
@@ -55,7 +55,6 @@ public class ClienteJogoMesada {
     }
 
     /**
-     *
      * Método responsável por efetuar o login no servidor do jogo
      *
      * @param usuario nome para identificar o jogador
@@ -250,12 +249,15 @@ public class ClienteJogoMesada {
         }
     }
 
-    public synchronized void setControleMsgJogada(boolean valor) {
+    public static synchronized void setControleMsgJogada(boolean valor) {
         ClienteJogoMesada.controleMsgJogada = valor;
     }
-    
-    public synchronized boolean getControleMsgJogada()
-    {
+
+    public static synchronized void setUltimoDado(int valor) {
+        ClienteJogoMesada.ultimoDado = valor;
+    }
+
+    public synchronized boolean getControleMsgJogada() {
         return controleMsgJogada;
     }
 
@@ -280,13 +282,10 @@ public class ClienteJogoMesada {
                     String msg = new String(datagrama.getData());
 
                     if (msg.startsWith("1001")) {
-                        String[] dadosRecebidos = new String[3];
-                        dadosRecebidos = msg.split(";");
+                        String[] dadosRecebidos = msg.split(";");
                         proximoJogador = dadosRecebidos[1];
-                        ultimoDado = Integer.parseInt(dadosRecebidos[2]);
+                        ultimoDado = Integer.parseInt(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleMsgJogada = true;
-
-                        System.out.println("Dados Recebidos");
 
                     } else if (msg.startsWith("1002")) {
                         String[] dadosRecebidos = new String[2];
@@ -312,6 +311,7 @@ public class ClienteJogoMesada {
                     Thread.sleep(500);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

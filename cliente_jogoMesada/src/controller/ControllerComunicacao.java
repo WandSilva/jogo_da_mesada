@@ -66,7 +66,6 @@ public class ControllerComunicacao {
 
     public int getProximoJogador() {
         int idProximo = Integer.parseInt(cliente.getProximoJogador());
-        System.out.println(idProximo);
         return idProximo;
     }
 
