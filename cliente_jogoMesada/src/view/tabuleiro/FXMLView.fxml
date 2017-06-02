@@ -94,6 +94,6 @@
       <Button fx:id="botaoAcaoCarta" layoutX="5.0" layoutY="145.0" mnemonicParsing="false" onAction="#acaoCartaCorreio" text="Açao da carta" />
       <TextArea fx:id="txtJogadores" editable="false" layoutX="8.0" layoutY="390.0" prefHeight="179.0" prefWidth="200.0" />
       <Label layoutX="7.0" layoutY="372.0" text="Jogadores" />
-      <Button layoutX="893.0" layoutY="571.0" mnemonicParsing="false" onAction="#finalizarJogada" text="Finalizar Jogada" />
+      <Button fx:id="botaoFinalizar" layoutX="893.0" layoutY="571.0" mnemonicParsing="false" onAction="#finalizarJogada" text="Finalizar Jogada" />
    </children>
 </AnchorPane>

@@ -109,11 +109,10 @@ public class ControllerComunicacao {
         int meuId = this.getIdJogador();
         int proximo;
 
-        if (meuId ==usuarios.size())
+        if (meuId ==usuarios.size()-1)
             proximo = 0;
         else
             proximo = meuId+1;
-        
         cliente.jogar(proximo, dado);
     }
 }

@@ -308,7 +308,7 @@ public class ClienteJogoMesada {
                         }
                         ClienteJogoMesada.ordemJogadas = ordem;
                     }
-                    Thread.sleep(500);
+                    Thread.sleep(3000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

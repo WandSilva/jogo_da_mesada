@@ -130,6 +130,8 @@ public class FXMLViewController implements Initializable {
     private Button botaoVenderCarta;
     @FXML
     private Button botaoAcaoCarta;
+    @FXML
+    private Button botaoFinalizar;
 
     private ArrayList<Peao> peoes = new ArrayList<>();
 
@@ -165,7 +167,7 @@ public class FXMLViewController implements Initializable {
             Peao peao = new Peao();
             peao.setPeao(aparenciaPeao.getAparenciaPeoes().get(i));
             peoes.add(peao);
-            grid.add(peao.getPeao(), 0,0);
+            grid.add(peao.getPeao(), 0, 0);
         }
     }
 
@@ -183,8 +185,8 @@ public class FXMLViewController implements Initializable {
         this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
     }
 
-    public void finalizarJogada(){
-       this.facade.finalizarJogada(this.dado);
+    public void finalizarJogada() {
+        this.facade.finalizarJogada(this.dado);
     }
 
     public void moverPeao(Peao peao, int dado) {
@@ -212,25 +214,30 @@ public class FXMLViewController implements Initializable {
             @Override
             protected Object call() throws Exception {
                 while (true) {
-                        Platform.runLater(() -> {
-                            if (facade.getControle() && (facade.getProximoJogador()-1)!=facade.getIdJogador()) {
+                    Platform.runLater(() -> {
+
+                        int jogadorPassado = facade.getProximoJogador() - 1;
+                        if (jogadorPassado < 0)
+                            jogadorPassado = facade.getUsuariosConectados().size()-1;
+
+                        if (facade.getControle() && (jogadorPassado != facade.getIdJogador())) {
                             /* no peoes.get() abaixo tem quem passar o id do jogador que
                              vc quer mover o peão. Para mover, basta colocar o valor que saiu
                              no dado dele*/
-                                moverPeao(peoes.get(facade.getProximoJogador()-1), facade.getUltimoDado());
+
+                            moverPeao(peoes.get(jogadorPassado), facade.getUltimoDado());
 
                             /*aqui vc passa o ID do jogador no get para verficar se onde
                              * ele caiu tem algum evento que outros jogadores precisam interagir*/
-                                acaoSeAlguemCaiuNaCasa(peoes.get(facade.getProximoJogador()-1).getColuna(), peoes.get(facade.getProximoJogador()-1).getLinha());
-                                facade.setControle(false);
-                            }
-                            if (facade.getIdJogador() == facade.getProximoJogador()) {
-                                habilitarBotoes();
-                            }
-                            else if (facade.getIdJogador() != facade.getProximoJogador()) {
-                                desabilitarBotoes();
-                            }
-                        });
+                            acaoSeAlguemCaiuNaCasa(peoes.get(jogadorPassado).getColuna(), peoes.get(jogadorPassado).getLinha());
+                            facade.setControle(false);
+                        }
+                        if (facade.getIdJogador() == facade.getProximoJogador()) {
+                            habilitarBotoes();
+                        } else if (facade.getIdJogador() != facade.getProximoJogador()) {
+                            desabilitarBotoes();
+                        }
+                    });
 
 
                     Thread.sleep(2000);
@@ -674,13 +681,14 @@ public class FXMLViewController implements Initializable {
         }
     }
 
-    public void desabilitarBotoes () {
+    public void desabilitarBotoes() {
         this.botaoAcaoCarta.setDisable(true);
         this.botaoEmprestimo.setDisable(true);
         this.botaoJogar.setDisable(true);
         this.botaoPagarDivida.setDisable(true);
         this.botaoSorGrande.setDisable(true);
         this.botaoVenderCarta.setDisable(true);
+        this.botaoFinalizar.setDisable(true);
     }
 
     public void habilitarBotoes() {
@@ -690,6 +698,7 @@ public class FXMLViewController implements Initializable {
         this.botaoPagarDivida.setDisable(false);
         this.botaoSorGrande.setDisable(false);
         this.botaoVenderCarta.setDisable(false);
+        this.botaoFinalizar.setDisable(false);
     }
 
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
