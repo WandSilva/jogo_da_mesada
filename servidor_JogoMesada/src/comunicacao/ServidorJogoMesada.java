@@ -14,7 +14,6 @@ import model.Sala;
  * Esta classe implementa a abstração do servidor do Jogo da Mesada. A execução
  * dele independe da execução do cliente.
  *
- * @see model.Jogador
  * @author Wanderson e Santana
  * @version 1.0
  *
@@ -22,7 +21,6 @@ import model.Sala;
 public class ServidorJogoMesada {
 
     private static final int portaClienteServidor = 22222;
-//    private static ArrayList<Jogador> jogadoresCadastrados;
     private static ArrayList<String> jogadoresOnline;
     private static ArrayList<Sala> salasDePartidas;
 
@@ -38,7 +36,6 @@ public class ServidorJogoMesada {
 
             ServerSocket socketClienteServidor = new ServerSocket(portaClienteServidor);
             System.out.println("Servidor executando na porta" + " " + portaClienteServidor);
-//            jogadoresCadastrados = new ArrayList<>();
             jogadoresOnline = new ArrayList<>();
             salasDePartidas = new ArrayList<>();
 
@@ -53,6 +50,12 @@ public class ServidorJogoMesada {
         }
     }
 
+    /**
+     * Esta interna classe implementa a Thread responsavel por tratar a comunicação entre Cliente-Servidor.
+     * @author Wanderson e Santana
+     * @version 1.0
+     */
+    
     private static class ThreadServidor extends Thread {
 
         private final Socket conexaoClienteServidor;
@@ -61,6 +64,12 @@ public class ServidorJogoMesada {
         private final DataOutputStream saidaDadosClienteServidor;
         private ArrayList<Jogador> jogadores = new ArrayList<>();
 
+        /**
+        * Construtor da(s) Thread(s).
+        * @param conexaoClienteServidor - Socket entre o Cliente e o Servidor.
+        * @author Wanderson e Santana
+        * @version 1.0
+        */
         public ThreadServidor(Socket conexaoClienteServidor) throws IOException {
             this.conexaoClienteServidor = conexaoClienteServidor;
             this.entradaDadosClienteServidor = new BufferedReader(new InputStreamReader(this.conexaoClienteServidor.getInputStream()));
@@ -79,16 +88,17 @@ public class ServidorJogoMesada {
 
             /**
              * Informações sobre o Protocolo
-             *
+             * 001 - Login
+             * 002 - Remover Jogador
+             * 003 - 
+             * 004 - Iniciar Partida
+             * 005 - Lista de Jogadores
              */
             while (true) {
                 if (conexaoClienteServidor.isConnected()) {
-
                     try {
                         String pacoteDados = entradaDadosClienteServidor.readLine();
-
                         if (pacoteDados.startsWith("001")) {
-
                             String[] dados = new String[2];
                             dados = pacoteDados.split(";");
 
@@ -147,6 +157,13 @@ public class ServidorJogoMesada {
 
         }
 
+        /**
+        * Metodo que adiciona um jogador na sala.
+        * @param novoJogadorOnline
+        * @return IP Multicast
+        * @author Wanderson e Santana
+        * 
+        */
         private synchronized String entrarSala(Jogador novoJogadorOnline) {
 
             if (salasDePartidas.isEmpty()) {
@@ -174,6 +191,12 @@ public class ServidorJogoMesada {
             }
         }
 
+        /**
+        * Metodo que remove um jogador da sala.
+        * @param jogador
+        * @author Wanderson e Santana
+        */
+        
         private synchronized void sairSala(Jogador jogador) {
 
             for (Sala sala : salasDePartidas) {
@@ -186,19 +209,26 @@ public class ServidorJogoMesada {
             }
 
         }
-
+        /**
+        * Método que retorna a lista de jogadores de uma sala.
+        * @param sala - Sala. 
+        * @return Lista de Jogadores.
+        * @author Wanderson e Santana
+        */
         private synchronized ArrayList<String> listaJogadores(Sala sala) {
-
             ArrayList<String> jogadores = new ArrayList<>();
-
             for (Jogador jogador1 : sala.getJogadores()) {
-
                 jogadores.add(jogador1.getNome());
             }
-
             return jogadores;
         }
 
+        /**
+        * Método que retorna a sala de um jogador.
+        * @param jogador - O Jogador. 
+        * @return Sala procurada.
+        * @author Wanderson e Santana
+        */
         private synchronized Sala buscarSala(Jogador jogador) {
             for (Sala sala : salasDePartidas) {
                 if (sala != null) {
