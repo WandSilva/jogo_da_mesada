@@ -1,25 +1,19 @@
 package controller;
 
+import comunicacao.ClienteJogoMesada;
 import exception.SaldoInsuficienteException;
-import model.CartaCorreio;
 import model.Jogador;
-import model.SorteGrande;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by wanderson on 06/05/17.
  */
 public class ControllerAcaoCasas {
 
-    private SorteGrande sorteGrande;
     private Jogador jogador;
     private int numeroDeJogadores;
+    private ClienteJogoMesada cliente;
 
     public ControllerAcaoCasas() {
-        this.sorteGrande = SorteGrande.getInstance();
         this.jogador = Jogador.getInstance();
     }
 
@@ -29,11 +23,10 @@ public class ControllerAcaoCasas {
     /**
      * recebe o dinheiro acumulado no sorte grande se cair na casa 'Sorte Grande'.
      */
-    public void casaSorteGrande(Boolean caiuNaCasa) {
-        if (caiuNaCasa)
-            jogador.depositar(sorteGrande.doarTodoDinheiro());
-        else
-            sorteGrande.doarTodoDinheiro();
+    public void casaSorteGrande() {
+        Double valor = cliente.getSorteGrande();
+        jogador.depositar(valor);
+        cliente.setSorteGrande(0);
     }
 
     /**
@@ -48,10 +41,11 @@ public class ControllerAcaoCasas {
         try {
             jogador.debitar(valor);
         } catch (SaldoInsuficienteException e) {
-            jogador.fazerEmprestimo(valor-jogador.getSaldoJogador());
+            jogador.fazerEmprestimo(valor - jogador.getSaldoJogador());
             jogador.debitar(valor);
         }
-        this.sorteGrande.arrecadarDinheiro(valor);
+        double aux = cliente.getSorteGrande();
+        cliente.setSorteGrande(aux+valor);
     }
 
     /**
@@ -69,6 +63,7 @@ public class ControllerAcaoCasas {
 
     /**
      * evento da casa Bolão de esportes
+     *
      * @param valorDado
      * @param numeroEscolhido
      * @param numeroParticipantes
@@ -88,15 +83,16 @@ public class ControllerAcaoCasas {
 
     /**
      * debita o 100 x valor do dado sorteado na casa Negocio de Ocasião
+     *
      * @param valorDado
      * @throws SaldoInsuficienteException
      */
     public void pagarNeogocioOcasiao(int valorDado) throws SaldoInsuficienteException {
         try {
-            jogador.debitar(valorDado*100);
+            jogador.debitar(valorDado * 100);
         } catch (SaldoInsuficienteException e) {
-            jogador.fazerEmprestimo((valorDado*100)-jogador.getSaldoJogador());
-            jogador.debitar(valorDado*100);
+            jogador.fazerEmprestimo((valorDado * 100) - jogador.getSaldoJogador());
+            jogador.debitar(valorDado * 100);
         }
     }
 
@@ -108,40 +104,43 @@ public class ControllerAcaoCasas {
         try {
             jogador.debitar(100);
         } catch (SaldoInsuficienteException e) {
-            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.fazerEmprestimo(100 - jogador.getSaldoJogador());
             jogador.debitar(100);
         }
-        sorteGrande.arrecadarDinheiro(100);
+        double aux = cliente.getSorteGrande();
+        cliente.setSorteGrande(aux+100);
     }
 
     public void casaAjudeaFloresta() throws SaldoInsuficienteException {
         try {
             jogador.debitar(100);
         } catch (SaldoInsuficienteException e) {
-            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.fazerEmprestimo(100 - jogador.getSaldoJogador());
             jogador.debitar(100);
         }
-        sorteGrande.arrecadarDinheiro(100);
+        double aux = cliente.getSorteGrande();
+        cliente.setSorteGrande(aux+100);
     }
 
     public void casaLanchonete() throws SaldoInsuficienteException {
         try {
             jogador.debitar(100);
         } catch (SaldoInsuficienteException e) {
-            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.fazerEmprestimo(100 - jogador.getSaldoJogador());
             jogador.debitar(100);
         }
-        sorteGrande.arrecadarDinheiro(100);
-    }
+        double aux = cliente.getSorteGrande();
+        cliente.setSorteGrande(aux+100);    }
 
     public void casaShopping() throws SaldoInsuficienteException {
         try {
             jogador.debitar(100);
         } catch (SaldoInsuficienteException e) {
-            jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+            jogador.fazerEmprestimo(100 - jogador.getSaldoJogador());
             jogador.debitar(100);
         }
-        sorteGrande.arrecadarDinheiro(100);
+        double aux = cliente.getSorteGrande();
+        cliente.setSorteGrande(aux+100);
     }
 
     public void casaFelizAniversario(boolean caiuNaCasa) throws SaldoInsuficienteException {
@@ -151,24 +150,29 @@ public class ControllerAcaoCasas {
             try {
                 jogador.debitar(100);
             } catch (SaldoInsuficienteException e) {
-                jogador.fazerEmprestimo(100-jogador.getSaldoJogador());
+                jogador.fazerEmprestimo(100 - jogador.getSaldoJogador());
                 jogador.debitar(100);
             }
     }
 
     /**
      * paga a mesada e faz o cálculo dos juros
+     *
      * @throws SaldoInsuficienteException
      */
-    public void casaDiaDaMesada()  {
+    public void casaDiaDaMesada() {
         jogador.depositar(3500); //recebe a mesada
         jogador.setDividaMensal(jogador.getDividaJogador()); //pega a dívida do mês
         jogador.receberJuros(jogador.getDividaMensal() * 0.1);
     }
 
-    public double getValorSorteGrande(){
-        return this.sorteGrande.getValorAcumulado();
+
+    public void setCliente(ClienteJogoMesada cliente) {
+        this.cliente = cliente;
     }
 
+    public double DELETARISSO(){
+        return cliente.getSorteGrande();
+    }
 
 }

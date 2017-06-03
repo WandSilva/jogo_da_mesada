@@ -1,10 +1,10 @@
 package controller;
 
+import comunicacao.ClienteJogoMesada;
 import exception.SaldoInsuficienteException;
 import model.CartaCompra;
 import model.CartaCorreio;
 import model.Jogador;
-import model.SorteGrande;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,16 +15,16 @@ import java.util.Random;
 public class ControllerCartas {
     private ArrayList<CartaCorreio> listaCartasCorreio;
     private ArrayList<CartaCompra> listaCartasCompra;
+    private ClienteJogoMesada cliente;
     private Jogador jogador;
-    private SorteGrande sorteGrande;
 
     public ControllerCartas() {
         this.listaCartasCorreio = new ArrayList<>();
         this.listaCartasCompra = new ArrayList<>();
         this.jogador = Jogador.getInstance();
-        this.sorteGrande = SorteGrande.getInstance();
         this.iniciarCartasCorreio();
         this.criarCartasCompra();
+
     }
 
 
@@ -92,7 +92,8 @@ public class ControllerCartas {
 
     private void acaoDoacoes(CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
         jogador.debitar(cartaCorreio.getValor());
-        sorteGrande.arrecadarDinheiro(cartaCorreio.getValor());
+        this.cliente.setSorteGrande(cliente.getSorteGrande() +
+                cartaCorreio.getValor());
 
         jogador.removerContas(cartaCorreio);
     }
@@ -277,4 +278,7 @@ public class ControllerCartas {
         return listaCartasCompra.get(sorteio);
     }
 
+    public void setCliente(ClienteJogoMesada cliente) {
+        this.cliente = cliente;
+    }
 }
