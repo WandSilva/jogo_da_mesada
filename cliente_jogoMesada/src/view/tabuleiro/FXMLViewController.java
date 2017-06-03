@@ -187,7 +187,12 @@ public class FXMLViewController implements Initializable {
     }
 
     public void finalizarJogada() {
-        this.facade.finalizarJogada(this.dado);
+        if (botaoJogar.isDisable())
+            this.facade.finalizarJogada(this.dado);
+        else
+        {
+            this.facade.finalizarJogada(0);}
+      
     }
 
     public void moverPeao(Peao peao, int dado) {
