@@ -24,19 +24,18 @@ public class ClienteJogoMesada {
     private final static int portaClienteServidor = 22222;
     private final static int portaClienteCliente = 44444;
     private static String usuario;
-    private static int id;
     private static int idDestino;
-    private static float valorTransferencia;
+    private static double valorTransferencia;
     private static boolean controleTransferencia;
     private static boolean controleMsgJogada;
-    private static float sorteGrande;
+    private static double sorteGrande;
     private static boolean controleSorteGrande;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
-    private static String proximoJogador = "0";
+    private static String proximoJogador;
     private static int ultimoDado;
     private static ArrayList<String> ordemJogadas = new ArrayList();
 
@@ -46,6 +45,8 @@ public class ClienteJogoMesada {
      * @param ipServidor IP do Servidor
      */
     public ClienteJogoMesada(String ipServidor) {
+        sorteGrande =1;
+        proximoJogador = "0";
         try {
             this.conexaoClienteServidor = new Socket(ipServidor, portaClienteServidor);
             this.saidaDados = new DataOutputStream(this.conexaoClienteServidor.getOutputStream());
@@ -273,14 +274,12 @@ public class ClienteJogoMesada {
     
     /**
      * Método responsável por atualizar o valor do sorte grande.
-     *
-     * @param id - ID do jogador que efetuou a jogada.
      * @param valor - Valor atual do sorte grande.
      * @author Wanderson e Santana
      */
 
-    public synchronized void sorteGrande(int id, float valor) {
-        byte dados[] = ("1005" + ";" + id + ";" + valor).getBytes();
+    public synchronized void setSorteGrande(double valor) {
+        byte dados[] = ("1005" + ";" + valor).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
         try {
             conexaoGrupo.send(msgPacket);
@@ -297,7 +296,7 @@ public class ClienteJogoMesada {
      * @author Wanderson e Santana
      */
     
-    public synchronized void transferirValores(int idDestino, float valor)
+    public synchronized void transferirValores(int idDestino, double valor)
     {
         byte dados[] = ("1006" + ";" + idDestino + ";" + valor).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
@@ -370,7 +369,8 @@ public class ClienteJogoMesada {
      * @author Wanderson e Santana
      */
 
-    public synchronized float getSorteGrande() {
+    public synchronized double getSorteGrande() {
+        System.out.println("valor sorte grande: "+ClienteJogoMesada.sorteGrande);
         return ClienteJogoMesada.sorteGrande;
     }
     
@@ -427,7 +427,7 @@ public class ClienteJogoMesada {
      * @author Wanderson e Santana
      */
     
-    public synchronized float getValorTransferencia()
+    public synchronized double getValorTransferencia()
     {
         return ClienteJogoMesada.valorTransferencia;
     }
@@ -498,13 +498,12 @@ public class ClienteJogoMesada {
                         ClienteJogoMesada.ordemJogadas = ordem;
                     } else if (msg.startsWith("1005")) {
                         String[] dadosRecebidos = msg.split(";");
-                        id = Integer.parseInt(dadosRecebidos[1].trim());
-                        sorteGrande = Float.parseFloat(dadosRecebidos[2].trim());
+                        sorteGrande = Double.parseDouble(dadosRecebidos[1].trim());
                         ClienteJogoMesada.controleSorteGrande = true;
                     } else if (msg.startsWith("1006")){
                         String[] dadosRecebidos = msg.split(";");
                         idDestino = Integer.parseInt(dadosRecebidos[1].trim());
-                        valorTransferencia = Float.parseFloat(dadosRecebidos[2].trim());
+                        valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleTransferencia = true;
                     }
                     Thread.sleep(1000);

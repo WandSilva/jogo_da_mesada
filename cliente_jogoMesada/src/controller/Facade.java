@@ -19,10 +19,10 @@ public class Facade {
     private ControllerComunicacao controllerComunicacao;
 
     public Facade() {
-        this.controllerCasas = new ControllerAcaoCasas();
-        this.controllerJogador = new ControllerJogador();
-        this.controllerCartas = new ControllerCartas();
         this.controllerComunicacao = ControllerComunicacao.getInstance();
+        this.controllerJogador = new ControllerJogador();
+        this.controllerCasas = new ControllerAcaoCasas();
+        this.controllerCartas = new ControllerCartas();
     }
 
     public static Facade getInstance() {
@@ -30,6 +30,12 @@ public class Facade {
             INSTANCE = new Facade();
         }
         return INSTANCE;
+    }
+
+    public void sincronizarComunicacao(){
+        this.controllerCasas.setCliente(this.controllerComunicacao.getCliente());
+        this.controllerCartas.setCliente(this.controllerComunicacao.getCliente());
+
     }
 
     //******************************METODOS DO CONTROLLER JOGADOR***********************//
@@ -99,8 +105,8 @@ public class Facade {
         this.controllerCasas.casaPremio();
     }
 
-    public void acaoCasaSorteGrande(Boolean caiuNaCasa) {
-        this.controllerCasas.casaSorteGrande(caiuNaCasa);
+    public void acaoCasaSorteGrande() {
+        this.controllerCasas.casaSorteGrande();
     }
 
     public void acaoCasaMaratonaBeneficente(int valorRolarDado) throws SaldoInsuficienteException {
@@ -140,7 +146,8 @@ public class Facade {
     }
 
     public double getValorSorteGrande() {
-        return this.controllerCasas.getValorSorteGrande();
+        //return this.controllerComunicacao.getSorteGrande();
+        return this.controllerCasas.DELETARISSO();
     }
 
     //******************************METODOS DO CONTROLLER CARTA***********************//
@@ -215,7 +222,7 @@ public class Facade {
         return this.controllerComunicacao.getUltimoDado();
     }
     
-    public float getSorteGrande()
+    public double getSorteGrande()
     {
         return this.controllerComunicacao.getSorteGrande();
     }

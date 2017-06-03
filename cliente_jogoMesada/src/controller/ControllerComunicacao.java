@@ -42,6 +42,10 @@ public class ControllerComunicacao {
         cliente = new ClienteJogoMesada(ip);
     }
 
+    public ClienteJogoMesada getCliente() {
+        return cliente;
+    }
+
     /**
      * Método Construtor da Classe.
      *
@@ -229,7 +233,7 @@ public class ControllerComunicacao {
      * @author Wanderson e Santana
      */
     
-    public float getSorteGrande() {
+    public double getSorteGrande() {
         return cliente.getSorteGrande();
     }
 

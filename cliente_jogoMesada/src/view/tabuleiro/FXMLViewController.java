@@ -144,6 +144,7 @@ public class FXMLViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.facade = Facade.getInstance();
+        facade.sincronizarComunicacao();
         ordemJogadas = this.facade.iniciarPartida();
         this.facade.enviarOrdemJogada(ordemJogadas);
 
@@ -178,9 +179,9 @@ public class FXMLViewController implements Initializable {
      */
     @FXML
     public void jogar(ActionEvent event) {
+        botaoJogar.setDisable(true);
         this.dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
-
         this.moverPeao(peoes.get(facade.getIdJogador()), dado);
         this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
     }
@@ -221,19 +222,14 @@ public class FXMLViewController implements Initializable {
                             jogadorPassado = facade.getUsuariosConectados().size()-1;
 
                         if (facade.getControle() && (jogadorPassado != facade.getIdJogador())) {
-                            /* no peoes.get() abaixo tem quem passar o id do jogador que
-                             vc quer mover o peão. Para mover, basta colocar o valor que saiu
-                             no dado dele*/
-
                             moverPeao(peoes.get(jogadorPassado), facade.getUltimoDado());
-
-                            /*aqui vc passa o ID do jogador no get para verficar se onde
-                             * ele caiu tem algum evento que outros jogadores precisam interagir*/
                             acaoSeAlguemCaiuNaCasa(peoes.get(jogadorPassado).getColuna(), peoes.get(jogadorPassado).getLinha());
                             facade.setControle(false);
                         }
                         if (facade.getIdJogador() == facade.getProximoJogador()) {
                             habilitarBotoes();
+                            atualizarSortegrande();
+
                         } else if (facade.getIdJogador() != facade.getProximoJogador()) {
                             desabilitarBotoes();
                         }
@@ -435,7 +431,7 @@ public class FXMLViewController implements Initializable {
     public void ganharSorteGrande(ActionEvent event) {
         if (dado == 6) {
             JOptionPane.showMessageDialog(null, "Parabéns, você recebeu R$" + labelSorteGrande.getText(), "Sorte grande", JOptionPane.INFORMATION_MESSAGE);
-            facade.acaoCasaSorteGrande(true);
+            facade.acaoCasaSorteGrande();
             atualizarSortegrande();
             atualizarValoresTela();
         } else {
