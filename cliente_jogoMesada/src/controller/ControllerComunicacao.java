@@ -252,4 +252,26 @@ public class ControllerComunicacao {
     public void setControleSorteGrande(boolean valor) {
         cliente.setControleSorteGrande(valor);
     }
+
+    public void setControleTranferenciaIn(boolean controle){
+        this.cliente.setControleTransferenciaIn(controle);
+    }
+
+    public void setControleTranferenciaOut(boolean controle){
+        this.cliente.setControleTransferenciaOut(controle);
+    }
+    public boolean getControleTranferenciaIn(){
+        return cliente.getControleTransferenciaIn();
+    }
+
+    public boolean getControleTranferenciaOut(){
+        return cliente.getControleTransferenciaOut();
+    }
+
+    public int getIdJogadorTranferencia(){
+        return cliente.getIdDestinoTranferenciaO();
+    }
+    public double getValorTranferencia(){
+        return cliente.getValorTransferencia();
+    }
 }

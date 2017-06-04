@@ -63,6 +63,17 @@ public class Facade {
         this.controllerJogador.fazerEmprestimo(valor);
     }
 
+    public void receberDinheiro(double valor){
+        this.controllerJogador.receberDinheiro(valor);
+    }
+
+    public void darDinheiro (double valor){
+        try {
+            controllerJogador.darDineiro(valor);
+        } catch (SaldoInsuficienteException e) {
+            e.printStackTrace();
+        }
+    }
     public void receberCartaCorreio(CartaCorreio cartaCorreio) {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
@@ -151,8 +162,8 @@ public class Facade {
     }
 
     //******************************METODOS DO CONTROLLER CARTA***********************//
-    public void acaoCartas(boolean pegouCarta, String tipoCarta) throws SaldoInsuficienteException {
-        this.controllerCartas.acaoCartas(pegouCarta, tipoCarta);
+    public void acaoCartas(int idDestino, String tipoCarta) throws SaldoInsuficienteException {
+        this.controllerCartas.acaoCartas(idDestino, tipoCarta);
     }
 
     public CartaCorreio pegarCartaCorreio() {
@@ -240,4 +251,28 @@ public class Facade {
     public void finalizarJogada(int dado){
         this.controllerComunicacao.finalizarJogada(dado);
     }
+
+    public void setControleTranferenciaIn(boolean controle){
+        this.controllerComunicacao.setControleTranferenciaIn(controle);
+    }
+
+    public void setControleTranferenciaOut(boolean controle){
+        this.controllerComunicacao.setControleTranferenciaOut(controle);
+    }
+    public boolean getControleTranferenciaIn(){
+        return controllerComunicacao.getControleTranferenciaIn();
+    }
+
+    public boolean getControleTranferenciaOut(){
+        return this.controllerComunicacao.getControleTranferenciaOut();
+    }
+
+    public double getValorTranferencia(){
+        return this.controllerComunicacao.getValorTranferencia();
+    }
+    public int getIdJogadorTranferencia(){
+        return controllerComunicacao.getIdJogadorTranferencia();
+    }
+
+
 }

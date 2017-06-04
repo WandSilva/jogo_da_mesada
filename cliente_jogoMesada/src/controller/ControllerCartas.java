@@ -33,11 +33,11 @@ public class ControllerCartas {
     /**
      * recebe uma carta e verifica seu tipo para executar sua devida ação
      *
-     * @param pegouCarta
+     * @param idDestino
      * @param tipoCarta
      * @throws SaldoInsuficienteException
      */
-    public void acaoCartas(boolean pegouCarta, String tipoCarta) throws SaldoInsuficienteException {
+    public void acaoCartas(int idDestino, String tipoCarta) throws SaldoInsuficienteException {
 
         CartaCorreio cartaCorreio = null;
 
@@ -51,10 +51,10 @@ public class ControllerCartas {
                 this.acaoCartaConta(cartaCorreio);
                 break;
             case "pague um vizinho agora":
-                this.acaoCartaPagueVizinhoAgora(pegouCarta, cartaCorreio);
+                this.acaoCartaPagueVizinhoAgora(idDestino, cartaCorreio);
                 break;
             case "dinheiro extra":
-                this.acaoDinheiroExtra(pegouCarta, cartaCorreio);
+                this.acaoDinheiroExtra(idDestino, cartaCorreio);
                 break;
             case "doacoes":
                 this.acaoDoacoes(cartaCorreio);
@@ -72,21 +72,15 @@ public class ControllerCartas {
         jogador.removerContas(cartaCorreio);
     }
 
-    private void acaoCartaPagueVizinhoAgora(boolean pegouCarta, CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
-        if (pegouCarta)
-            jogador.debitar(cartaCorreio.getValor());
-        else
-            jogador.depositar(cartaCorreio.getValor());
-
+    private void acaoCartaPagueVizinhoAgora(int idDestino, CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
+        jogador.debitar(cartaCorreio.getValor());
+        cliente.transferirValores(idDestino, cartaCorreio.getValor());
         jogador.removerContas(cartaCorreio);
     }
 
-    private void acaoDinheiroExtra(boolean pegouCarta, CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
-        if (pegouCarta)
-            jogador.depositar(cartaCorreio.getValor());
-        else
-            jogador.debitar(cartaCorreio.getValor());
-
+    private void acaoDinheiroExtra(int idPagador, CartaCorreio cartaCorreio) throws SaldoInsuficienteException {
+        jogador.depositar(cartaCorreio.getValor());
+        cliente.receberValores(idPagador,cartaCorreio.getValor());
         jogador.removerContas(cartaCorreio);
     }
 

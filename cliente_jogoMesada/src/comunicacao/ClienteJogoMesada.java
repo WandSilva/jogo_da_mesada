@@ -26,7 +26,8 @@ public class ClienteJogoMesada {
     private static String usuario;
     private static int idDestino;
     private static double valorTransferencia;
-    private static boolean controleTransferencia;
+    private static boolean controleTransferenciaIn;
+    private static boolean controleTransferenciaOut;
     private static boolean controleMsgJogada;
     private static double sorteGrande;
     private static boolean controleSorteGrande;
@@ -41,11 +42,12 @@ public class ClienteJogoMesada {
 
     /**
      * Construtor da classe que recebe o IP do servidor do jogo.
-     * @author Wanderson e Santana
+     *
      * @param ipServidor IP do Servidor
+     * @author Wanderson e Santana
      */
     public ClienteJogoMesada(String ipServidor) {
-        sorteGrande =1;
+        sorteGrande = 0;
         proximoJogador = "0";
         try {
             this.conexaoClienteServidor = new Socket(ipServidor, portaClienteServidor);
@@ -95,9 +97,8 @@ public class ClienteJogoMesada {
      *
      * @return Resposta do Servidor.
      * @author Wanderson e Santana
-     * 
      */
-    
+
     public synchronized String sair() {
         if (conexaoClienteServidor.isConnected()) {
             try {
@@ -118,12 +119,12 @@ public class ClienteJogoMesada {
     }
 
     /**
-     * Método responsável por efetuar a troca de uma sala 
+     * Método responsável por efetuar a troca de uma sala
      *
      * @return Resposta do Servidor.
      * @author Wanderson e Santana
      */
-    
+
     public synchronized String trocarSala() {
         if (conexaoClienteServidor.isConnected()) {
             try {
@@ -146,7 +147,7 @@ public class ClienteJogoMesada {
             return "ERRO! Tente novamente...";
         }
     }
-    
+
     /**
      * Método responsável por iniciar uma partida.
      *
@@ -186,10 +187,11 @@ public class ClienteJogoMesada {
 
     /**
      * Método responsável por consultar quem são os usuários conectados em uma determinada sala.
+     *
      * @return Lista dos jogadores
      * @author Wanderson e Santana
      */
-    
+
     public synchronized ArrayList<String> usuariosConectados() {
 
         if (conexaoClienteServidor.isConnected()) {
@@ -218,11 +220,11 @@ public class ClienteJogoMesada {
             return new ArrayList<>();
         }
     }
-    
+
     /**
      * Método responsável por enviar uma jogada para todos os outros jogadores.
      *
-     * @param id - ID do jogador que efetuou a jogada.
+     * @param id      - ID do jogador que efetuou a jogada.
      * @param numDado - Número do dado.
      * @author Wanderson e Santana
      */
@@ -243,7 +245,7 @@ public class ClienteJogoMesada {
      * @param nomeUsuario - Nome do Jogador que entrou na sala.
      * @author Wanderson e Santana
      */
-    
+
     public synchronized void entrouNaSala(String nomeUsuario) {
         byte dados[] = ("1002" + ";" + nomeUsuario + " entrou na sala!").getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
@@ -253,12 +255,11 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Método responsável por enviar a ordem das jogadas.
      *
      * @param ordem - ID do jogador que efetuou a jogada.
-     * 
      * @author Wanderson e Santana
      */
 
@@ -271,9 +272,10 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Método responsável por atualizar o valor do sorte grande.
+     *
      * @param valor - Valor atual do sorte grande.
      * @author Wanderson e Santana
      */
@@ -287,17 +289,16 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Método responsável por transferir valores entre jogadores.
      *
      * @param idDestino - ID do jogador destino.
-     * @param valor - Valor a ser transferido.
+     * @param valor     - Valor a ser transferido.
      * @author Wanderson e Santana
      */
-    
-    public synchronized void transferirValores(int idDestino, double valor)
-    {
+
+    public synchronized void transferirValores(int idDestino, double valor) {
         byte dados[] = ("1006" + ";" + idDestino + ";" + valor).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
         try {
@@ -306,18 +307,28 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    public synchronized void receberValores(int idPagador, double valor) {
+        byte dados[] = ("1007" + ";" + idPagador + ";" + valor).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Método responsável por obter o próximo jogador
      *
      * @return ID do proíxmo jogador.
      * @author Wanderson e Santana
      */
-    
+
     public String getProximoJogador() {
         return proximoJogador;
     }
-    
+
     /**
      * Método responsável por obter o último resultado do dado.
      *
@@ -328,7 +339,7 @@ public class ClienteJogoMesada {
     public int getUltimoDado() {
         return ultimoDado;
     }
-    
+
     /**
      * Método responsável por alterar a variável que verifica se uma nova jogada foi feita.
      *
@@ -339,7 +350,7 @@ public class ClienteJogoMesada {
     public static synchronized void setControleMsgJogada(boolean valor) {
         ClienteJogoMesada.controleMsgJogada = valor;
     }
-    
+
     /**
      * Método responsável por modificar o valor do último dado.
      *
@@ -357,11 +368,11 @@ public class ClienteJogoMesada {
      * @return Valor da variável.
      * @author Wanderson e Santana
      */
-    
+
     public synchronized boolean getControleMsgJogada() {
         return controleMsgJogada;
     }
-    
+
     /**
      * Método responsável por obter o valor do sorte grande.
      *
@@ -370,10 +381,9 @@ public class ClienteJogoMesada {
      */
 
     public synchronized double getSorteGrande() {
-        System.out.println("valor sorte grande: "+ClienteJogoMesada.sorteGrande);
         return ClienteJogoMesada.sorteGrande;
     }
-    
+
     /**
      * Método responsável por obter o estado da variável que verifica se o sorte grande foi atualizado.
      *
@@ -384,10 +394,10 @@ public class ClienteJogoMesada {
     public synchronized boolean getControleSorteGrande() {
         return controleSorteGrande;
     }
-    
+
     /**
      * Método responsável por alterar o estado da variável que verifica se o sorte grande foi atualizado.
-     * 
+     *
      * @param valor - Valor da variável.
      * @author Wanderson e Santana
      */
@@ -398,47 +408,60 @@ public class ClienteJogoMesada {
 
     /**
      * Método responsável por obter o estado da variável que verifica se uma transferência foi feita.
-     * 
+     *
      * @return Valor da variável.
      * @author Wanderson e Santana
      */
-    
-    public synchronized boolean getControleTransferencia()
-    {
-        return ClienteJogoMesada.controleTransferencia;
+
+    public synchronized boolean getControleTransferenciaIn() {
+        return ClienteJogoMesada.controleTransferenciaIn;
+    }
+
+    public synchronized boolean getControleTransferenciaOut() {
+        return ClienteJogoMesada.controleTransferenciaOut;
     }
 
     /**
      * Método responsável por alterar o estado da variável que verifica se uma transferência foi feita.
-     * 
+     *
      * @param valor - Valor da variável.
      * @author Wanderson e Santana
      */
-    
-    public synchronized void setControleTransferencia(boolean valor)
-    {
-        ClienteJogoMesada.controleTransferencia = valor;
+
+    public synchronized void setControleTransferenciaIn(boolean valor) {
+        ClienteJogoMesada.controleTransferenciaIn = valor;
     }
-    
+    /**
+     * Método responsável por alterar o estado da variável que verifica se uma transferência foi feita.
+     *
+     * @param valor - Valor da variável.
+     * @author Wanderson e Santana
+     */
+    public synchronized void setControleTransferenciaOut(boolean valor) {
+        ClienteJogoMesada.controleTransferenciaOut = valor;
+    }
+
     /**
      * Método responsável por obter o valor a ser transferido.
-     * 
+     *
      * @return Valor a ser transferido.
      * @author Wanderson e Santana
      */
-    
-    public synchronized double getValorTransferencia()
-    {
+
+    public synchronized double getValorTransferencia() {
         return ClienteJogoMesada.valorTransferencia;
     }
-    
+
+    public synchronized int getIdDestinoTranferenciaO(){
+        return ClienteJogoMesada.idDestino;
+    }
     /**
-    * Esta classe interna implementa a Thread responsavel pela comunicaçao entre os jogadores. 
-    *
-    * @author Wanderson e Santana
-    * @version 1.0
-    */
-    
+     * Esta classe interna implementa a Thread responsavel pela comunicaçao entre os jogadores.
+     *
+     * @author Wanderson e Santana
+     * @version 1.0
+     */
+
     private static class ThreadCliente extends Thread {
 
         private final MulticastSocket socketMulticast;
@@ -448,26 +471,26 @@ public class ClienteJogoMesada {
         }
 
         /**
-        * Método responsável por executar a Thread criada.
-        * 
-        * @author Wanderson e Santana
-        */
+         * Método responsável por executar a Thread criada.
+         *
+         * @author Wanderson e Santana
+         */
         public void run() {
             try {
-                
+
                 /**
-                * Protocolo:
-                * 
-                * 1001 - Jogar
-                * 1002 - Notificar Entrada
-                * 1003 -
-                * 1004 - Ordem Jogada
-                * 1005 - Sorte Grande
-                * 1006 - Transferir Valores
-                * 
-                * @author Wanderson e Santana
-                */
-                
+                 * Protocolo:
+                 *
+                 * 1001 - Jogar
+                 * 1002 - Notificar Entrada
+                 * 1003 -
+                 * 1004 - Ordem Jogada
+                 * 1005 - Sorte Grande
+                 * 1006 - Transferir Valores
+                 *
+                 * @author Wanderson e Santana
+                 */
+
                 while (true) {
                     byte dados[] = new byte[1024];
                     DatagramPacket datagrama = new DatagramPacket(dados, dados.length);
@@ -500,18 +523,22 @@ public class ClienteJogoMesada {
                         String[] dadosRecebidos = msg.split(";");
                         sorteGrande = Double.parseDouble(dadosRecebidos[1].trim());
                         ClienteJogoMesada.controleSorteGrande = true;
-                    } else if (msg.startsWith("1006")){
+                    } else if (msg.startsWith("1006")) {
                         String[] dadosRecebidos = msg.split(";");
                         idDestino = Integer.parseInt(dadosRecebidos[1].trim());
                         valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
-                        ClienteJogoMesada.controleTransferencia = true;
+                        ClienteJogoMesada.controleTransferenciaIn = true;
+                    } else if (msg.startsWith("1007")) {
+                        String[] dadosRecebidos = msg.split(";");
+                        idDestino = Integer.parseInt(dadosRecebidos[1].trim());
+                        valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
+                        ClienteJogoMesada.controleTransferenciaIn = true;
                     }
-                    Thread.sleep(1000);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
             }
-        }
 
+        }
     }
-}

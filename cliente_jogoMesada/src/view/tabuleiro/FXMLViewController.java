@@ -139,6 +139,8 @@ public class FXMLViewController implements Initializable {
 
     private Facade facade;
 
+    public int meuID;
+
     private ArrayList<String> ordemJogadas = new ArrayList();
 
     @Override
@@ -147,6 +149,7 @@ public class FXMLViewController implements Initializable {
         facade.sincronizarComunicacao();
         ordemJogadas = this.facade.iniciarPartida();
         this.facade.enviarOrdemJogada(ordemJogadas);
+        this.meuID = facade.getIdJogador();
 
         this.atualizarValoresTela();
         this.desabilitarBotoes();
@@ -183,16 +186,11 @@ public class FXMLViewController implements Initializable {
         this.dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
         this.moverPeao(peoes.get(facade.getIdJogador()), dado);
-        this.realizarAcaoCasa(peoes.get(facade.getIdJogador()).getColuna(), peoes.get(facade.getIdJogador()).getLinha());
+        this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
     }
 
     public void finalizarJogada() {
-        if (botaoJogar.isDisable())
-            this.facade.finalizarJogada(this.dado);
-        else
-        {
-            this.facade.finalizarJogada(0);}
-      
+        this.facade.finalizarJogada(this.dado);
     }
 
     public void moverPeao(Peao peao, int dado) {
@@ -224,18 +222,38 @@ public class FXMLViewController implements Initializable {
 
                         int jogadorPassado = facade.getProximoJogador() - 1;
                         if (jogadorPassado < 0)
-                            jogadorPassado = facade.getUsuariosConectados().size()-1;
+                            jogadorPassado = facade.getUsuariosConectados().size() - 1;
 
-                        if (facade.getControle() && (jogadorPassado != facade.getIdJogador())) {
+                        if (facade.getControle() && jogadorPassado != meuID) {
                             moverPeao(peoes.get(jogadorPassado), facade.getUltimoDado());
                             acaoSeAlguemCaiuNaCasa(peoes.get(jogadorPassado).getColuna(), peoes.get(jogadorPassado).getLinha());
                             facade.setControle(false);
                         }
-                        if (facade.getIdJogador() == facade.getProximoJogador()) {
+                        if (facade.getControleTranferenciaIn() &&
+                                facade.getIdJogadorTranferencia() == meuID) {
+
+                            facade.setControleTranferenciaIn(false);
+                            mostrarAlerta("Dinheiro Extra", "",
+                                    "Você recebeu R$ " + facade.getValorTranferencia());
+                            facade.receberDinheiro(facade.getValorTranferencia());
+                            atualizarValoresTela();
+                        }
+                        if (facade.getControleTranferenciaOut() &&
+                                facade.getIdJogadorTranferencia() == meuID) {
+
+                            facade.setControleTranferenciaOut(false);
+                            mostrarAlerta("Pague um vizinho agora", "",
+                                    "Você pagou R$ " + facade.getValorTranferencia());
+                            facade.darDinheiro(facade.getValorTranferencia());
+                            atualizarValoresTela();
+
+                        }
+
+                        if (meuID == facade.getProximoJogador()) {
                             habilitarBotoes();
                             atualizarSortegrande();
 
-                        } else if (facade.getIdJogador() != facade.getProximoJogador()) {
+                        } else if (meuID != facade.getProximoJogador()) {
                             desabilitarBotoes();
                         }
                     });
@@ -504,12 +522,34 @@ public class FXMLViewController implements Initializable {
     @FXML
     public void acaoCartaCorreio(ActionEvent e) {
         if (comboCorreio.getValue() != null) {
+
             if (comboCorreio.getValue().equals("va para frente agora")) {
                 this.acaoVaParaFrenteAgora();
                 comboCorreio.getItems().remove(comboCorreio.getValue());
+
+
+            } else if (comboCorreio.getValue().equals("dinheiro extra") ||
+                    comboCorreio.getValue().equals("pague um vizinho agora")) {
+
+                String selecionado = this.selecionarJogador();
+                int id = -1;
+
+                for (OrdemJogada ordemJogada : facade.getUsuariosConectados()) {
+                    if (selecionado.equals(ordemJogada.getNome())) {
+                        id = ordemJogada.getId();
+                    }
+                }
+                try {
+                    facade.acaoCartas(id, comboCorreio.getValue());
+                    comboCorreio.getItems().remove(comboCorreio.getValue());
+
+                } catch (SaldoInsuficienteException e1) {
+                    JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
+                }
+                atualizarValoresTela();
             } else {
                 try {
-                    facade.acaoCartas(true, comboCorreio.getValue());
+                    facade.acaoCartas(0, comboCorreio.getValue());
                     comboCorreio.getItems().remove(comboCorreio.getValue());
                     textCorreio.setText("");
                     this.atualizarValoresTela();
@@ -646,6 +686,26 @@ public class FXMLViewController implements Initializable {
             textCorreio.setText("Carta: " + cartaCorreio.getNome() + "\n\n"
                     + "Valor:" + cartaCorreio.getValor());
         }
+    }
+
+    public String selecionarJogador() {
+
+        ArrayList<OrdemJogada> lista = facade.getUsuariosConectados();
+        String selecionado = "";
+        ChoiceDialog dialogoRegiao = new ChoiceDialog();
+
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getId() != meuID)
+                dialogoRegiao.getItems().add(lista.get(i).getNome());
+        }
+
+        dialogoRegiao.setTitle("Selecione um jogador");
+        dialogoRegiao.setHeaderText("Selecione um jogador");
+        dialogoRegiao.setContentText("");
+        dialogoRegiao.showAndWait();
+        selecionado = (String) dialogoRegiao.getSelectedItem();
+
+        return selecionado;
     }
 
     public void mostraJogadorConectado() {

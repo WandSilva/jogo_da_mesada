@@ -45,6 +45,19 @@ public class ControllerJogador {
         return dado6Faces;
     }
 
+    public void receberDinheiro(double valor){
+        jogador.depositar(valor);
+    }
+
+    public void darDineiro(double valor) throws SaldoInsuficienteException {
+        try {
+            jogador.debitar(valor);
+        } catch (SaldoInsuficienteException e) {
+            jogador.fazerEmprestimo(valor -jogador.getSaldoJogador());
+            jogador.debitar(valor);
+        }
+    }
+
     /**
      * paga 10% de juros sobre a dívida
      * @throws SaldoInsuficienteException
