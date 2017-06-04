@@ -16,7 +16,7 @@
 
 <AnchorPane fx:id="fundo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.tabuleiro.FXMLViewController">
    <children>
-      <GridPane fx:id="grid" gridLinesVisible="true" layoutX="218.0" layoutY="6.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="558.0" prefWidth="808.0">
+      <GridPane fx:id="grid" gridLinesVisible="true" layoutX="218.0" layoutY="6.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="768.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -78,22 +78,22 @@
             <Pane fx:id="casa24" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button fx:id="botaoJogar" layoutX="222.0" layoutY="571.0" mnemonicParsing="false" onAction="#jogar" text="Jogar" />
-      <Label fx:id="labelSaldo" layoutX="651.0" layoutY="570.0" text="Saldo: 0" />
-      <Label fx:id="labelDivida" layoutX="649.0" layoutY="585.0" text="Divida: 0" />
-      <Button fx:id="botaoEmprestimo" layoutX="392.0" layoutY="571.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
+      <Button fx:id="botaoJogar" layoutX="220.0" layoutY="529.0" mnemonicParsing="false" onAction="#jogar" text="Jogar" />
+      <Label fx:id="labelSaldo" layoutX="649.0" layoutY="528.0" text="Saldo: 0" />
+      <Label fx:id="labelDivida" layoutX="647.0" layoutY="543.0" text="Divida: 0" />
+      <Button fx:id="botaoEmprestimo" layoutX="390.0" layoutY="529.0" mnemonicParsing="false" onAction="#fazerEmprestimo" text="Fazer emprestimo" />
       <ComboBox fx:id="comboCorreio" layoutX="6.0" layoutY="32.0" onAction="#descricaoCartaCorreio" prefHeight="25.0" prefWidth="208.0" />
       <TextArea fx:id="textCorreio" editable="false" layoutX="6.0" layoutY="56.0" prefHeight="88.0" prefWidth="208.0" wrapText="true" />
       <TextArea fx:id="textContas" editable="false" layoutX="7.0" layoutY="250.0" prefHeight="55.0" prefWidth="208.0" wrapText="true" />
       <ComboBox fx:id="comboCompras" layoutX="7.0" layoutY="226.0" onAction="#descricaoCartaCompra" prefHeight="25.0" prefWidth="208.0" />
       <Label layoutX="3.0" layoutY="14.0" text="Cartas correio" />
       <Label layoutX="7.0" layoutY="211.0" text="Cartas conta" />
-      <Button fx:id="botaoSorGrande" layoutX="280.0" layoutY="571.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
+      <Button fx:id="botaoSorGrande" layoutX="278.0" layoutY="529.0" mnemonicParsing="false" onAction="#ganharSorteGrande" text="Sorte Grande" />
       <Button fx:id="botaoVenderCarta" layoutX="7.0" layoutY="307.0" mnemonicParsing="false" onAction="#venderCartaCompra" text="Vender" />
-      <Button fx:id="botaoPagarDivida" layoutX="537.0" layoutY="571.0" mnemonicParsing="false" onAction="#pagarDivida" text="Pagar divida" />
+      <Button fx:id="botaoPagarDivida" layoutX="535.0" layoutY="529.0" mnemonicParsing="false" onAction="#pagarDivida" text="Pagar divida" />
       <Button fx:id="botaoAcaoCarta" layoutX="5.0" layoutY="145.0" mnemonicParsing="false" onAction="#acaoCartaCorreio" text="Açao da carta" />
       <TextArea fx:id="txtJogadores" editable="false" layoutX="8.0" layoutY="390.0" prefHeight="179.0" prefWidth="200.0" />
       <Label layoutX="7.0" layoutY="372.0" text="Jogadores" />
-      <Button fx:id="botaoFinalizar" layoutX="893.0" layoutY="571.0" mnemonicParsing="false" onAction="#finalizarJogada" text="Finalizar Jogada" />
+      <Button fx:id="botaoFinalizar" layoutX="891.0" layoutY="529.0" mnemonicParsing="false" onAction="#finalizarJogada" text="Finalizar Jogada" />
    </children>
 </AnchorPane>
