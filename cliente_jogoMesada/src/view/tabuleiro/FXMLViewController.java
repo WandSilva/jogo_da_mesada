@@ -220,7 +220,7 @@ public class FXMLViewController implements Initializable {
         grid.add(peao.getPeao(), peao.getColuna(), peao.getLinha());
     }
     
-    synchronized void atualizarJogadas() {
+    void atualizarJogadas() {
         Task t = new Task() {
             @Override
             protected Object call() throws Exception {
@@ -266,7 +266,7 @@ public class FXMLViewController implements Initializable {
                         }
                     });
                     
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 }
             }
         };
