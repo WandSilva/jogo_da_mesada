@@ -502,6 +502,7 @@ public class ClienteJogoMesada {
                         proximoJogador = dadosRecebidos[1];
                         ultimoDado = Integer.parseInt(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleMsgJogada = true;
+                        System.out.println(dadosRecebidos[1] + " " + dadosRecebidos[2]);
 
                     } else if (msg.startsWith("1002")) {
                         String[] dadosRecebidos = new String[2];

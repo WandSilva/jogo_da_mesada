@@ -246,7 +246,7 @@ public class FXMLViewController implements Initializable {
                             facade.receberDinheiro(facade.getValorTranferencia());
                             atualizarValoresTela();
                         }
-                        else if (facade.getControleTranferenciaOut()
+                        if (facade.getControleTranferenciaOut()
                                 && facade.getIdJogadorTranferencia() == meuID) {
                             
                             facade.setControleTranferenciaOut(false);
