@@ -534,6 +534,7 @@ public class ClienteJogoMesada {
                         valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleTransferenciaIn = true;
                     }
+                   Thread.sleep(2000);
                 }
                 } catch(Exception e){
                     e.printStackTrace();
