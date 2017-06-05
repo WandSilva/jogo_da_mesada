@@ -1,6 +1,8 @@
 package view.telaInicial;
 
 import controller.Facade;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -65,13 +67,26 @@ public class FXMLTelaInicialController implements Initializable {
     }
 
     public void mostraJogadorConectado() {
-        ArrayList<OrdemJogada> lista = new ArrayList();
-        lista = facade.getUsuariosConectados();
-        String usuarios = new String();
-        for (int i = 0; i < lista.size(); i++) {
-            usuarios = usuarios + lista.get(i).getNome()+"\n";
-        }
-        txtJogadoresConect.setText(usuarios);
+        Task t = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                while (true) {
+                    Platform.runLater(() -> {
+                        String usuarios = new String();
+                        for (int i = 0; i < facade.getUsuariosConectados().size(); i++) {
+                            usuarios = usuarios + facade.getUsuariosConectados().get(i).getNome()+"\n";
+                        }
+                        txtJogadoresConect.setText(usuarios);
+
+                    });
+
+                    Thread.sleep(2000);
+                }
+            }
+        };
+        new Thread(t).start();
+
+
     }
 
 }
