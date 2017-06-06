@@ -274,4 +274,14 @@ public class ControllerComunicacao {
     public double getValorTranferencia(){
         return cliente.getValorTransferencia();
     }
+
+    public boolean getGatilhoInicioPartida(){
+        return  this.cliente.isGatilhoInicioPartida();
+    }
+    public void setGatilhoInicioPartida(boolean gatilho){
+        this.cliente.setGatilhoInicioPartida(gatilho);
+    }
+    public void iniciarTabuleiro(){
+        this.cliente.iniciarTabuleiro();
+    }
 }

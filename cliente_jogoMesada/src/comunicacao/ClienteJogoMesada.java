@@ -31,6 +31,7 @@ public class ClienteJogoMesada {
     private static boolean controleMsgJogada;
     private static double sorteGrande;
     private static boolean controleSorteGrande;
+    private static boolean gatilhoInicioPartida;
     private BufferedReader entradaDados;
     private DataOutputStream saidaDados;
     private Socket conexaoClienteServidor;
@@ -318,6 +319,18 @@ public class ClienteJogoMesada {
         }
     }
 
+    public synchronized void iniciarTabuleiro() {
+        byte dados[] = ("1008").getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+
     /**
      * Método responsável por obter o próximo jogador
      *
@@ -441,6 +454,14 @@ public class ClienteJogoMesada {
         ClienteJogoMesada.controleTransferenciaOut = valor;
     }
 
+    public synchronized boolean isGatilhoInicioPartida() {
+        return gatilhoInicioPartida;
+    }
+
+    public synchronized void setGatilhoInicioPartida(boolean gatilhoInicioPartida) {
+        ClienteJogoMesada.gatilhoInicioPartida = gatilhoInicioPartida;
+    }
+
     /**
      * Método responsável por obter o valor a ser transferido.
      *
@@ -535,6 +556,10 @@ public class ClienteJogoMesada {
                         valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleTransferenciaIn = true;
                     }
+                    else if(msg.startsWith("1008")){
+                        ClienteJogoMesada.gatilhoInicioPartida = true;
+                    }
+
                   Thread.sleep(500);
                 }
                 } catch(Exception e){

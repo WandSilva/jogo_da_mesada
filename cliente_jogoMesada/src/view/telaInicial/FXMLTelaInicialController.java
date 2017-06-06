@@ -7,13 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import model.OrdemJogada;
 import view.tabuleiro.Tabuleiro;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -35,7 +33,7 @@ public class FXMLTelaInicialController implements Initializable {
         if (facade.conectarServidor(nomeUsuario).equals("OK")) {
             facade.iniciarJogador(nomeUsuario);
             facade.enviarNotificacao(nomeUsuario);
-            mostraJogadorConectado();
+            atualizarStatus();
 
         } else {
             boolean nomeExiste = true;
@@ -47,7 +45,7 @@ public class FXMLTelaInicialController implements Initializable {
                     facade.iniciarJogador(nomeUsuario);
                     facade.enviarNotificacao(nomeUsuario);
                     nomeExiste = false;
-                    mostraJogadorConectado();
+                    atualizarStatus();
                 }
             }
         }
@@ -56,17 +54,17 @@ public class FXMLTelaInicialController implements Initializable {
 
     @FXML
     public void iniciarPartida() {
-        Tabuleiro x = new Tabuleiro();
+        int aux = facade.getUsuariosConectados().get(0).getId();
 
-        try {
-            x.start(new Stage());
-            ((Stage) txtJogadoresConect.getScene().getWindow()).close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(aux == facade.getIdJogador()){
+            facade.iniciarTabuleiro();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"Você não é o moderador da sala.", "Calma amigão", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void mostraJogadorConectado() {
+    public void atualizarStatus() {
         Task t = new Task() {
             @Override
             protected Object call() throws Exception {
@@ -78,6 +76,17 @@ public class FXMLTelaInicialController implements Initializable {
                         }
                         txtJogadoresConect.setText(usuarios);
 
+                        if (facade.getGatilhoInicioPartida()){
+                            facade.setGatilhoInicioPartida(false);
+                            Tabuleiro x = new Tabuleiro();
+                            try {
+                                x.start(new Stage());
+                                ((Stage) txtJogadoresConect.getScene().getWindow()).close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Thread.currentThread().interrupt();
+                        }
                     });
 
                     Thread.sleep(2000);

@@ -32,7 +32,7 @@ public class Facade {
         return INSTANCE;
     }
 
-    public void sincronizarComunicacao(){
+    public void sincronizarComunicacao() {
         this.controllerCasas.setCliente(this.controllerComunicacao.getCliente());
         this.controllerCartas.setCliente(this.controllerComunicacao.getCliente());
 
@@ -63,23 +63,23 @@ public class Facade {
         this.controllerJogador.fazerEmprestimo(valor);
     }
 
-    public void receberDinheiro(double valor){
+    public void receberDinheiro(double valor) {
         this.controllerJogador.receberDinheiro(valor);
     }
 
-    public void darDinheiro (double valor){
+    public void darDinheiro(double valor) {
         try {
             controllerJogador.darDineiro(valor);
         } catch (SaldoInsuficienteException e) {
             e.printStackTrace();
         }
     }
+
     public void receberCartaCorreio(CartaCorreio cartaCorreio) {
         this.controllerJogador.receberCartaCorreio(cartaCorreio);
     }
-    
-    public String getNome()
-    {
+
+    public String getNome() {
         return this.controllerJogador.getJogador().getNome();
     }
 
@@ -199,79 +199,83 @@ public class Facade {
 
         return controllerComunicacao.usuariosConectados();
     }
-    
-    public void enviarOrdemJogada(ArrayList<String> ordemJogada)
-    {
+
+    public void enviarOrdemJogada(ArrayList<String> ordemJogada) {
         controllerComunicacao.enviarOrdemJogada(ordemJogada);
     }
-    
-    public ArrayList<String> iniciarPartida()
-    {
+
+    public ArrayList<String> iniciarPartida() {
         return controllerComunicacao.iniciarPartida();
     }
-    
+
     public void removerJogadorServidor() {
         controllerComunicacao.sairServidor();
     }
-    
-    public void enviarJogada(int id, int numDado)
-    {
+
+    public void enviarJogada(int id, int numDado) {
         controllerComunicacao.enviarJogada(id, numDado);
     }
 
     public int getIdJogador() {
         return this.controllerComunicacao.getIdJogador();
     }
-    
-    public int getProximoJogador()
-    {
+
+    public int getProximoJogador() {
         return this.controllerComunicacao.getProximoJogador();
     }
-    
-    public int getUltimoDado()
-    {
+
+    public int getUltimoDado() {
         return this.controllerComunicacao.getUltimoDado();
     }
-    
-    public double getSorteGrande()
-    {
+
+    public double getSorteGrande() {
         return this.controllerComunicacao.getSorteGrande();
     }
-    
-    public boolean getControleSorte()
-    {
+
+    public boolean getControleSorte() {
         return this.controllerComunicacao.getControle();
     }
-    
-    public void setControleSorteGrande(boolean valor)
-    {
+
+    public void setControleSorteGrande(boolean valor) {
         this.controllerComunicacao.setControleSorteGrande(valor);
     }
-    
-    public void finalizarJogada(int dado){
+
+    public void finalizarJogada(int dado) {
         this.controllerComunicacao.finalizarJogada(dado);
     }
 
-    public void setControleTranferenciaIn(boolean controle){
+    public void setControleTranferenciaIn(boolean controle) {
         this.controllerComunicacao.setControleTranferenciaIn(controle);
     }
 
-    public void setControleTranferenciaOut(boolean controle){
+    public void setControleTranferenciaOut(boolean controle) {
         this.controllerComunicacao.setControleTranferenciaOut(controle);
     }
-    public boolean getControleTranferenciaIn(){
+
+    public boolean getControleTranferenciaIn() {
         return controllerComunicacao.getControleTranferenciaIn();
     }
 
-    public boolean getControleTranferenciaOut(){
+    public boolean getControleTranferenciaOut() {
         return this.controllerComunicacao.getControleTranferenciaOut();
     }
 
-    public double getValorTranferencia(){
+    public double getValorTranferencia() {
         return this.controllerComunicacao.getValorTranferencia();
     }
-    public int getIdJogadorTranferencia(){
+
+    public int getIdJogadorTranferencia() {
         return controllerComunicacao.getIdJogadorTranferencia();
+    }
+
+    public boolean getGatilhoInicioPartida(){
+        return  this.controllerComunicacao.getGatilhoInicioPartida();
+    }
+    public void setGatilhoInicioPartida(boolean gatilho){
+        this.controllerComunicacao.setGatilhoInicioPartida(gatilho);
+    }
+    public void iniciarTabuleiro(){
+        this.controllerComunicacao.iniciarTabuleiro();
     }
 
 
