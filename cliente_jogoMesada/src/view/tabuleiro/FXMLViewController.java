@@ -188,14 +188,15 @@ public class FXMLViewController implements Initializable {
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
         this.moverPeao(peoes.get(facade.getIdJogador()), dado);
         this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
+        facade.informarJogada(dado);
     }
     
     public void finalizarJogada() {
         if (this.jogou) {
-            this.facade.finalizarJogada(this.dado);
+           // this.facade.informarJogada(this.dado);
             this.jogou = false;
         } else {
-            this.facade.finalizarJogada(0);
+           // this.facade.informarJogada(0);
             this.jogou = false;
         }
     }
@@ -227,7 +228,7 @@ public class FXMLViewController implements Initializable {
                 while (true) {
                     Platform.runLater(() -> {
                         
-                        int jogadorPassado = facade.getProximoJogador() - 1;
+                        int jogadorPassado = facade.getProximoJogador();
                         if (jogadorPassado < 0) {
                             jogadorPassado = facade.getUsuariosConectados().size() - 1;
                         }

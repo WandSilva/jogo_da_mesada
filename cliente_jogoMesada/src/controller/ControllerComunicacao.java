@@ -215,6 +215,11 @@ public class ControllerComunicacao {
      * @author Wanderson e Santana
      * 
      */
+
+    public void informarJogada(int dado){
+        cliente.jogar(this.getIdJogador(), dado);
+    }
+
     
     public void finalizarJogada(int dado) {
         int meuId = this.getIdJogador();

@@ -240,8 +240,8 @@ public class Facade {
         this.controllerComunicacao.setControleSorteGrande(valor);
     }
 
-    public void finalizarJogada(int dado) {
-        this.controllerComunicacao.finalizarJogada(dado);
+    public void informarJogada(int dado) {
+        this.controllerComunicacao.informarJogada(dado);
     }
 
     public void setControleTranferenciaIn(boolean controle) {
