@@ -38,6 +38,7 @@ public class ClienteJogoMesada {
     private InetAddress enderecoMulticast;
     private MulticastSocket conexaoGrupo;
     private static String proximoJogador;
+    private static String atualJogador;
     private static int ultimoDado;
     private static ArrayList<String> ordemJogadas = new ArrayList();
 
@@ -50,6 +51,7 @@ public class ClienteJogoMesada {
     public ClienteJogoMesada(String ipServidor) {
         sorteGrande = 0;
         proximoJogador = "0";
+        atualJogador = "0";
         try {
             this.conexaoClienteServidor = new Socket(ipServidor, portaClienteServidor);
             this.saidaDados = new DataOutputStream(this.conexaoClienteServidor.getOutputStream());
@@ -328,6 +330,17 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public synchronized void finalizarJogada(int idProximo)
+    {
+        byte dados[] = ("1009" + ";" + idProximo).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 
 
@@ -340,6 +353,10 @@ public class ClienteJogoMesada {
 
     public String getProximoJogador() {
         return proximoJogador;
+    }
+    
+    public String getAtualJogador(){
+        return atualJogador;
     }
 
     /**
@@ -520,10 +537,10 @@ public class ClienteJogoMesada {
 
                     if (msg.startsWith("1001")) {
                         String[] dadosRecebidos = msg.split(";");
-                        proximoJogador = dadosRecebidos[1];
+                        atualJogador = proximoJogador;
+                        proximoJogador = dadosRecebidos[1].trim();
                         ultimoDado = Integer.parseInt(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleMsgJogada = true;
-                        System.out.println(dadosRecebidos[1] + " " + dadosRecebidos[2]);
 
                     } else if (msg.startsWith("1002")) {
                         String[] dadosRecebidos = new String[2];
@@ -542,30 +559,36 @@ public class ClienteJogoMesada {
                         }
                         ClienteJogoMesada.ordemJogadas = ordem;
                     } else if (msg.startsWith("1005")) {
-                        String[] dadosRecebidos = msg.split(";");
+                        String[] dadosRecebidos = new String[2];
+                        dadosRecebidos = msg.split(";");
                         sorteGrande = Double.parseDouble(dadosRecebidos[1].trim());
                         ClienteJogoMesada.controleSorteGrande = true;
                     } else if (msg.startsWith("1006")) {
-                        String[] dadosRecebidos = msg.split(";");
+                        String[] dadosRecebidos = new String[3];
+                        dadosRecebidos = msg.split(";");
                         idDestino = Integer.parseInt(dadosRecebidos[1].trim());
                         valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleTransferenciaIn = true;
                     } else if (msg.startsWith("1007")) {
-                        String[] dadosRecebidos = msg.split(";");
+                        String[] dadosRecebidos = new String[3];
+                        dadosRecebidos = msg.split(";");
                         idDestino = Integer.parseInt(dadosRecebidos[1].trim());
                         valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleTransferenciaIn = true;
                     }
                     else if(msg.startsWith("1008")){
                         ClienteJogoMesada.gatilhoInicioPartida = true;
+                    } else if(msg.startsWith("1009")){
+                        String[] dadosRecebidos = new String[2];
+                        dadosRecebidos = msg.split(";");
+                        atualJogador = proximoJogador;
+                        proximoJogador = dadosRecebidos[1].trim();
                     }
-
                   Thread.sleep(500);
                 }
                 } catch(Exception e){
                     e.printStackTrace();
                 }
             }
-
         }
     }

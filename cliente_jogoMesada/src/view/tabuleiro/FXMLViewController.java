@@ -193,10 +193,11 @@ public class FXMLViewController implements Initializable {
     
     public void finalizarJogada() {
         if (this.jogou) {
-           // this.facade.informarJogada(this.dado);
+            this.facade.finalizarJogada(this.facade.getIdJogador());
             this.jogou = false;
         } else {
-           // this.facade.informarJogada(0);
+            this.facade.informarJogada(0);
+            this.facade.finalizarJogada(this.facade.getIdJogador());
             this.jogou = false;
         }
     }
@@ -228,7 +229,7 @@ public class FXMLViewController implements Initializable {
                 while (true) {
                     Platform.runLater(() -> {
                         
-                        int jogadorPassado = facade.getProximoJogador();
+                        int jogadorPassado = facade.getAtualJogador();
                         if (jogadorPassado < 0) {
                             jogadorPassado = facade.getUsuariosConectados().size() - 1;
                         }

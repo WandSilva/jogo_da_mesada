@@ -278,5 +278,13 @@ public class Facade {
         this.controllerComunicacao.iniciarTabuleiro();
     }
 
-
+    public void finalizarJogada(int atualJogador)
+    {
+        this.controllerComunicacao.finalizarJogada(atualJogador);
+    }
+    
+    public int getAtualJogador()
+    {
+       return this.controllerComunicacao.getAtualJogador();
+    }
 }

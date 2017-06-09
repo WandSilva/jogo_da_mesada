@@ -221,7 +221,7 @@ public class ControllerComunicacao {
     }
 
     
-    public void finalizarJogada(int dado) {
+    public void finalizarJogada(int atualJogador) {
         int meuId = this.getIdJogador();
         int proximo;
 
@@ -230,7 +230,7 @@ public class ControllerComunicacao {
         } else {
             proximo = meuId + 1;
         }
-        cliente.jogar(proximo, dado);
+        cliente.finalizarJogada(proximo);
     }
 
     /**
@@ -288,5 +288,8 @@ public class ControllerComunicacao {
     }
     public void iniciarTabuleiro(){
         this.cliente.iniciarTabuleiro();
+    }
+    public int getAtualJogador(){
+        return Integer.parseInt(this.cliente.getAtualJogador());
     }
 }
