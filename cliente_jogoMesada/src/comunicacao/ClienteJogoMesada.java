@@ -29,6 +29,8 @@ public class ClienteJogoMesada {
     private static boolean controleTransferenciaIn;
     private static boolean controleTransferenciaOut;
     private static boolean controleMsgJogada;
+    private static boolean controleConcursoBanda;
+    private static int idProximoJogadorEvento;
     private static double sorteGrande;
     private static boolean controleSorteGrande;
     private static boolean gatilhoInicioPartida;
@@ -330,9 +332,8 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public synchronized void finalizarJogada(int idProximo)
-    {
+
+    public synchronized void finalizarJogada(int idProximo) {
         byte dados[] = ("1009" + ";" + idProximo).getBytes();
         DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
         try {
@@ -342,6 +343,27 @@ public class ClienteJogoMesada {
         }
     }
 
+    public synchronized void concursoBandaRock(int idProximoJogadorEvento) {
+        byte dados[] = ("1010" + ";" + idProximoJogadorEvento).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public synchronized void setControleConcursoBanda(boolean controle) {
+        ClienteJogoMesada.controleConcursoBanda = controle;
+    }
+
+    public boolean getControleConcursoBanda() {
+        return ClienteJogoMesada.controleConcursoBanda;
+    }
+
+    public int getIdProximoJOgadorEvento(){
+        return idProximoJogadorEvento;
+    }
 
 
     /**
@@ -354,8 +376,8 @@ public class ClienteJogoMesada {
     public String getProximoJogador() {
         return proximoJogador;
     }
-    
-    public String getAtualJogador(){
+
+    public String getAtualJogador() {
         return atualJogador;
     }
 
@@ -461,6 +483,7 @@ public class ClienteJogoMesada {
     public synchronized void setControleTransferenciaIn(boolean valor) {
         ClienteJogoMesada.controleTransferenciaIn = valor;
     }
+
     /**
      * Método responsável por alterar o estado da variável que verifica se uma transferência foi feita.
      *
@@ -490,9 +513,10 @@ public class ClienteJogoMesada {
         return ClienteJogoMesada.valorTransferencia;
     }
 
-    public synchronized int getIdDestinoTranferenciaO(){
+    public synchronized int getIdDestinoTranferenciaO() {
         return ClienteJogoMesada.idDestino;
     }
+
     /**
      * Esta classe interna implementa a Thread responsavel pela comunicaçao entre os jogadores.
      *
@@ -575,20 +599,23 @@ public class ClienteJogoMesada {
                         idDestino = Integer.parseInt(dadosRecebidos[1].trim());
                         valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
                         ClienteJogoMesada.controleTransferenciaIn = true;
-                    }
-                    else if(msg.startsWith("1008")){
+                    } else if (msg.startsWith("1008")) {
                         ClienteJogoMesada.gatilhoInicioPartida = true;
-                    } else if(msg.startsWith("1009")){
+                    } else if (msg.startsWith("1009")) {
                         String[] dadosRecebidos = new String[2];
                         dadosRecebidos = msg.split(";");
                         atualJogador = proximoJogador;
                         proximoJogador = dadosRecebidos[1].trim();
+                    } else if (msg.startsWith("1010")) {
+                        String[] dadosRecebidos = msg.split(";");
+                        idProximoJogadorEvento = Integer.parseInt(dadosRecebidos[1].trim());
+                        ClienteJogoMesada.controleConcursoBanda =true;
                     }
-                  Thread.sleep(500);
+                    Thread.sleep(500);
                 }
-                } catch(Exception e){
-                    e.printStackTrace();
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
+}

@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.CartaCompra;
 import model.CartaCorreio;
+import model.Jogador;
 import model.OrdemJogada;
 
 import javax.swing.*;
@@ -186,7 +187,7 @@ public class FXMLViewController implements Initializable {
         botaoJogar.setDisable(true);
         this.dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
-        this.moverPeao(peoes.get(facade.getIdJogador()), dado);
+        this.moverPeao(peoes.get(facade.getIdJogador()), 8);
         this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
         facade.informarJogada(dado);
     }
@@ -258,6 +259,21 @@ public class FXMLViewController implements Initializable {
                             atualizarValoresTela();
                             
                         }
+                        if(facade.getControleConcursoBanda()==true &&
+                                facade.getIdProxJogadorEvento()==meuID){
+                            facade.setControleConcursoBanda(false);
+                            int resultado = eventoRolarDado("Concurso banda de rock");
+                            if(resultado ==3){
+                                facade.receberDinheiro(1000);
+                                atualizarValoresTela();
+                            }else {
+                                if(meuID==facade.getUsuariosConectados().size()-1)
+                                    facade.concursoBandaRock(0);
+                                else
+                                    facade.concursoBandaRock(meuID+1);
+                            }
+
+                        }
                         
                         if (meuID == facade.getProximoJogador()) {
                             habilitarBotoes();
@@ -328,8 +344,7 @@ public class FXMLViewController implements Initializable {
             atualizarSortegrande();
         } //concurso banda de rock
         else if (coluna == 1 && linha == 1) {
-            facade.casaConcursoArrocha(0);
-            atualizarValoresTela();
+            this.facade.concursoBandaRock(facade.getIdJogador());
         } //feliz aniversário
         else if (coluna == 3 && linha == 1) {
             try {
@@ -701,6 +716,22 @@ public class FXMLViewController implements Initializable {
             textCorreio.setText("Carta: " + cartaCorreio.getNome() + "\n\n"
                     + "Valor:" + cartaCorreio.getValor());
         }
+    }
+
+    public int eventoRolarDado(String titulo) {
+        Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
+        ButtonType rolarDado = new ButtonType("Rolar dado");
+        final int[] valor = new int[1];
+
+        dialogoExe.setTitle(titulo);
+        dialogoExe.setHeaderText("Role o dado");
+        dialogoExe.setContentText("");
+        dialogoExe.getButtonTypes().setAll(rolarDado);
+        dialogoExe.showAndWait().ifPresent(b -> {
+            valor[0] = facade.rolarDado();
+            mostrarAlerta("","", "valor sorteado: "+valor[0]);
+        });
+        return valor[0];
     }
     
     public String selecionarJogador() {

@@ -24,7 +24,6 @@ public class ControllerComunicacao {
      * Método privado Construtor da Classe.
      *
      * @author Wanderson e Santana
-     *
      */
     private ControllerComunicacao() {
         this.usuarios = new ArrayList<>();
@@ -35,7 +34,6 @@ public class ControllerComunicacao {
      *
      * @param ip - Endereço do Servidor.
      * @author Wanderson e Santana
-     * 
      */
     public void setIP(String ip) {
         this.endIP = ip;
@@ -50,7 +48,6 @@ public class ControllerComunicacao {
      * Método Construtor da Classe.
      *
      * @author Wanderson e Santana
-     *
      */
     public synchronized static ControllerComunicacao getInstance() {
         if (INSTANCE == null) {
@@ -66,7 +63,6 @@ public class ControllerComunicacao {
      * @param nomeUsuario - Nome do Jogador
      * @return Resposta do Servidor.
      * @author Wanderson e Santana
-     * 
      */
     public String conectarCliente(String nomeUsuario) {
 
@@ -78,7 +74,6 @@ public class ControllerComunicacao {
      *
      * @return id - ID.
      * @author Wanderson e Santana
-     * 
      */
     public int getIdJogador() {
         int id = 0;
@@ -98,7 +93,6 @@ public class ControllerComunicacao {
      *
      * @param nomeUsuario - Nome do Jogador.
      * @author Wanderson e Santana
-     * 
      */
     public void enviarNotificacao(String nomeUsuario) {
         cliente.entrouNaSala(nomeUsuario);
@@ -107,10 +101,9 @@ public class ControllerComunicacao {
     /**
      * Método que envia uma jogada.
      *
-     * @param id - ID do Jogador.
+     * @param id      - ID do Jogador.
      * @param numDado - Numero´sorteado no dado.
      * @author Wanderson e Santana
-     * 
      */
     public void enviarJogada(int id, int numDado) {
         cliente.jogar(id, numDado);
@@ -120,7 +113,6 @@ public class ControllerComunicacao {
      * Método que obtem o próximo jogador.
      *
      * @author Wanderson e Santana
-     * 
      */
     public int getProximoJogador() {
         int idProximo = Integer.parseInt(cliente.getProximoJogador());
@@ -131,7 +123,6 @@ public class ControllerComunicacao {
      * Método que obtem o último dado.
      *
      * @author Wanderson e Santana
-     * 
      */
     public int getUltimoDado() {
         return cliente.getUltimoDado();
@@ -142,7 +133,6 @@ public class ControllerComunicacao {
      *
      * @return true ou false.
      * @author Wanderson e Santana
-     * 
      */
     public boolean getControle() {
         return cliente.getControleMsgJogada();
@@ -153,7 +143,6 @@ public class ControllerComunicacao {
      *
      * @return Lista de Jogadores.
      * @author Wanderson e Santana
-     * 
      */
     public ArrayList<OrdemJogada> usuariosConectados() {
         ArrayList<String> nomeUsuarios = cliente.usuariosConectados();
@@ -170,7 +159,6 @@ public class ControllerComunicacao {
      *
      * @return Ordem de Jogada.
      * @author Wanderson e Santana
-     * 
      */
     public ArrayList<String> iniciarPartida() {
         return cliente.iniciarPartida();
@@ -181,7 +169,6 @@ public class ControllerComunicacao {
      *
      * @param ordemJogada - Ordem com as jogadas.
      * @author Wanderson e Santana
-     * 
      */
     public void enviarOrdemJogada(ArrayList<String> ordemJogada) {
         cliente.enviarOrdemJogada(ordemJogada);
@@ -192,7 +179,6 @@ public class ControllerComunicacao {
      *
      * @param controle - true ou false.
      * @author Wanderson e Santana
-     * 
      */
     public void setControle(boolean controle) {
         this.cliente.setControleMsgJogada(controle);
@@ -200,10 +186,10 @@ public class ControllerComunicacao {
 
     /**
      * Método que desconecta do Servidor.
+     *
      * @author Wanderson e Santana
-     * 
      */
-    
+
     public void sairServidor() {
         cliente.sair();
     }
@@ -213,14 +199,13 @@ public class ControllerComunicacao {
      *
      * @param dado - Número sorteado.
      * @author Wanderson e Santana
-     * 
      */
 
-    public void informarJogada(int dado){
+    public void informarJogada(int dado) {
         cliente.jogar(this.getIdJogador(), dado);
     }
 
-    
+
     public void finalizarJogada(int atualJogador) {
         int meuId = this.getIdJogador();
         int proximo;
@@ -235,22 +220,26 @@ public class ControllerComunicacao {
 
     /**
      * Método que obtém o valor do sorte grande.
+     *
      * @author Wanderson e Santana
      */
-    
+
     public double getSorteGrande() {
         return cliente.getSorteGrande();
     }
 
-     /**
+    /**
      * Método que obtém a variável que verifica se o sorte grande foi atualizado.
+     *
      * @author Wanderson e Santana
      */
     public boolean getControleSorteGrande() {
         return cliente.getControleSorteGrande();
     }
+
     /**
      * Método que modifica a variável que verifica se o sorte grande foi atualizado.
+     *
      * @author Wanderson e Santana
      */
 
@@ -258,38 +247,57 @@ public class ControllerComunicacao {
         cliente.setControleSorteGrande(valor);
     }
 
-    public void setControleTranferenciaIn(boolean controle){
+    public void setControleTranferenciaIn(boolean controle) {
         this.cliente.setControleTransferenciaIn(controle);
     }
 
-    public void setControleTranferenciaOut(boolean controle){
+    public void setControleTranferenciaOut(boolean controle) {
         this.cliente.setControleTransferenciaOut(controle);
     }
-    public boolean getControleTranferenciaIn(){
+
+    public boolean getControleTranferenciaIn() {
         return cliente.getControleTransferenciaIn();
     }
 
-    public boolean getControleTranferenciaOut(){
+    public boolean getControleTranferenciaOut() {
         return cliente.getControleTransferenciaOut();
     }
 
-    public int getIdJogadorTranferencia(){
+    public int getIdJogadorTranferencia() {
         return cliente.getIdDestinoTranferenciaO();
     }
-    public double getValorTranferencia(){
+
+    public double getValorTranferencia() {
         return cliente.getValorTransferencia();
     }
 
-    public boolean getGatilhoInicioPartida(){
-        return  this.cliente.isGatilhoInicioPartida();
+    public boolean getGatilhoInicioPartida() {
+        return this.cliente.isGatilhoInicioPartida();
     }
-    public void setGatilhoInicioPartida(boolean gatilho){
+
+    public void setGatilhoInicioPartida(boolean gatilho) {
         this.cliente.setGatilhoInicioPartida(gatilho);
     }
-    public void iniciarTabuleiro(){
+
+    public void iniciarTabuleiro() {
         this.cliente.iniciarTabuleiro();
     }
-    public int getAtualJogador(){
+
+    public int getAtualJogador() {
         return Integer.parseInt(this.cliente.getAtualJogador());
+    }
+
+    public void concursoBandaRock(int idProximo){
+        this.cliente.concursoBandaRock(idProximo);
+    }
+
+    public void setControleConcursoBanda(boolean controle){
+        this.cliente.setControleConcursoBanda(controle);
+    }
+    public boolean getControleConcursoBanda(){
+        return this.cliente.getControleConcursoBanda();
+    }
+    public int getIdProxJogadorEvento(){
+        return this.cliente.getIdProximoJOgadorEvento();
     }
 }

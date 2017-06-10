@@ -158,7 +158,7 @@ public class Facade {
 
     public double getValorSorteGrande() {
         //return this.controllerComunicacao.getSorteGrande();
-        return this.controllerCasas.DELETARISSO();
+        return this.controllerCasas.getSorteGrande();
     }
 
     //******************************METODOS DO CONTROLLER CARTA***********************//
@@ -268,23 +268,41 @@ public class Facade {
         return controllerComunicacao.getIdJogadorTranferencia();
     }
 
-    public boolean getGatilhoInicioPartida(){
-        return  this.controllerComunicacao.getGatilhoInicioPartida();
+    public boolean getGatilhoInicioPartida() {
+        return this.controllerComunicacao.getGatilhoInicioPartida();
     }
-    public void setGatilhoInicioPartida(boolean gatilho){
+
+    public void setGatilhoInicioPartida(boolean gatilho) {
         this.controllerComunicacao.setGatilhoInicioPartida(gatilho);
     }
-    public void iniciarTabuleiro(){
+
+    public void iniciarTabuleiro() {
         this.controllerComunicacao.iniciarTabuleiro();
     }
 
-    public void finalizarJogada(int atualJogador)
-    {
+    public void finalizarJogada(int atualJogador) {
         this.controllerComunicacao.finalizarJogada(atualJogador);
     }
-    
-    public int getAtualJogador()
-    {
-       return this.controllerComunicacao.getAtualJogador();
+
+    public int getAtualJogador() {
+        return this.controllerComunicacao.getAtualJogador();
     }
+
+
+    public void concursoBandaRock(int idProximo) {
+        this.controllerComunicacao.concursoBandaRock(idProximo);
+    }
+
+    public void setControleConcursoBanda(boolean controle) {
+        this.controllerComunicacao.setControleConcursoBanda(controle);
+    }
+
+    public boolean getControleConcursoBanda() {
+        return this.controllerComunicacao.getControleConcursoBanda();
+    }
+
+    public int getIdProxJogadorEvento() {
+        return this.controllerComunicacao.getIdProxJogadorEvento();
+    }
+
 }

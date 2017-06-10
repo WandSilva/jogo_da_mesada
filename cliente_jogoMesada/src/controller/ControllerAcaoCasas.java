@@ -96,10 +96,17 @@ public class ControllerAcaoCasas {
         }
     }
 
+    /**
+     * acao da case premio
+     */
     public void casaPremio() {
         jogador.depositar(5000);
     }
 
+    /**
+     * acao da casa Praia no Domingo
+     * @throws SaldoInsuficienteException
+     */
     public void casaPraiaNodomingo() throws SaldoInsuficienteException {
         try {
             jogador.debitar(100);
@@ -111,6 +118,10 @@ public class ControllerAcaoCasas {
         cliente.setSorteGrande(aux+100);
     }
 
+    /**
+     * acao da casa Ajude a floresta
+     * @throws SaldoInsuficienteException
+     */
     public void casaAjudeaFloresta() throws SaldoInsuficienteException {
         try {
             jogador.debitar(100);
@@ -122,6 +133,10 @@ public class ControllerAcaoCasas {
         cliente.setSorteGrande(aux+100);
     }
 
+    /**
+     * acao da casa Lanchonete
+     * @throws SaldoInsuficienteException
+     */
     public void casaLanchonete() throws SaldoInsuficienteException {
         try {
             jogador.debitar(100);
@@ -132,6 +147,10 @@ public class ControllerAcaoCasas {
         double aux = cliente.getSorteGrande();
         cliente.setSorteGrande(aux+100);    }
 
+    /**
+     * acao da casa Shopping
+     * @throws SaldoInsuficienteException
+     */
     public void casaShopping() throws SaldoInsuficienteException {
         try {
             jogador.debitar(100);
@@ -143,6 +162,11 @@ public class ControllerAcaoCasas {
         cliente.setSorteGrande(aux+100);
     }
 
+    /**
+     * acao da casa Feliz Aniversario
+     * @param caiuNaCasa
+     * @throws SaldoInsuficienteException
+     */
     public void casaFelizAniversario(boolean caiuNaCasa) throws SaldoInsuficienteException {
         if (caiuNaCasa)
             jogador.depositar(numeroDeJogadores * 100);
@@ -171,7 +195,7 @@ public class ControllerAcaoCasas {
         this.cliente = cliente;
     }
 
-    public double DELETARISSO(){
+    public double getSorteGrande(){
         return cliente.getSorteGrande();
     }
 
