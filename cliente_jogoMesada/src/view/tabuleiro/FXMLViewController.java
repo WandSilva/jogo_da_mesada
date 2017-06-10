@@ -187,7 +187,7 @@ public class FXMLViewController implements Initializable {
         botaoJogar.setDisable(true);
         this.dado = facade.rolarDado();
         JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
-        this.moverPeao(peoes.get(facade.getIdJogador()), 8);
+        this.moverPeao(peoes.get(facade.getIdJogador()), dado);
         this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
         facade.informarJogada(dado);
     }
