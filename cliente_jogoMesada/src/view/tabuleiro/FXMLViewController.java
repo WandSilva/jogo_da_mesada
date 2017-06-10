@@ -183,13 +183,18 @@ public class FXMLViewController implements Initializable {
      */
     @FXML
     public void jogar(ActionEvent event) {
-        this.jogou = true;
-        botaoJogar.setDisable(true);
-        this.dado = facade.rolarDado();
-        JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
-        this.moverPeao(peoes.get(facade.getIdJogador()), dado);
-        this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
-        facade.informarJogada(dado);
+        if(!jogou) {
+            this.jogou = true;
+            botaoJogar.setDisable(true);
+            this.dado = facade.rolarDado();
+            JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
+            this.moverPeao(peoes.get(facade.getIdJogador()), dado);
+            this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
+            facade.informarJogada(dado);
+        }
+        else
+            JOptionPane.showMessageDialog(null, "Você já jogou", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
+
     }
     
     public void finalizarJogada() {
