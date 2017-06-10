@@ -584,16 +584,21 @@ public class FXMLViewController implements Initializable {
                 if (((coluna == 1) && (linha == 0))
                         || ((coluna == 1) && (linha == 3))) {
                     this.moverPeao(peoes.get(facade.getIdJogador()), 3);
+                    facade.informarJogada(3);
                 } else if (((coluna == 3) && (linha == 0))
                         || ((coluna == 4) && (linha == 1))
                         || ((coluna == 3) && (linha == 3))) {
                     this.moverPeao(peoes.get(facade.getIdJogador()), 1);
+                    facade.informarJogada(1);
                 } else if ((coluna == 5) && (linha == 0)) {
                     this.moverPeao(peoes.get(facade.getIdJogador()), 7);
+                    facade.informarJogada(7);
                 } else if ((coluna == 2) && (linha == 2)) {
                     this.moverPeao(peoes.get(facade.getIdJogador()), 9);
+                    facade.informarJogada(9);
                 } else if ((coluna == 5) && (linha == 2)) {
                     this.moverPeao(peoes.get(facade.getIdJogador()), 6);
+                    facade.informarJogada(6);
                 } else {
                     JOptionPane.showMessageDialog(null, "Voce não está na casa ''Correios''!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
                 }
