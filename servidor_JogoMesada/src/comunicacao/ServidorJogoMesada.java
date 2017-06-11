@@ -128,7 +128,7 @@ public class ServidorJogoMesada {
                             dados = pacoteDados.split(";");
                             Jogador jogador = new Jogador();
                             jogador.setNome(dados[1]);
-                            Sala sala = buscarSala(jogador);
+                            Sala sala = buscarSala(jogador);                            
                             sala.ocuparSala();
                             ArrayList<String> ordemJogada = new ArrayList<>();
                             ordemJogada = listaJogadores(sala);

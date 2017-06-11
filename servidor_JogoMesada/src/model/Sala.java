@@ -33,11 +33,10 @@ public class Sala {
     }
 
     public boolean salaOcupada() {
-        if (!this.jogando) {
-            return this.jogando;
-        } else {
-            return !this.jogando;
-        }
+        if (jogando == true)
+            return true;
+        else
+            return false;
     }
 
     public void ocuparSala() {
