@@ -10,7 +10,6 @@ import model.Jogador;
 public class ControllerAcaoCasas {
 
     private Jogador jogador;
-    private int numeroDeJogadores;
     private ClienteJogoMesada cliente;
 
     public ControllerAcaoCasas() {
@@ -168,8 +167,10 @@ public class ControllerAcaoCasas {
      * @throws SaldoInsuficienteException
      */
     public void casaFelizAniversario(boolean caiuNaCasa) throws SaldoInsuficienteException {
-        if (caiuNaCasa)
+        if (caiuNaCasa) {
+            int numeroDeJogadores = cliente.usuariosConectados().size();
             jogador.depositar(numeroDeJogadores * 100);
+        }
         else
             try {
                 jogador.debitar(100);

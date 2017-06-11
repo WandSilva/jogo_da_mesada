@@ -154,6 +154,16 @@ public class ControllerComunicacao {
         return usuarios;
     }
 
+    public String getNomeUsiarioPorId(int id){
+        String nome = null;
+
+        for (OrdemJogada ordemJogada:usuarios) {
+            if (ordemJogada.getId() ==id)
+                nome = ordemJogada.getNome();
+        }
+        return nome;
+    }
+
     /**
      * Método que inicia a partida.
      *
@@ -290,6 +300,9 @@ public class ControllerComunicacao {
     public void concursoBandaRock(int idProximo){
         this.cliente.concursoBandaRock(idProximo);
     }
+    public void participarBolao(int id){
+        this.cliente.participarBolao(id);
+    }
 
     public void setControleConcursoBanda(boolean controle){
         this.cliente.setControleConcursoBanda(controle);
@@ -299,5 +312,29 @@ public class ControllerComunicacao {
     }
     public int getIdProxJogadorEvento(){
         return this.cliente.getIdProximoJOgadorEvento();
+    }
+    public int getReultadoBolao(){
+        return this.cliente.getVencedorBolao();
+    }
+    public boolean getControleBolao(){
+        return this.cliente.getControleBolao();
+    }
+    public void setControleBolao(boolean controleBolao){
+        this.cliente.setControleBolao(controleBolao);
+    }
+
+    public int getNumeroParticipantesBolao(){
+        return this.cliente.getNumeroParticipantesBolao();
+    }
+
+    public void organizadorBolao(int id){
+        this.cliente.organizadorBolao(id);
+    }
+    public int getOrganizadorBolao(){
+        return this.cliente.getIdOrganizadorBolao();
+    }
+
+    public void resultadoBolao(int resultado){
+        this.cliente.resultadoBolao(resultado);
     }
 }

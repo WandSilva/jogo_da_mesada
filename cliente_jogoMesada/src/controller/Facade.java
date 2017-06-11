@@ -305,4 +305,40 @@ public class Facade {
         return this.controllerComunicacao.getIdProxJogadorEvento();
     }
 
+    public void participarBolao(int id) {
+        this.controllerComunicacao.participarBolao(id);
+    }
+
+    public String getNomeUsuarioPorId(int id) {
+        return this.controllerComunicacao.getNomeUsiarioPorId(id);
+    }
+
+    public int getReultadoBolao() {
+        return this.controllerComunicacao.getReultadoBolao();
+    }
+
+    public boolean getControleBolao() {
+        return this.controllerComunicacao.getControleBolao();
+    }
+
+    public void setControleBolao(boolean controleBolao) {
+        this.controllerComunicacao.setControleBolao(controleBolao);
+    }
+
+    public int getNumeroParticipantesBolao() {
+        return this.controllerComunicacao.getNumeroParticipantesBolao();
+    }
+
+    public void organizadorBolao(int id) {
+        this.controllerComunicacao.organizadorBolao(id);
+    }
+
+    public int getOrganizadorBolao() {
+        return this.controllerComunicacao.getOrganizadorBolao();
+    }
+
+    public void resultadoBolao(int resultado) {
+        this.controllerComunicacao.resultadoBolao(resultado);
+    }
+
 }

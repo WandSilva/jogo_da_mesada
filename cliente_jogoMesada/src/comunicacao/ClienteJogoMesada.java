@@ -43,6 +43,11 @@ public class ClienteJogoMesada {
     private static String atualJogador;
     private static int ultimoDado;
     private static ArrayList<String> ordemJogadas = new ArrayList();
+    private static ArrayList<String> jogadoresBolao = new ArrayList<>();
+    private static boolean controleBolao;
+    private static int vencedorBolao;
+    private static int numeroParticipantesBolao;
+    private static int idOrganizadorBolao;
 
     /**
      * Construtor da classe que recebe o IP do servidor do jogo.
@@ -51,6 +56,7 @@ public class ClienteJogoMesada {
      * @author Wanderson e Santana
      */
     public ClienteJogoMesada(String ipServidor) {
+
         sorteGrande = 0;
         proximoJogador = "0";
         atualJogador = "0";
@@ -353,6 +359,55 @@ public class ClienteJogoMesada {
         }
     }
 
+    public synchronized void participarBolao(int id) {
+        byte dados[] = ("1011" + ";" + id).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void resultadoBolao(int resutado) {
+        byte dados[] = ("1012" + ";" + resutado).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void organizadorBolao(int id){
+        byte dados[] = ("1013" + ";" + id).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int getIdOrganizadorBolao() {
+        return idOrganizadorBolao;
+    }
+
+    public int getVencedorBolao() {
+        return vencedorBolao;
+    }
+
+    public int getNumeroParticipantesBolao() {
+        return numeroParticipantesBolao;
+    }
+
+    public boolean getControleBolao() {
+        return controleBolao;
+    }
+
+    public synchronized void setControleBolao(boolean controleBolao) {
+        ClienteJogoMesada.controleBolao = controleBolao;
+    }
+
     public synchronized void setControleConcursoBanda(boolean controle) {
         ClienteJogoMesada.controleConcursoBanda = controle;
     }
@@ -361,7 +416,7 @@ public class ClienteJogoMesada {
         return ClienteJogoMesada.controleConcursoBanda;
     }
 
-    public int getIdProximoJOgadorEvento(){
+    public int getIdProximoJOgadorEvento() {
         return idProximoJogadorEvento;
     }
 
@@ -609,7 +664,25 @@ public class ClienteJogoMesada {
                     } else if (msg.startsWith("1010")) {
                         String[] dadosRecebidos = msg.split(";");
                         idProximoJogadorEvento = Integer.parseInt(dadosRecebidos[1].trim());
-                        ClienteJogoMesada.controleConcursoBanda =true;
+                        ClienteJogoMesada.controleConcursoBanda = true;
+                    } else if (msg.startsWith("1011")) {
+                        Thread.sleep(3000);
+                        String[] dadosRecebidos = msg.split(";");
+                        ClienteJogoMesada.jogadoresBolao.add(dadosRecebidos[1]);
+                    } else if (msg.startsWith("1012")) {
+                        String[] dadosRecebidos = msg.split(";");
+                        String resultado = dadosRecebidos[1];
+                        for (String x : jogadoresBolao) {
+                            if (x.equals(resultado)) {
+                                vencedorBolao = Integer.parseInt(resultado);
+                            } else vencedorBolao = -1;
+                        }
+                        numeroParticipantesBolao = jogadoresBolao.size();
+                        ClienteJogoMesada.controleBolao = true;
+                    }
+                    else if(msg.startsWith("1013")){
+                        String[] dadosRecebidos = msg.split(";");
+                        idOrganizadorBolao = Integer.parseInt(dadosRecebidos[1].trim());
                     }
                     Thread.sleep(500);
                 }

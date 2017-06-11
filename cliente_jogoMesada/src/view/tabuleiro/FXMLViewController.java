@@ -117,7 +117,7 @@ public class FXMLViewController implements Initializable {
     private TextArea txtJogadores;
     @FXML
     private Label labelSorteGrande;
-    
+
     private boolean jogou = false;
     //botões
     @FXML
@@ -134,17 +134,17 @@ public class FXMLViewController implements Initializable {
     private Button botaoAcaoCarta;
     @FXML
     private Button botaoFinalizar;
-    
+
     private ArrayList<Peao> peoes = new ArrayList<>();
-    
+
     private int dado;
-    
+
     private Facade facade;
-    
+
     public int meuID;
-    
+
     private ArrayList<String> ordemJogadas = new ArrayList();
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.facade = Facade.getInstance();
@@ -152,7 +152,7 @@ public class FXMLViewController implements Initializable {
         ordemJogadas = this.facade.iniciarPartida();
         this.facade.enviarOrdemJogada(ordemJogadas);
         this.meuID = facade.getIdJogador();
-        
+
         this.atualizarValoresTela();
         this.desabilitarBotoes();
         this.criarPeoes(this.facade.getUsuariosConectados().size());
@@ -163,9 +163,11 @@ public class FXMLViewController implements Initializable {
         this.removerJogadorServidor();
         this.mostraJogadorConectado();
         this.atualizarJogadas();
-        
+
     }
-    
+
+    //*************************** Métodos de atualização das telas **********************//
+
     public void criarPeoes(int numeroJogadores) {
         AparenciaPeao aparenciaPeao = new AparenciaPeao();
         for (int i = 0; i < numeroJogadores; i++) {
@@ -183,20 +185,19 @@ public class FXMLViewController implements Initializable {
      */
     @FXML
     public void jogar(ActionEvent event) {
-        if(!jogou) {
+        if (!jogou) {
             this.jogou = true;
             botaoJogar.setDisable(true);
             this.dado = facade.rolarDado();
             JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
-            this.moverPeao(peoes.get(facade.getIdJogador()), dado);
+            this.moverPeao(peoes.get(facade.getIdJogador()), 6);
             this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
             facade.informarJogada(dado);
-        }
-        else
+        } else
             JOptionPane.showMessageDialog(null, "Você já jogou", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
 
     }
-    
+
     public void finalizarJogada() {
         if (this.jogou) {
             this.facade.finalizarJogada(this.facade.getIdJogador());
@@ -207,9 +208,9 @@ public class FXMLViewController implements Initializable {
             this.jogou = false;
         }
     }
-    
+
     public void moverPeao(Peao peao, int dado) {
-        
+
         if (peao.getLinha() == 4 && peao.getColuna() == 3) {
             peao.setLinha(0);
             peao.setColuna(dado);
@@ -227,19 +228,19 @@ public class FXMLViewController implements Initializable {
         grid.getChildren().remove(peao.getPeao());
         grid.add(peao.getPeao(), peao.getColuna(), peao.getLinha());
     }
-    
+
     void atualizarJogadas() {
         Task t = new Task() {
             @Override
             protected Object call() throws Exception {
                 while (true) {
                     Platform.runLater(() -> {
-                        
+
                         int jogadorPassado = facade.getAtualJogador();
                         if (jogadorPassado < 0) {
                             jogadorPassado = facade.getUsuariosConectados().size() - 1;
                         }
-                        
+
                         if (facade.getControle() && jogadorPassado != meuID) {
                             moverPeao(peoes.get(jogadorPassado), facade.getUltimoDado());
                             acaoSeAlguemCaiuNaCasa(peoes.get(jogadorPassado).getColuna(), peoes.get(jogadorPassado).getLinha());
@@ -247,7 +248,7 @@ public class FXMLViewController implements Initializable {
                         }
                         if (facade.getControleTranferenciaIn()
                                 && facade.getIdJogadorTranferencia() == meuID) {
-                            
+
                             facade.setControleTranferenciaIn(false);
                             mostrarAlerta("Dinheiro Extra", "",
                                     "Você recebeu R$ " + facade.getValorTranferencia());
@@ -256,39 +257,52 @@ public class FXMLViewController implements Initializable {
                         }
                         if (facade.getControleTranferenciaOut()
                                 && facade.getIdJogadorTranferencia() == meuID) {
-                            
+
                             facade.setControleTranferenciaOut(false);
                             mostrarAlerta("Pague um vizinho agora", "",
                                     "Você pagou R$ " + facade.getValorTranferencia());
                             facade.darDinheiro(facade.getValorTranferencia());
                             atualizarValoresTela();
-                            
+
                         }
-                        if(facade.getControleConcursoBanda()==true &&
-                                facade.getIdProxJogadorEvento()==meuID){
+                        if (facade.getControleConcursoBanda() == true &&
+                                facade.getIdProxJogadorEvento() == meuID) {
                             facade.setControleConcursoBanda(false);
                             int resultado = eventoRolarDado("Concurso banda de rock");
-                            if(resultado ==3){
+                            if (resultado == 3) {
                                 facade.receberDinheiro(1000);
                                 atualizarValoresTela();
-                            }else {
-                                if(meuID==facade.getUsuariosConectados().size()-1)
+                            } else {
+                                if (meuID == facade.getUsuariosConectados().size() - 1)
                                     facade.concursoBandaRock(0);
                                 else
-                                    facade.concursoBandaRock(meuID+1);
+                                    facade.concursoBandaRock(meuID + 1);
                             }
 
                         }
-                        
+                        if(facade.getControleBolao() && facade.getOrganizadorBolao()==meuID){
+                            facade.setControleBolao(false);
+                            int resultado = eventoRolarDado("Bolão de esportes");
+                            facade.resultadoBolao(resultado);
+                        }
+                        if (facade.getControleBolao() && facade.getReultadoBolao() == meuID) {
+                            facade.setControleBolao(false);
+                            int numeroParticipantes = facade.getNumeroParticipantesBolao();
+                            int premio = (numeroParticipantes * 100) + 100;
+                            facade.receberDinheiro(premio);
+                            mostrarAlerta("Parabéns", "","Você ganhou R%"+premio+" no bolão");
+                            atualizarValoresTela();
+                        }
+
                         if (meuID == facade.getProximoJogador()) {
                             habilitarBotoes();
                             atualizarSortegrande();
-                            
+
                         } else if (meuID != facade.getProximoJogador()) {
                             desabilitarBotoes();
                         }
                     });
-                    
+
                     Thread.sleep(2000);
                 }
             }
@@ -332,8 +346,8 @@ public class FXMLViewController implements Initializable {
             atualizarValoresTela();
         } //bolao de esportes
         else if ((coluna == 6 && linha == 0) || (coluna == 6 && linha == 1) || (coluna == 6 && linha == 2) || (coluna == 6 && linha == 3)) {
-            //  facade.acaCasaPremio();
-            atualizarValoresTela();
+            escolherParticiparBolao();
+            facade.organizadorBolao(meuID);
         } //achou um comprador
         else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
             mostrarAlerta("Achou um comprador", "", "Agora você pode vender uma carta 'Compras e entretenimento', caso possua uma");
@@ -378,11 +392,11 @@ public class FXMLViewController implements Initializable {
             atualizarSortegrande();
         } //negocio de ocasião
         else if (coluna == 0 && linha == 3) {
-            
+
             Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
             ButtonType btnSim = new ButtonType("Sim");
             ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
-            
+
             dialogoExe.setTitle("Negócio de ocasião");
             dialogoExe.setHeaderText("Você pode comprar uma carta ''Compras e Entretenimento''"
                     + " por 100 x valor sorteado no dado. ");
@@ -448,7 +462,7 @@ public class FXMLViewController implements Initializable {
         else if (coluna == 2 && linha == 4) {
             Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
             ButtonType rolarDado = new ButtonType("rolar o dado");
-            
+
             dialogoExe.setTitle("Maratona beneficente");
             dialogoExe.setHeaderText("Um jogador caiu na casa maratona beneficente. "
                     + "Role o dado para saber o valor da sua doação");
@@ -456,7 +470,7 @@ public class FXMLViewController implements Initializable {
             dialogoExe.getButtonTypes().setAll(rolarDado);
             dialogoExe.showAndWait().ifPresent(b -> {
                 if (b == rolarDado) {
-                    
+
                     try {
                         int valorDado = facade.rolarDado();
                         mostrarAlerta("", "", "valor sorteado: " + valorDado + "\nVocê doará " + 100 * valorDado + " reais");
@@ -468,9 +482,11 @@ public class FXMLViewController implements Initializable {
                     }
                 }
             });
+        } else if ((coluna == 6 && linha == 0) || (coluna == 6 && linha == 1) || (coluna == 6 && linha == 2) || (coluna == 6 && linha == 3)) {
+            escolherParticiparBolao();
         }
     }
-    
+
     @FXML
     public void fazerEmprestimo() {
         String valor = JOptionPane.showInputDialog("Valor do emprestimo:");
@@ -478,7 +494,7 @@ public class FXMLViewController implements Initializable {
         labelDivida.setText("Dívida: " + facade.verDividaJogador());
         labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
     }
-    
+
     @FXML
     public void ganharSorteGrande(ActionEvent event) {
         if (dado == 6) {
@@ -490,18 +506,18 @@ public class FXMLViewController implements Initializable {
             JOptionPane.showMessageDialog(null, "Tentando trapacear? Voce não tirou 6 no dado!", "Tentando trapacear?", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public void comprarCartaEntretenimento() {
         Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
         ButtonType btnSim = new ButtonType("Comprar");
         ButtonType btnEmprestimo = new ButtonType("Pagar com empréstimo");
         ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
-        
+
         CartaCompra cartaCompra = facade.pegarCartaCompra();
         String nome = cartaCompra.getNome();
         Double valor = cartaCompra.getValorInicial();
         Double vRevenda = cartaCompra.getValorRevenda();
-        
+
         dialogoExe.setTitle("Compras e entretenimento");
         dialogoExe.setHeaderText("Você pegou a carta ''" + nome + "''. Ela custa R$" + valor + " e "
                 + "pode ser revendida por " + vRevenda);
@@ -530,13 +546,13 @@ public class FXMLViewController implements Initializable {
             }
         });
     }
-    
+
     @FXML
     public void venderCartaCompra(ActionEvent e) {
         if (comboCompras.getValue() != null) {
             int coluna = peoes.get(facade.getIdJogador()).getColuna();
             int linha = peoes.get(facade.getIdJogador()).getLinha();
-            
+
             if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
                 facade.venderCartaCompraEntretenimento(comboCompras.getValue());
                 comboCompras.getItems().remove(comboCompras.getValue());
@@ -547,21 +563,21 @@ public class FXMLViewController implements Initializable {
             }
         }
     }
-    
+
     @FXML
     public void acaoCartaCorreio(ActionEvent e) {
         if (comboCorreio.getValue() != null) {
-            
+
             if (comboCorreio.getValue().equals("va para frente agora")) {
                 this.acaoVaParaFrenteAgora();
                 comboCorreio.getItems().remove(comboCorreio.getValue());
-                
+
             } else if (comboCorreio.getValue().equals("dinheiro extra")
                     || comboCorreio.getValue().equals("pague um vizinho agora")) {
-                
+
                 String selecionado = this.selecionarJogador();
                 int id = -1;
-                
+
                 for (OrdemJogada ordemJogada : facade.getUsuariosConectados()) {
                     if (selecionado.equals(ordemJogada.getNome())) {
                         id = ordemJogada.getId();
@@ -570,7 +586,7 @@ public class FXMLViewController implements Initializable {
                 try {
                     facade.acaoCartas(id, comboCorreio.getValue());
                     comboCorreio.getItems().remove(comboCorreio.getValue());
-                    
+
                 } catch (SaldoInsuficienteException e1) {
                     JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
                 }
@@ -588,19 +604,19 @@ public class FXMLViewController implements Initializable {
             }
         }
     }
-    
+
     private void acaoVaParaFrenteAgora() {
         Peao peao = peoes.get(facade.getIdJogador());
         int linha = peao.getLinha();
         int coluna = peao.getColuna();
-        
+
         ChoiceDialog dialogoRegiao = new ChoiceDialog("Compras e entretenimento", "Achou um comprador");
         dialogoRegiao.setTitle("Va para frente agora");
         dialogoRegiao.setHeaderText("Escolha seu destino");
         dialogoRegiao.setContentText("Destino:");
         dialogoRegiao.showAndWait().ifPresent(r -> {
             if (r == "Compras e entretenimento") {
-                
+
                 if (((coluna == 1) && (linha == 0))
                         || ((coluna == 1) && (linha == 3))) {
                     this.moverPeao(peoes.get(facade.getIdJogador()), 3);
@@ -644,18 +660,18 @@ public class FXMLViewController implements Initializable {
             }
         });
     }
-    
+
     @FXML
     public void pagarDivida(ActionEvent e) {
         int coluna = peoes.get(facade.getIdJogador()).getColuna();
         int linha = peoes.get(facade.getIdJogador()).getLinha();
-        
+
         if (linha == 4 && coluna == 3) {
             Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
             ButtonType btnJuros = new ButtonType("apenas juros");
             ButtonType btnParte = new ButtonType("parte da dívida");
             ButtonType btnTudo = new ButtonType("toda a dívida");
-            
+
             dialogoExe.setTitle("Compras e entretenimento");
             dialogoExe.setHeaderText("");
             dialogoExe.setContentText("Pagar");
@@ -666,7 +682,7 @@ public class FXMLViewController implements Initializable {
                         facade.pagarJuros();
                         this.atualizarValoresTela();
                     } catch (SaldoInsuficienteException e1) {
-                        
+
                     }
                 } else if (b == btnParte) {
                     try {
@@ -684,40 +700,40 @@ public class FXMLViewController implements Initializable {
                         JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                
+
             });
         } else {
             JOptionPane.showMessageDialog(null, "Voce não está na casa 'Dia da mesada'!", "Calma aí amigão", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     @FXML
     public void descricaoCartaCompra(ActionEvent e) {
         CartaCompra cartaCompra = null;
-        
+
         for (CartaCompra aux : facade.verCartasCompraJogador()) {
             if (aux.getNome() == comboCompras.getValue()) {
                 cartaCompra = aux;
             }
         }
-        
+
         if (cartaCompra != null) {
             textContas.setText("Valor Inicial: R$" + cartaCompra.getValorInicial() + "\n"
                     + "Valor de revenda: R$" + cartaCompra.getValorRevenda());
         }
     }
-    
+
     @FXML
     public void descricaoCartaCorreio(ActionEvent e) {
         CartaCorreio cartaCorreio = null;
-        
+
         for (CartaCorreio aux : facade.verCartasCorreioJogador()) {
             if (aux.getTipo() == comboCorreio.getValue()) {
                 cartaCorreio = aux;
             }
         }
         if (cartaCorreio != null) {
-            
+
             textCorreio.setText("Carta: " + cartaCorreio.getNome() + "\n\n"
                     + "Valor:" + cartaCorreio.getValor());
         }
@@ -734,32 +750,49 @@ public class FXMLViewController implements Initializable {
         dialogoExe.getButtonTypes().setAll(rolarDado);
         dialogoExe.showAndWait().ifPresent(b -> {
             valor[0] = facade.rolarDado();
-            mostrarAlerta("","", "valor sorteado: "+valor[0]);
+            mostrarAlerta("", "", "valor sorteado: " + valor[0]);
         });
         return valor[0];
     }
-    
+
+    public void escolherParticiparBolao() {
+        Alert dialogoExe = new Alert(Alert.AlertType.CONFIRMATION);
+        ButtonType btnSim = new ButtonType("Sim");
+        ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        dialogoExe.setTitle("Bolão de esportes");
+        dialogoExe.setHeaderText("");
+        dialogoExe.setContentText("Deseja partcipar?");
+        dialogoExe.getButtonTypes().setAll(btnSim, btnNao);
+        dialogoExe.showAndWait().ifPresent(b -> {
+            if (b == btnSim) {
+                facade.participarBolao(meuID);
+                facade.darDinheiro(100);
+            }
+        });
+    }
+
     public String selecionarJogador() {
-        
+
         ArrayList<OrdemJogada> lista = facade.getUsuariosConectados();
         String selecionado = "";
         ChoiceDialog dialogoRegiao = new ChoiceDialog();
-        
+
         for (int i = 0; i < lista.size(); i++) {
             if (lista.get(i).getId() != meuID) {
                 dialogoRegiao.getItems().add(lista.get(i).getNome());
             }
         }
-        
+
         dialogoRegiao.setTitle("Selecione um jogador");
         dialogoRegiao.setHeaderText("Selecione um jogador");
         dialogoRegiao.setContentText("");
         dialogoRegiao.showAndWait();
         selecionado = (String) dialogoRegiao.getSelectedItem();
-        
+
         return selecionado;
     }
-    
+
     public void mostraJogadorConectado() {
         ArrayList<OrdemJogada> lista = new ArrayList();
         lista = facade.getUsuariosConectados();
@@ -769,31 +802,31 @@ public class FXMLViewController implements Initializable {
         }
         txtJogadores.setText(usuarios);
     }
-    
+
     public void atualizarValoresTela() {
         labelDivida.setText("Dívida: " + facade.verDividaJogador());
         labelSaldo.setText("Saldo: " + facade.verSaldoJogador());
     }
-    
+
     public void atualizarSortegrande() {
         String valor = Double.toString(facade.getValorSorteGrande());
         this.labelSorteGrande.setText("R$" + valor);
     }
-    
+
     public void mostrarCartasCorreio() {
         comboCorreio.getItems().clear();
         for (int i = 0; i < facade.verCartasCorreioJogador().size(); i++) {
             comboCorreio.getItems().addAll(facade.verCartasCorreioJogador().get(i).getTipo());
         }
     }
-    
+
     public void mostrarCartasCompra() {
         comboCompras.getItems().clear();
         for (int i = 0; i < facade.verCartasCompraJogador().size(); i++) {
             comboCompras.getItems().addAll(facade.verCartasCompraJogador().get(i).getNome());
         }
     }
-    
+
     public void desabilitarBotoes() {
         this.botaoAcaoCarta.setDisable(true);
         this.botaoEmprestimo.setDisable(true);
@@ -803,7 +836,7 @@ public class FXMLViewController implements Initializable {
         this.botaoVenderCarta.setDisable(true);
         this.botaoFinalizar.setDisable(true);
     }
-    
+
     public void habilitarBotoes() {
         this.botaoAcaoCarta.setDisable(false);
         this.botaoEmprestimo.setDisable(false);
@@ -813,7 +846,7 @@ public class FXMLViewController implements Initializable {
         this.botaoVenderCarta.setDisable(false);
         this.botaoFinalizar.setDisable(false);
     }
-    
+
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
         Alert dialogoInfo = new Alert(Alert.AlertType.INFORMATION);
         dialogoInfo.setTitle(titulo);
@@ -821,16 +854,16 @@ public class FXMLViewController implements Initializable {
         dialogoInfo.setContentText(corpo);
         dialogoInfo.showAndWait();
     }
-    
+
     private void adicionarImagensTabuleiro() {
         ArrayList<Pane> casas = organizarCasas();
-        
+
         for (Pane casa : casas) {
             BackgroundImage bi = new BackgroundImage(new Image(casa.getId() + ".png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
             casa.setBackground(new Background(bi));
         }
     }
-    
+
     public void removerJogadorServidor() {
         Stage stage = Tabuleiro.getStage();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -843,7 +876,7 @@ public class FXMLViewController implements Initializable {
             }
         });
     }
-    
+
     private ArrayList<Pane> organizarCasas() {
         ArrayList<Pane> casas = new ArrayList<>();
         casas.add(casa00);
@@ -879,7 +912,7 @@ public class FXMLViewController implements Initializable {
         casas.add(casa62);
         casas.add(casa63);
         casas.add(casa64);
-        
+
         return casas;
     }
 }
