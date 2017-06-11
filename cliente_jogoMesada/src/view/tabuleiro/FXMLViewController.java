@@ -190,7 +190,7 @@ public class FXMLViewController implements Initializable {
             botaoJogar.setDisable(true);
             this.dado = facade.rolarDado();
             JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
-            this.moverPeao(peoes.get(facade.getIdJogador()), 6);
+            this.moverPeao(peoes.get(facade.getIdJogador()), dado);
             this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
             facade.informarJogada(dado);
         } else
@@ -242,9 +242,9 @@ public class FXMLViewController implements Initializable {
                         }
 
                         if (facade.getControle() && jogadorPassado != meuID) {
+                            facade.setControle(false);
                             moverPeao(peoes.get(jogadorPassado), facade.getUltimoDado());
                             acaoSeAlguemCaiuNaCasa(peoes.get(jogadorPassado).getColuna(), peoes.get(jogadorPassado).getLinha());
-                            facade.setControle(false);
                         }
                         if (facade.getControleTranferenciaIn()
                                 && facade.getIdJogadorTranferencia() == meuID) {
@@ -280,18 +280,24 @@ public class FXMLViewController implements Initializable {
                             }
 
                         }
-                        if(facade.getControleBolao() && facade.getOrganizadorBolao()==meuID){
+                        if(facade.getControleBolao()==true && facade.getOrganizadorBolao()==meuID &&facade.getReultadoBolao() ==-1){
                             facade.setControleBolao(false);
-                            int resultado = eventoRolarDado("Bolão de esportes");
+                            int resultado = eventoRolarDado("Bolão de esportes")-1;
                             facade.resultadoBolao(resultado);
                         }
-                        if (facade.getControleBolao() && facade.getReultadoBolao() == meuID) {
+                        if (facade.getControleBolao()==true && facade.getReultadoBolao() == meuID) {
+                            System.out.println("enviando o valor");
                             facade.setControleBolao(false);
                             int numeroParticipantes = facade.getNumeroParticipantesBolao();
-                            int premio = (numeroParticipantes * 100) + 100;
+                            int premio = (numeroParticipantes * 100) + 1000;
                             facade.receberDinheiro(premio);
-                            mostrarAlerta("Parabéns", "","Você ganhou R%"+premio+" no bolão");
+                            mostrarAlerta("Parabéns", "","Você ganhou R$"+premio+" no bolão");
                             atualizarValoresTela();
+                        }
+                        if(facade.getControleBolao() && facade.getReultadoBolao() >-1 && facade.getReultadoBolao() !=meuID) {
+                            facade.setControleBolao(false);
+                            String nome = facade.getNomeUsuarioPorId(facade.getReultadoBolao());
+                            mostrarAlerta("Resultado do bolão", "","O jogador "+nome+" ganhou");
                         }
 
                         if (meuID == facade.getProximoJogador()) {
@@ -348,6 +354,7 @@ public class FXMLViewController implements Initializable {
         else if ((coluna == 6 && linha == 0) || (coluna == 6 && linha == 1) || (coluna == 6 && linha == 2) || (coluna == 6 && linha == 3)) {
             escolherParticiparBolao();
             facade.organizadorBolao(meuID);
+            atualizarValoresTela();
         } //achou um comprador
         else if ((coluna == 2 && linha == 1) || (coluna == 3 && linha == 2) || (coluna == 2 && linha == 3) || (coluna == 5 && linha == 3) || (coluna == 1 && linha == 4)) {
             mostrarAlerta("Achou um comprador", "", "Agora você pode vender uma carta 'Compras e entretenimento', caso possua uma");
@@ -484,6 +491,7 @@ public class FXMLViewController implements Initializable {
             });
         } else if ((coluna == 6 && linha == 0) || (coluna == 6 && linha == 1) || (coluna == 6 && linha == 2) || (coluna == 6 && linha == 3)) {
             escolherParticiparBolao();
+            atualizarValoresTela();
         }
     }
 

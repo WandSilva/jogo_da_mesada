@@ -154,11 +154,11 @@ public class ControllerComunicacao {
         return usuarios;
     }
 
-    public String getNomeUsiarioPorId(int id){
+    public String getNomeUsiarioPorId(int id) {
         String nome = null;
 
-        for (OrdemJogada ordemJogada:usuarios) {
-            if (ordemJogada.getId() ==id)
+        for (OrdemJogada ordemJogada : usuarios) {
+            if (ordemJogada.getId() == id)
                 nome = ordemJogada.getNome();
         }
         return nome;
@@ -297,44 +297,51 @@ public class ControllerComunicacao {
         return Integer.parseInt(this.cliente.getAtualJogador());
     }
 
-    public void concursoBandaRock(int idProximo){
+    public void concursoBandaRock(int idProximo) {
         this.cliente.concursoBandaRock(idProximo);
     }
-    public void participarBolao(int id){
+
+    public void participarBolao(int id) {
         this.cliente.participarBolao(id);
     }
 
-    public void setControleConcursoBanda(boolean controle){
+    public void setControleConcursoBanda(boolean controle) {
         this.cliente.setControleConcursoBanda(controle);
     }
-    public boolean getControleConcursoBanda(){
+
+    public boolean getControleConcursoBanda() {
         return this.cliente.getControleConcursoBanda();
     }
-    public int getIdProxJogadorEvento(){
+
+    public int getIdProxJogadorEvento() {
         return this.cliente.getIdProximoJOgadorEvento();
     }
-    public int getReultadoBolao(){
+
+    public int getReultadoBolao() {
         return this.cliente.getVencedorBolao();
     }
-    public boolean getControleBolao(){
+
+    public boolean getControleBolao() {
         return this.cliente.getControleBolao();
     }
-    public void setControleBolao(boolean controleBolao){
+
+    public void setControleBolao(boolean controleBolao) {
         this.cliente.setControleBolao(controleBolao);
     }
 
-    public int getNumeroParticipantesBolao(){
+    public int getNumeroParticipantesBolao() {
         return this.cliente.getNumeroParticipantesBolao();
     }
 
-    public void organizadorBolao(int id){
+    public void organizadorBolao(int id) {
         this.cliente.organizadorBolao(id);
     }
-    public int getOrganizadorBolao(){
+
+    public int getOrganizadorBolao() {
         return this.cliente.getIdOrganizadorBolao();
     }
 
-    public void resultadoBolao(int resultado){
+    public void resultadoBolao(int resultado) {
         this.cliente.resultadoBolao(resultado);
     }
 }

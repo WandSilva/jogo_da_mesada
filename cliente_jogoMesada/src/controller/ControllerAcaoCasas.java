@@ -168,7 +168,7 @@ public class ControllerAcaoCasas {
      */
     public void casaFelizAniversario(boolean caiuNaCasa) throws SaldoInsuficienteException {
         if (caiuNaCasa) {
-            int numeroDeJogadores = cliente.usuariosConectados().size();
+            int numeroDeJogadores = cliente.usuariosConectados().size()-1;
             jogador.depositar(numeroDeJogadores * 100);
         }
         else
