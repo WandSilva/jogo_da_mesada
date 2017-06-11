@@ -57,6 +57,7 @@ public class FXMLTelaInicialController implements Initializable {
         int aux = facade.getUsuariosConectados().get(0).getId();
 
         if(aux == facade.getIdJogador()){
+            facade.iniciarPartida();
             facade.iniciarTabuleiro();
         }
         else{
