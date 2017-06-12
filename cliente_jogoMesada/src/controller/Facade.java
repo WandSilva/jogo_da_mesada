@@ -340,5 +340,10 @@ public class Facade {
     public void resultadoBolao(int resultado) {
         this.controllerComunicacao.resultadoBolao(resultado);
     }
+    
+    public void enviarSaldoFinal(double saldoFinal)
+    {
+        this.controllerComunicacao.enviarSaldoFinal(saldoFinal);
+    }
 
 }

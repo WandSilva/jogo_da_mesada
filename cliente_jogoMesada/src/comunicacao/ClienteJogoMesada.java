@@ -232,6 +232,30 @@ public class ClienteJogoMesada {
             return new ArrayList<>();
         }
     }
+    
+    public synchronized String enviarSaldoFinal(double saldoFinal){
+        
+        if (conexaoClienteServidor.isConnected()) {
+            try {
+                saidaDados.writeBytes("006" + ";" + ClienteJogoMesada.usuario + ";" + saldoFinal+'\n');
+
+                String pacoteDados = entradaDados.readLine();
+
+                if (pacoteDados.startsWith("600")) {
+                    return "OK";
+
+                } else {
+                    return pacoteDados;
+                }
+
+            } catch (IOException ex) {
+                //System.out.println(ex.toString());
+                return "Falha na conexão com o servidor!";
+            }
+        } else {
+            return "ERRO! Tente novamente...";
+        }
+    }
 
     /**
      * Método responsável por enviar uma jogada para todos os outros jogadores.

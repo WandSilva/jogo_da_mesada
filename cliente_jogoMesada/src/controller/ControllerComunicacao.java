@@ -344,4 +344,8 @@ public class ControllerComunicacao {
     public void resultadoBolao(int resultado) {
         this.cliente.resultadoBolao(resultado);
     }
+    
+    public void enviarSaldoFinal(double saldoFinal){
+        this.cliente.enviarSaldoFinal(saldoFinal);
+    }
 }
