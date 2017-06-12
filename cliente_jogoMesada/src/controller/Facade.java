@@ -345,5 +345,4 @@ public class Facade {
     {
         this.controllerComunicacao.enviarSaldoFinal(saldoFinal);
     }
-
 }

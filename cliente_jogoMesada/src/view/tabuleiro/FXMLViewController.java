@@ -142,6 +142,8 @@ public class FXMLViewController implements Initializable {
     private Facade facade;
 
     public int meuID;
+    
+    public int qtdMeses = 1;
 
     private ArrayList<String> ordemJogadas = new ArrayList();
 
@@ -293,6 +295,7 @@ public class FXMLViewController implements Initializable {
                             facade.receberDinheiro(premio);
                             mostrarAlerta("Parabéns", "","Você ganhou R$"+premio+" no bolão");
                             atualizarValoresTela();
+                            
                         }
                         if(facade.getControleBolao() && facade.getReultadoBolao() >-1 && facade.getReultadoBolao() !=meuID) {
                             facade.setControleBolao(false);
@@ -444,6 +447,11 @@ public class FXMLViewController implements Initializable {
         if (coluna == 3 && linha == 4) {
             facade.acaoCasaDiaDaMesada();
             this.atualizarValoresTela();
+            qtdMeses = qtdMeses - 1;
+            if (qtdMeses == 0){
+                botaoJogar.setDisable(true);
+            }
+            
         }
     }
 
@@ -846,13 +854,26 @@ public class FXMLViewController implements Initializable {
     }
 
     public void habilitarBotoes() {
-        this.botaoAcaoCarta.setDisable(false);
-        this.botaoEmprestimo.setDisable(false);
-        this.botaoJogar.setDisable(false);
-        this.botaoPagarDivida.setDisable(false);
-        this.botaoSorGrande.setDisable(false);
-        this.botaoVenderCarta.setDisable(false);
-        this.botaoFinalizar.setDisable(false);
+        
+        if(qtdMeses > 0){
+            this.botaoAcaoCarta.setDisable(false);
+            this.botaoEmprestimo.setDisable(false);
+            this.botaoJogar.setDisable(false);
+            this.botaoPagarDivida.setDisable(false);
+            this.botaoSorGrande.setDisable(false);
+            this.botaoVenderCarta.setDisable(false);
+            this.botaoFinalizar.setDisable(false);
+        }
+        
+        else {
+            this.botaoAcaoCarta.setDisable(true);
+            this.botaoEmprestimo.setDisable(true);
+            this.botaoJogar.setDisable(true);
+            this.botaoPagarDivida.setDisable(true);
+            this.botaoSorGrande.setDisable(true);
+            this.botaoVenderCarta.setDisable(true);
+            this.botaoFinalizar.setDisable(false);
+        }
     }
 
     public void mostrarAlerta(String titulo, String cabecalho, String corpo) {
