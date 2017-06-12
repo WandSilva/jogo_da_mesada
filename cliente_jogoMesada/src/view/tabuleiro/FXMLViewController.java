@@ -193,7 +193,7 @@ public class FXMLViewController implements Initializable {
             this.jogou = true;
             botaoJogar.setDisable(true);
             this.dado = facade.rolarDado();
-            dado=5;
+            //dado=5;
             JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
             this.moverPeao(peoes.get(facade.getIdJogador()), dado);
             this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
@@ -376,6 +376,7 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Praia no Domingo", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //concurso banda de rock
@@ -396,6 +397,7 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Ajude a Floresta", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //lanchonete
@@ -405,6 +407,7 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Lanchonete", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //negocio de ocasião
@@ -443,6 +446,7 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Compras no Shopping", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //maratona beneficente
