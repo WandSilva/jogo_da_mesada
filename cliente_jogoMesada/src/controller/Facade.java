@@ -345,4 +345,12 @@ public class Facade {
     {
         this.controllerComunicacao.enviarSaldoFinal(saldoFinal);
     }
+
+    public void setVencedorBolao(int vencedorBolao){
+        this.controllerComunicacao.setVencedorBolao(vencedorBolao);
+    }
+
+    public void limparListaBolao(){
+        this.controllerComunicacao.limparListaBolao();
+    }
 }

@@ -348,8 +348,12 @@ public class ControllerComunicacao {
     public void enviarSaldoFinal(double saldoFinal){
         this.cliente.enviarSaldoFinal(saldoFinal);
     }
-   public void limparBolao()
-   {
-       
-   }
+
+    public void setVencedorBolao(int vencedorBolao){
+        this.cliente.setVencedorBolao(vencedorBolao);
+    }
+
+    public void limparListaBolao(){
+        this.cliente.limparListaBolao();
+    }
 }

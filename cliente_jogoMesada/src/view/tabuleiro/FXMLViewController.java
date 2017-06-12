@@ -1,5 +1,6 @@
 package view.tabuleiro;
 
+import comunicacao.ClienteJogoMesada;
 import controller.Facade;
 import exception.SaldoInsuficienteException;
 
@@ -288,7 +289,8 @@ public class FXMLViewController implements Initializable {
                             facade.resultadoBolao(resultado);
                         }
                         if (facade.getControleBolao()==true && facade.getReultadoBolao() == meuID) {
-                            System.out.println("enviando o valor");
+                            facade.setVencedorBolao(-1);
+                            facade.limparListaBolao();
                             facade.setControleBolao(false);
                             int numeroParticipantes = facade.getNumeroParticipantesBolao();
                             int premio = (numeroParticipantes * 100) + 1000;
@@ -298,8 +300,11 @@ public class FXMLViewController implements Initializable {
                             
                         }
                         if(facade.getControleBolao() && facade.getReultadoBolao() >-1 && facade.getReultadoBolao() !=meuID) {
+                            int resultado = facade.getReultadoBolao();
                             facade.setControleBolao(false);
-                            String nome = facade.getNomeUsuarioPorId(facade.getReultadoBolao());
+                            facade.setVencedorBolao(-1);
+                            facade.limparListaBolao();
+                            String nome = facade.getNomeUsuarioPorId(resultado);
                             mostrarAlerta("Resultado do bolão", "","O jogador "+nome+" ganhou");
                         }
 

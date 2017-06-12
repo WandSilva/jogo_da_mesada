@@ -422,6 +422,10 @@ public class ClienteJogoMesada {
         return vencedorBolao;
     }
 
+    public synchronized void setVencedorBolao(int vencedorBolao) {
+        ClienteJogoMesada.vencedorBolao = vencedorBolao;
+    }
+
     public int getNumeroParticipantesBolao() {
         return numeroParticipantesBolao;
     }
@@ -432,6 +436,10 @@ public class ClienteJogoMesada {
 
     public static synchronized void setControleBolao(boolean controleBolao) {
         ClienteJogoMesada.controleBolao = controleBolao;
+    }
+
+    public synchronized void limparListaBolao(){
+        jogadoresBolao.clear();
     }
 
     public synchronized void setControleConcursoBanda(boolean controle) {
@@ -697,8 +705,6 @@ public class ClienteJogoMesada {
                     } else if (msg.startsWith("1012")) {
                         String[] dadosRecebidos = msg.split(";");
                         String resultado = dadosRecebidos[1].trim();
-                        System.out.println("resultado: " + resultado);
-                        System.out.println("N participantes :" + jogadoresBolao.size());
                         for (String x : jogadoresBolao) {
                             System.out.println(x);
                         }
