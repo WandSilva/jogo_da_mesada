@@ -48,6 +48,7 @@ public class ClienteJogoMesada {
     private static int vencedorBolao;
     private static int numeroParticipantesBolao;
     private static int idOrganizadorBolao;
+    private static int duracaoPartida;
 
     /**
      * Construtor da classe que recebe o IP do servidor do jogo.
@@ -414,6 +415,20 @@ public class ClienteJogoMesada {
         }
     }
 
+    public void duracaoPartida(int duracao) {
+        byte dados[] = ("1014" + ";" + duracao).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int getDuracaoPartida() {
+        return duracaoPartida;
+    }
+
     public int getIdOrganizadorBolao() {
         return idOrganizadorBolao;
     }
@@ -441,6 +456,8 @@ public class ClienteJogoMesada {
     public synchronized void limparListaBolao(){
         jogadoresBolao.clear();
     }
+
+
 
     public synchronized void setControleConcursoBanda(boolean controle) {
         ClienteJogoMesada.controleConcursoBanda = controle;
@@ -721,6 +738,10 @@ public class ClienteJogoMesada {
                         String[] dadosRecebidos = msg.split(";");
                         idOrganizadorBolao = Integer.parseInt(dadosRecebidos[1].trim());
                         ClienteJogoMesada.controleBolao = true;
+                    }
+                    else if (msg.startsWith("1014")) {
+                        String[] dadosRecebidos = msg.split(";");
+                        duracaoPartida = Integer.parseInt(dadosRecebidos[1].trim());
                     }
                     Thread.sleep(500);
                 }

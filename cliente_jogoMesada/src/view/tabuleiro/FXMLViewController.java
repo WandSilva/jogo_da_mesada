@@ -144,7 +144,7 @@ public class FXMLViewController implements Initializable {
 
     public int meuID;
     
-    public int qtdMeses = 1;
+    public int qtdMeses;
 
     private ArrayList<String> ordemJogadas = new ArrayList();
 
@@ -152,6 +152,7 @@ public class FXMLViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.facade = Facade.getInstance();
         facade.sincronizarComunicacao();
+        qtdMeses = facade.getDuracaoPartida();
         ordemJogadas = this.facade.iniciarPartida();
         this.facade.enviarOrdemJogada(ordemJogadas);
         this.meuID = facade.getIdJogador();
@@ -192,6 +193,7 @@ public class FXMLViewController implements Initializable {
             this.jogou = true;
             botaoJogar.setDisable(true);
             this.dado = facade.rolarDado();
+            dado=5;
             JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
             this.moverPeao(peoes.get(facade.getIdJogador()), dado);
             this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
@@ -223,7 +225,7 @@ public class FXMLViewController implements Initializable {
                 peao.setColuna(dado - (7 - ((peao.getColuna() - dado))));
                 peao.setLinha(peao.getLinha() + 1);
             }
-            if (peao.getLinha() > 3 && peao.getColuna() > 2) {
+            if ( (peao.getLinha() > 3 && peao.getColuna() > 2) || (peao.getLinha()>4)) {
                 peao.setLinha(4);
                 peao.setColuna(3);
             }
@@ -871,11 +873,11 @@ public class FXMLViewController implements Initializable {
         }
         
         else {
-            this.botaoAcaoCarta.setDisable(true);
-            this.botaoEmprestimo.setDisable(true);
+            this.botaoAcaoCarta.setDisable(false);
+            this.botaoEmprestimo.setDisable(false);
             this.botaoJogar.setDisable(true);
-            this.botaoPagarDivida.setDisable(true);
-            this.botaoSorGrande.setDisable(true);
+            this.botaoPagarDivida.setDisable(false);
+            this.botaoSorGrande.setDisable(false);
             this.botaoVenderCarta.setDisable(true);
             this.botaoFinalizar.setDisable(false);
         }

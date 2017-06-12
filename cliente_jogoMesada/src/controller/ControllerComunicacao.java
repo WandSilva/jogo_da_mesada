@@ -356,4 +356,12 @@ public class ControllerComunicacao {
     public void limparListaBolao(){
         this.cliente.limparListaBolao();
     }
+
+    public int getDuracaoPartida() {
+        return this.cliente.getDuracaoPartida();
+    }
+
+    public void duracaoPartida(int duracao) {
+        this.cliente.duracaoPartida(duracao);
+    }
 }

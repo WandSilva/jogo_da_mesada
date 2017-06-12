@@ -57,6 +57,8 @@ public class FXMLTelaInicialController implements Initializable {
         int aux = facade.getUsuariosConectados().get(0).getId();
 
         if(aux == facade.getIdJogador()){
+            int duracao = Integer.parseInt(JOptionPane.showInputDialog("Informe a duração da partida"));
+            facade.setDuracaoPartida(duracao);
             facade.iniciarPartida();
             facade.iniciarTabuleiro();
         }

@@ -353,4 +353,11 @@ public class Facade {
     public void limparListaBolao(){
         this.controllerComunicacao.limparListaBolao();
     }
+
+    public int getDuracaoPartida() {
+        return this.controllerComunicacao.getDuracaoPartida();
+    }
+    public void setDuracaoPartida(int duracao) {
+        this.controllerComunicacao.duracaoPartida(duracao);
+    }
 }
