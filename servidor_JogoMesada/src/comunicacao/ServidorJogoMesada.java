@@ -142,9 +142,22 @@ public class ServidorJogoMesada {
                             jogador.setNome(dados[1]);
                             Sala sala = buscarSala(jogador);
                             ArrayList<String> ordemJogada = new ArrayList<>();
-                            ordemJogada = listaJogadores(sala);
-                            //System.out.println(ordemJogada);
+                            ordemJogada = listaJogadores(sala);                          
                             saidaDadosClienteServidor.writeBytes("500" + ";" + ordemJogada + "\n");
+                        } else if (pacoteDados.startsWith("006")){
+                            String[] dados = new String[3];
+                            dados = pacoteDados.split(";");
+                            Jogador jogador = new Jogador();
+                            jogador.setNome(dados[1]);
+                            
+                            for (Sala sala:salasDePartidas){
+                                for (Jogador jogador2:sala.getJogadores()){
+                                    if(jogador2.equals(jogador2)){
+                                        jogador2.setSaldo(Double.parseDouble(dados[2]));
+                                        saidaDadosClienteServidor.writeBytes("600\n");
+                                    }
+                                }
+                            }  
                         }
 
                     } catch (IOException ex) {

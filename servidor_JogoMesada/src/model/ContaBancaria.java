@@ -73,4 +73,8 @@ public class ContaBancaria {
     public double getDivida() {
         return divida;
     }
+    
+    public void setSaldo(double novoSaldo){
+        this.saldo = novoSaldo;
+    }
 }

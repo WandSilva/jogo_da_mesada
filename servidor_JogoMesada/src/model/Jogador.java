@@ -159,4 +159,8 @@ public class Jogador {
     public void setSala(Sala sala) {
         this.sala = sala;
     }
+    
+    public void setSaldo(double novoSaldo){
+        this.contaBancaria.setSaldo(novoSaldo);
+    }
 }
