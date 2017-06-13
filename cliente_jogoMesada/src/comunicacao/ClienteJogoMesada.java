@@ -44,11 +44,14 @@ public class ClienteJogoMesada {
     private static int ultimoDado;
     private static ArrayList<String> ordemJogadas = new ArrayList();
     private static ArrayList<String> jogadoresBolao = new ArrayList<>();
+    private static ArrayList<String> finalizaramPartida = new ArrayList<>();
     private static boolean controleBolao;
     private static int vencedorBolao;
     private static int numeroParticipantesBolao;
     private static int idOrganizadorBolao;
     private static int duracaoPartida;
+    private static boolean finalizeiPartida = false;
+    private static boolean acabouJogo = false;
 
     /**
      * Construtor da classe que recebe o IP do servidor do jogo.
@@ -234,27 +237,35 @@ public class ClienteJogoMesada {
         }
     }
     
-    public synchronized String enviarSaldoFinal(double saldoFinal){
+    public synchronized ArrayList<String> enviarMeuResultado(String nomeUsuario, double saldoFinal){
         
         if (conexaoClienteServidor.isConnected()) {
             try {
-                saidaDados.writeBytes("006" + ";" + ClienteJogoMesada.usuario + ";" + saldoFinal+'\n');
+                saidaDados.writeBytes("006" + ";" + nomeUsuario + ";" + saldoFinal+'\n');
 
                 String pacoteDados = entradaDados.readLine();
 
+                
                 if (pacoteDados.startsWith("600")) {
-                    return "OK";
-
+                    String[] dados = new String[2];
+                    dados = pacoteDados.split(";");
+                    String[] dados2 = new String[12];
+                    dados2 = dados[1].split(",");
+                    ArrayList<String> lista = new ArrayList();
+                    for (String string : dados2) {
+                        lista.add(string.replace("[", "").replace("]", "").replace(" ", "").replace("#"," R$: "));
+                    }
+                    return lista;
                 } else {
-                    return pacoteDados;
+                    return new ArrayList<>();
                 }
 
             } catch (IOException ex) {
                 //System.out.println(ex.toString());
-                return "Falha na conexão com o servidor!";
+                return new ArrayList<>();
             }
         } else {
-            return "ERRO! Tente novamente...";
+            return new ArrayList<>();
         }
     }
 
@@ -424,6 +435,16 @@ public class ClienteJogoMesada {
             Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void finalizeiPartida(String nomeUsuario){
+        byte dados[] = ("1015" + ";" + nomeUsuario).getBytes();
+        DatagramPacket msgPacket = new DatagramPacket(dados, dados.length, enderecoMulticast, portaClienteCliente);
+        try {
+            conexaoGrupo.send(msgPacket);
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteJogoMesada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public int getDuracaoPartida() {
         return duracaoPartida;
@@ -441,6 +462,11 @@ public class ClienteJogoMesada {
         ClienteJogoMesada.vencedorBolao = vencedorBolao;
     }
 
+    
+    public synchronized int getTamanhoFinalizaram(){
+        return finalizeiPartida.size();
+    }
+    
     public int getNumeroParticipantesBolao() {
         return numeroParticipantesBolao;
     }
@@ -457,7 +483,17 @@ public class ClienteJogoMesada {
         jogadoresBolao.clear();
     }
 
+    public synchronized boolean getAcabouJogo(){
+        return acabouJogo;
+    }
+    
+    public synchronized void setAcabouJogo(boolean valor){
+        acabouJogo = valor;
+    }
 
+    public synchronized boolean getFinalizeiPartida(){
+        return finalizeiPartida;
+    }
 
     public synchronized void setControleConcursoBanda(boolean controle) {
         ClienteJogoMesada.controleConcursoBanda = controle;
@@ -738,10 +774,21 @@ public class ClienteJogoMesada {
                         String[] dadosRecebidos = msg.split(";");
                         idOrganizadorBolao = Integer.parseInt(dadosRecebidos[1].trim());
                         ClienteJogoMesada.controleBolao = true;
-                    }
-                    else if (msg.startsWith("1014")) {
+                    }else if (msg.startsWith("1014")) {
                         String[] dadosRecebidos = msg.split(";");
                         duracaoPartida = Integer.parseInt(dadosRecebidos[1].trim());
+                    }else if (msg.startsWith("1015")){
+                       String[] dadosRecebidos = msg.split(";");
+                       if(ClienteJogoMesada.usuario.equals(dadosRecebidos[1].trim()) && finalizeiPartida == false){
+                            finalizaramPartida.add(dadosRecebidos[1].trim());
+                            finalizeiPartida = true;
+                       
+                       }else{
+                           finalizaramPartida.add(dadosRecebidos[1].trim());
+                       }
+                       if(finalizaramPartida.size() == ordemJogadas.size()){                         
+                           acabouJogo = true;
+                       }
                     }
                     Thread.sleep(500);
                 }

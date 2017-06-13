@@ -340,11 +340,6 @@ public class Facade {
     public void resultadoBolao(int resultado) {
         this.controllerComunicacao.resultadoBolao(resultado);
     }
-    
-    public void enviarSaldoFinal(double saldoFinal)
-    {
-        this.controllerComunicacao.enviarSaldoFinal(saldoFinal);
-    }
 
     public void setVencedorBolao(int vencedorBolao){
         this.controllerComunicacao.setVencedorBolao(vencedorBolao);
@@ -360,4 +355,28 @@ public class Facade {
     public void setDuracaoPartida(int duracao) {
         this.controllerComunicacao.duracaoPartida(duracao);
     }
-}
+    
+    public boolean getFinalizeiPartida(){
+        return this.controllerComunicacao.getFinalizeiPartida();
+    }
+    
+    public void finalizeiPartida(String nomeUsuario){
+       this.controllerComunicacao.finalizeiPartida(nomeUsuario);
+    }
+    
+    public boolean getAcabouJogo(){
+        return this.controllerComunicacao.getAcabouJogo();
+    }
+    
+    public ArrayList<String> enviarMeuResultado(String nomeUsuario, double saldoFinal){
+        return this.controllerComunicacao.enviarMeuResultado(nomeUsuario, saldoFinal);
+    }
+    
+    public void setAcabouJogo(boolean valor){
+        this.controllerComunicacao.setAcabouJogo(valor);
+    }
+    
+    public int getTamanhoFinalizaram(){
+       return this.controllerComunicacao.getTamanhoFinalizaram();
+    }
+}    
