@@ -464,7 +464,7 @@ public class ClienteJogoMesada {
 
     
     public synchronized int getTamanhoFinalizaram(){
-        return finalizeiPartida.size();
+        return finalizaramPartida.size();
     }
     
     public int getNumeroParticipantesBolao() {

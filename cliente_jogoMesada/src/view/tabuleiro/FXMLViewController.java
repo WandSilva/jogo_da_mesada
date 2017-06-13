@@ -193,7 +193,6 @@ public class FXMLViewController implements Initializable {
             this.jogou = true;
             botaoJogar.setDisable(true);
             this.dado = facade.rolarDado();
-            dado=9;
             JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
             this.moverPeao(peoes.get(facade.getIdJogador()), dado);
             this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());
@@ -204,7 +203,7 @@ public class FXMLViewController implements Initializable {
     }
 
     public void finalizarJogada() {
-        if (this.jogou && peoes.get(meuID).getColuna() == 3 && peoes.get(meuID).getLinha() == 4) {
+        if (this.jogou && peoes.get(meuID).getColuna() == 3 && peoes.get(meuID).getLinha() == 4 && qtdMeses == 0) {
             this.facade.finalizarJogada(this.facade.getIdJogador());
             this.jogou = false;
             if(facade.getFinalizeiPartida() == false){facade.finalizeiPartida(facade.getNome());}
@@ -318,6 +317,7 @@ public class FXMLViewController implements Initializable {
                         if(facade.getAcabouJogo()){
                             ArrayList<String> resultadoFinal = facade.enviarMeuResultado(facade.getNome(),facade.verSaldoJogador());
                             facade.setAcabouJogo(false);
+                            botaoFinalizar.setDisable(true);
                             mostrarAlerta("Resultado Final da Partida", "", "O vencedor é o primeiro da lista! \n" + resultadoFinal.toString().replace("[", "").replace("]", ""));
                             Platform.exit();
                             facade.removerJogadorServidor();
@@ -805,7 +805,7 @@ public class FXMLViewController implements Initializable {
 
         dialogoExe.setTitle("Bolão de esportes");
         dialogoExe.setHeaderText("");
-        dialogoExe.setContentText("Deseja partcipar?");
+        dialogoExe.setContentText("Deseja participar?");
         dialogoExe.getButtonTypes().setAll(btnSim, btnNao);
         dialogoExe.showAndWait().ifPresent(b -> {
             if (b == btnSim) {
