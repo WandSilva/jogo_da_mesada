@@ -154,13 +154,12 @@ public class ServidorJogoMesada {
                             Sala salaBuscada = new Sala();
                             for (Sala sala:salasDePartidas){
                                 for (Jogador jogador2:sala.getJogadores()){
-                                    if(jogador2.equals(jogador.getNome())){
+                                    if(jogador2.equals(jogador)){
                                         jogador2.setSaldo(Double.parseDouble(dados[2]));
                                         salaBuscada = sala;
                                     }
                                 }
                             }
-                            
                             Thread.sleep(2000);
                             ArrayList<String> ordemResultado = new ArrayList<>();
                             ordemResultado = ordenaJogadores(salaBuscada);
@@ -249,9 +248,8 @@ public class ServidorJogoMesada {
             boolean changed = false;
             do {
                 changed = false;
-                for (int a = 0; a < sala.getJogadores().size() - 1; a++) {
-                    if (sala.getJogadores().get(a).getSaldoJogador() < sala.getJogadores().get(a+1).getSaldoJogador()) {
-
+                for (int a = 0; a < sala.getJogadores().size()- 1; a++) {
+                    if (sala.getJogadores().get(a).getSaldoJogador() < sala.getJogadores().get(a+1).getSaldoJogador() && a+1 <= sala.getJogadores().size() ) {
                         Jogador auxMenor = new Jogador();
                         Jogador auxMaior = new Jogador();
                         auxMenor = sala.getJogadores().get(a);
