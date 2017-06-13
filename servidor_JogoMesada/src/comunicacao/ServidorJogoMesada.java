@@ -154,7 +154,7 @@ public class ServidorJogoMesada {
                             Sala salaBuscada = new Sala();
                             for (Sala sala:salasDePartidas){
                                 for (Jogador jogador2:sala.getJogadores()){
-                                    if(jogador2.equals(jogador2)){
+                                    if(jogador2.equals(jogador.getNome())){
                                         jogador2.setSaldo(Double.parseDouble(dados[2]));
                                         salaBuscada = sala;
                                     }
