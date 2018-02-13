@@ -345,9 +345,6 @@ public class ControllerComunicacao {
         this.cliente.resultadoBolao(resultado);
     }
     
-    public void enviarSaldoFinal(double saldoFinal){
-        this.cliente.enviarSaldoFinal(saldoFinal);
-    }
 
     public void setVencedorBolao(int vencedorBolao){
         this.cliente.setVencedorBolao(vencedorBolao);
@@ -363,5 +360,29 @@ public class ControllerComunicacao {
 
     public void duracaoPartida(int duracao) {
         this.cliente.duracaoPartida(duracao);
+    }
+    
+    public boolean getFinalizeiPartida()
+    {
+        return this.cliente.getFinalizeiPartida();
+    }
+    public void finalizeiPartida(String nomeUsuario){
+        this.cliente.finalizeiPartida(nomeUsuario);
+    }
+    
+    public boolean getAcabouJogo(){
+        return this.cliente.getAcabouJogo();
+    }
+    
+    public ArrayList<String> enviarMeuResultado(String nomeUsuario, double saldoFinal){
+        return this.cliente.enviarMeuResultado(nomeUsuario, saldoFinal);
+    }
+    
+    public void setAcabouJogo(boolean valor){
+        this.cliente.setAcabouJogo(valor);
+    }
+    
+    public int getTamanhoFinalizaram(){
+        return this.cliente.getTamanhoFinalizaram();
     }
 }

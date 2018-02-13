@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Sala;
 
 /**
@@ -149,18 +151,21 @@ public class ServidorJogoMesada {
                             dados = pacoteDados.split(";");
                             Jogador jogador = new Jogador();
                             jogador.setNome(dados[1]);
-                            
+                            Sala salaBuscada = new Sala();
                             for (Sala sala:salasDePartidas){
                                 for (Jogador jogador2:sala.getJogadores()){
-                                    if(jogador2.equals(jogador2)){
+                                    if(jogador2.equals(jogador)){
                                         jogador2.setSaldo(Double.parseDouble(dados[2]));
-                                        saidaDadosClienteServidor.writeBytes("600\n");
+                                        salaBuscada = sala;
                                     }
                                 }
-                            }  
-                        }
-
-                    } catch (IOException ex) {
+                            }
+                            Thread.sleep(2000);
+                            ArrayList<String> ordemResultado = new ArrayList<>();
+                            ordemResultado = ordenaJogadores(salaBuscada);
+                            saidaDadosClienteServidor.writeBytes("600"+";"+ordemResultado+'\n');
+                        }                             
+                    } catch (Exception ex) {
                         //System.out.println("Conexão Finalizada!");
 
                         ex.printStackTrace();
@@ -232,6 +237,34 @@ public class ServidorJogoMesada {
             ArrayList<String> jogadores = new ArrayList<>();
             for (Jogador jogador1 : sala.getJogadores()) {
                 jogadores.add(jogador1.getNome());
+            }
+            return jogadores;
+        }
+        
+        private synchronized ArrayList<String> ordenaJogadores(Sala sala) {
+            
+            ArrayList<String> jogadores = new ArrayList<>();
+                
+            boolean changed = false;
+            do {
+                changed = false;
+                for (int a = 0; a < sala.getJogadores().size()- 1; a++) {
+                    if (sala.getJogadores().get(a).getSaldoJogador() < sala.getJogadores().get(a+1).getSaldoJogador() && a+1 <= sala.getJogadores().size() ) {
+                        Jogador auxMenor = new Jogador();
+                        Jogador auxMaior = new Jogador();
+                        auxMenor = sala.getJogadores().get(a);
+                        auxMaior = sala.getJogadores().get(a+1);
+                        sala.getJogadores().remove(a);
+                        sala.getJogadores().remove(a+1);
+                        sala.getJogadores().add(a, auxMaior);
+                        sala.getJogadores().add(a+1, auxMenor);
+                        changed = true;
+                        }
+                    }
+               } while (changed);
+
+            for (Jogador jogador1 : sala.getJogadores()) {
+                jogadores.add(jogador1.getNome() + "#" +jogador1.getSaldoJogador());
             }
             return jogadores;
         }

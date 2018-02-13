@@ -203,10 +203,14 @@ public class FXMLViewController implements Initializable {
     }
 
     public void finalizarJogada() {
-        if (this.jogou) {
+        if (this.jogou && peoes.get(meuID).getColuna() == 3 && peoes.get(meuID).getLinha() == 4 && qtdMeses == 0) {
             this.facade.finalizarJogada(this.facade.getIdJogador());
             this.jogou = false;
-        } else {
+            if(facade.getFinalizeiPartida() == false){facade.finalizeiPartida(facade.getNome());}
+        } else if(this.jogou){
+            this.facade.finalizarJogada(this.facade.getIdJogador());
+            this.jogou = false;
+        }else {
             this.facade.informarJogada(0);
             this.facade.finalizarJogada(this.facade.getIdJogador());
             this.jogou = false;
@@ -276,6 +280,7 @@ public class FXMLViewController implements Initializable {
                             if (resultado == 3) {
                                 facade.receberDinheiro(1000);
                                 atualizarValoresTela();
+                                mostrarAlerta("Concurso Banda de Rock", "", "Você ganhou R$ 1000!");
                             } else {
                                 if (meuID == facade.getUsuariosConectados().size() - 1)
                                     facade.concursoBandaRock(0);
@@ -308,6 +313,17 @@ public class FXMLViewController implements Initializable {
                             String nome = facade.getNomeUsuarioPorId(resultado);
                             mostrarAlerta("Resultado do bolão", "","O jogador "+nome+" ganhou");
                         }
+                        
+                        if(facade.getAcabouJogo()){
+                            ArrayList<String> resultadoFinal = facade.enviarMeuResultado(facade.getNome(),facade.verSaldoJogador());
+                            facade.setAcabouJogo(false);
+                            botaoFinalizar.setDisable(true);
+                            mostrarAlerta("Resultado Final da Partida", "", "O vencedor é o primeiro da lista! \n" + resultadoFinal.toString().replace("[", "").replace("]", ""));
+                            Platform.exit();
+                            facade.removerJogadorServidor();
+                            System.exit(0);
+                        }
+                        
 
                         if (meuID == facade.getProximoJogador()) {
                             habilitarBotoes();
@@ -375,11 +391,13 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Praia no Domingo", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //concurso banda de rock
         else if (coluna == 1 && linha == 1) {
             this.facade.concursoBandaRock(facade.getIdJogador());
+            
         } //feliz aniversário
         else if (coluna == 3 && linha == 1) {
             try {
@@ -395,6 +413,7 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Ajude a Floresta", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //lanchonete
@@ -404,6 +423,7 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Lanchonete", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //negocio de ocasião
@@ -442,6 +462,7 @@ public class FXMLViewController implements Initializable {
             } catch (SaldoInsuficienteException e) {
                 JOptionPane.showMessageDialog(null, "Saldo insuficiente, faça um empréstimo", "Saldo insuficiente", JOptionPane.ERROR_MESSAGE);
             }
+            mostrarAlerta("Compras no Shopping", "", "R$ 100 para o Sorte Grande, filho!");
             atualizarValoresTela();
             atualizarSortegrande();
         } //maratona beneficente
@@ -456,11 +477,11 @@ public class FXMLViewController implements Initializable {
             qtdMeses = qtdMeses - 1;
             if (qtdMeses == 0){
                 botaoJogar.setDisable(true);
-            }
-            
-        }
+                
+                }
+            }   
+ 
     }
-
     /**
      * verifica onde o peão de outro jogador está para informar sobre eventos
      * coletivos acionados por ele.
@@ -784,7 +805,7 @@ public class FXMLViewController implements Initializable {
 
         dialogoExe.setTitle("Bolão de esportes");
         dialogoExe.setHeaderText("");
-        dialogoExe.setContentText("Deseja partcipar?");
+        dialogoExe.setContentText("Deseja participar?");
         dialogoExe.getButtonTypes().setAll(btnSim, btnNao);
         dialogoExe.showAndWait().ifPresent(b -> {
             if (b == btnSim) {
@@ -951,3 +972,5 @@ public class FXMLViewController implements Initializable {
         return casas;
     }
 }
+
+
