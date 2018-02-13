@@ -193,7 +193,6 @@ public class FXMLViewController implements Initializable {
             this.jogou = true;
             botaoJogar.setDisable(true);
             this.dado = facade.rolarDado();
-            dado=5;
             JOptionPane.showMessageDialog(null, "Valor sorteado: " + dado);
             this.moverPeao(peoes.get(facade.getIdJogador()), dado);
             this.realizarAcaoCasa(peoes.get(meuID).getColuna(), peoes.get(meuID).getLinha());

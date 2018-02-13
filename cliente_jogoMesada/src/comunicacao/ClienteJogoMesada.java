@@ -704,7 +704,7 @@ public class ClienteJogoMesada {
                         dadosRecebidos = msg.split(";");
                         idDestino = Integer.parseInt(dadosRecebidos[1].trim());
                         valorTransferencia = Double.parseDouble(dadosRecebidos[2].trim());
-                        ClienteJogoMesada.controleTransferenciaIn = true;
+                        ClienteJogoMesada.controleTransferenciaOut = true;
                     } else if (msg.startsWith("1008")) {
                         ClienteJogoMesada.gatilhoInicioPartida = true;
                     } else if (msg.startsWith("1009")) {
