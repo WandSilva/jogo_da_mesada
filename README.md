@@ -1,4 +1,4 @@
-# jogo_da_mesada
+# jogo_da_mesada [BETA]
 
 Jogo da mesada implementado em Java
 
